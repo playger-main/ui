@@ -3,8 +3,8 @@ import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } 
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
-import { routes } from './components/app/app.routes';
-import { AppComponent } from './components/app/app.component';
+import { routes } from './app/app.routes';
+import { AppComponent } from './app/app.component';
 
 defineCustomElements(window);
 bootstrapApplication(AppComponent, {
