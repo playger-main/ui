@@ -4,8 +4,8 @@
       <ion-title>Menu</ion-title>
     </ion-toolbar>
     <ion-list>
-      <ion-item routerLink="/home">Home</ion-item>
-      <ion-item routerLink="settings">Settings</ion-item>     
+      <ion-item routerLink="/home" (click)="handlerMenu('Home')">Home</ion-item>
+      <ion-item routerLink="/settings" (click)="handlerMenu('Settings')">Settings</ion-item>     
     </ion-list>
   </ion-content>
 </ion-menu>
