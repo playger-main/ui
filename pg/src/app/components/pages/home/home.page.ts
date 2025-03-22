@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../../UI/explore-container/explore-container.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss'],
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent],
 })
-export class Tab1Page {
-  constructor() {}
+export class HomePage {
+  constructor(private titleService: Title) {
+    this.titleService.setTitle('Home')
+  }
 }
