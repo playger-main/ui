@@ -6,6 +6,6 @@ import { MapComponent } from '../../UI/map/map.component';
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, MapComponent],
+  imports: [IonContent, MapComponent],
 })
 export class HomePage {}
