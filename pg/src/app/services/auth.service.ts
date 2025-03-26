@@ -21,8 +21,8 @@ export class AuthService {
   }
 
   // Метод регистрации пользователя
-  register(email: string, password: string) {
-    return this.http.post<any>(`${this.apiUrl}/signup`, { email, password }).subscribe(
+  register(username: string, email: string, password: string) {
+    return this.http.post<any>(`${this.apiUrl}/signup`, {username, email, password }).subscribe(
       (response) => {
         alert('Письмо с подтверждением отправлено на вашу почту');
         this.router.navigate(['/login']);

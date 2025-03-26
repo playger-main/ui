@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 })
 export class RegisterPage {
   email = '';
+  username = '';
   password = '';
   confirmPassword = '';
   errorMessage = '';
@@ -25,6 +26,6 @@ export class RegisterPage {
       this.errorMessage = 'Пароли не совпадают';
       return;
     }
-    this.authService.register(this.email, this.password);
+    this.authService.register(this.username, this.email, this.password);
   }
 }
