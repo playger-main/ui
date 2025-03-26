@@ -1,14 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component, AfterViewInit } from '@angular/core';
-import { IonContent } from '@ionic/angular/standalone';
-import 
-
-mapboxgl from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss'],
-  imports: []
+  styleUrls: ['./map.component.scss'], 
+  imports: [CommonModule]
 })
 export class MapComponent implements AfterViewInit {
   map!: mapboxgl.Map;
@@ -27,5 +25,6 @@ export class MapComponent implements AfterViewInit {
     setTimeout(() => {
       this.map.resize(); // 👈 Обновляет размеры карты
     }, 100);
+
   }
 }
