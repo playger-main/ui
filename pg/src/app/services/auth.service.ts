@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://playground-back-production.up.railway.app/auth';  // URL бэкенда
+  private apiUrl = 'https://playground-back-production.up.railway.app';  // URL бэкенда
   constructor(private http: HttpClient, private router: Router) {}
 
   // Логин: получаем access_token и refresh_token
    
-  login(email: string, password: string) {
-    return this.http.post<any>(`${this.apiUrl}/signin`, { email, password }).subscribe(async (response) => {
+  login(user: string, password: string) {
+    return this.http.post<any>(`${this.apiUrl}/auth/signin`, { user, password }).subscribe(async (response) => {
       await this.saveTokens(response.access_token, response.refresh_token);      
       this.router.navigate(['/profile']);
     });
@@ -22,9 +21,10 @@ export class AuthService {
 
   // Метод регистрации пользователя
   register(username: string, email: string, password: string) {
-    return this.http.post<any>(`${this.apiUrl}/signup`, {username, email, password }).subscribe(
+    return this.http.post<any>(`${this.apiUrl}/auth/signup`, {username, email, password }).subscribe(
       (response) => {
-        alert('Письмо с подтверждением отправлено на вашу почту');
+        // alert('Письмо с подтверждением отправлено на вашу почту');
+        alert('Регистрация успешна!');
         this.router.navigate(['/login']);
       },
       (error) => {

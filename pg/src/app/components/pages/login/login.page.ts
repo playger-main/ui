@@ -13,13 +13,13 @@ import { RouterModule } from '@angular/router';
   standalone: true,
 })
 export class LoginPage {
-  email = '';
+  user = '';
   password = '';
   errorMessage = '';
 
   constructor(private authService: AuthService) {}
 
   login() {
-    this.authService.login(this.email, this.password);
+    this.authService.login(this.user, this.password);
   }
 }
