@@ -24,7 +24,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/auth/signup`, {username, email, password }).subscribe(
       (response) => {
         // alert('Письмо с подтверждением отправлено на вашу почту');
-        alert('Регистрация успешна!');
+        alert(`На ${email} выслано письмо для подтверждения почты. Если вы не находите письмо, проверте спам`);
         this.router.navigate(['/login']);
       },
       (error) => {
