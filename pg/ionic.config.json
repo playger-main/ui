@@ -1,7 +1,7 @@
 {
-  "name": "PG",
+  "name": "pg",
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular"
+  "type": "angular-standalone"
 }
