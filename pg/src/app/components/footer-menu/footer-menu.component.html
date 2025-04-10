@@ -1,8 +1,17 @@
+<div class="map-container">
+  <p class="map-placeholder">[Map Placeholder]</p>
+</div>
+
+
 <ion-tabs>
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="home" routerLink="/home" (click)="handlerTabs('Home')">
       <ion-icon name="home"></ion-icon>
       <ion-label>Home</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="events" routerLink="/events" (click)="handlerTabs('Events')">
+      <ion-icon name="golf"></ion-icon>  
+          <ion-label>Events</ion-label>
     </ion-tab-button>
     <ion-tab-button tab="profile" routerLink="/profile" (click)="handlerTabs('Profile')">
       <ion-icon name="person"></ion-icon>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonContent, IonItem, IonList, IonMenu, IonTitle, IonToolbar, MenuController } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
-import { AppComponent } from '../../../app.component';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-menu',
