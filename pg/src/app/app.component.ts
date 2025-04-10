@@ -9,7 +9,7 @@ import { FooterMenuComponent } from './components/footer-menu/footer-menu.compon
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet, MenuComponent, FooterMenuComponent, HeaderComponent],
+  imports: [IonApp, IonRouterOutlet, MenuComponent,FooterMenuComponent, HeaderComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ], 

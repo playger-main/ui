@@ -9,7 +9,7 @@ import { MapComponent } from 'src/app/components/map/map.component';
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [CommonModule,MapComponent, FormsModule],
+  imports: [CommonModule,MapComponent, FormsModule, DropDownPanelComponent, IonContent],
 })
 export class HomePage {
   
