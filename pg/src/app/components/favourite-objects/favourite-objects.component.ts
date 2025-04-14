@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonIcon, IonLabel, IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { barbell, basketball, football } from 'ionicons/icons';
 import { AppComponent } from 'src/app/app.component';
+import { IFavoriteListSport } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-favourite-objects',
@@ -20,7 +21,9 @@ export class FavouriteObjectsComponent  implements OnInit {
 
   ngOnInit() {}
 
-  public defaultFavouriteList = [{icon: 'football', type: 'Football'}, {icon: 'basketball', type: 'Basketball'}, {icon: 'barbell', type: 'Workout'}];
 
-  selectedKindOfSport: string = 'football';
+  @Input() listfavoriteKindOfSport: IFavoriteListSport[] | null = null;
+
+
+  selectedKindOfSport = this.listfavoriteKindOfSport? this.listfavoriteKindOfSport[0] : '';
 }

@@ -3,7 +3,17 @@
    
 
 <div class="bottom-modal-component">
-  <app-drop-down-panel/>
+
+  <app-drop-down-panel>
+    <ng-container search>
+         <app-search></app-search>
+    </ng-container>
+    <ng-container favoriteSports>
+      <app-favourite-objects [listfavoriteKindOfSport]="listfavoriteKindOfSport$ | async"></app-favourite-objects>
+
+    </ng-container>
+  </app-drop-down-panel>
+
 </div>
 
 </ion-content> 

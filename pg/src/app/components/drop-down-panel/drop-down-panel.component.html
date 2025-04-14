@@ -9,8 +9,11 @@
 
 <ng-template>
   <div class="modal-content">
-    <app-search></app-search>
-<app-favourite-objects/>
+    <ng-content select="[search]" />
+ 
+    <ng-content select="[favoriteSports]" />
+
+
   </div>
  
 </ng-template>

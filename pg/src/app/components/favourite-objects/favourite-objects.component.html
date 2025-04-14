@@ -1,14 +1,11 @@
 <div class="list-container">
   <ion-segment [(ngModel)]="selectedKindOfSport">
-    <ion-segment-button *ngFor="let item of defaultFavouriteList" [value]="item.type">
+    <ion-segment-button *ngFor="let item of listfavoriteKindOfSport" [value]="item.type">
       <ion-icon [name]="item.icon"></ion-icon>
       <ion-label>{{ item.type }}</ion-label>
     </ion-segment-button>
   </ion-segment>
-  
 </div>
-
-  
 
 
 

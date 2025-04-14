@@ -19,7 +19,6 @@ export interface IGround {
     createdAt: string;
     updatedAt: string;
     locationId: string;
-
 }
 
 export interface ILocation {
@@ -54,4 +53,10 @@ export interface IMigration {
     id: string;
     timestamp: string;
     name: string;
+}
+
+export interface IFavoriteListSport {
+    icon: string;
+    type: string
+
 }
