@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/angular/standalone';
-import { RouterModule } from '@angular/router';
+import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonNav, NavController, IonButton, IonButtons, IonToolbar, IonContent, IonTitle, IonHeader, IonTab } from '@ionic/angular/standalone';
+import { Router, RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { person, home, rocket, golf } from 'ionicons/icons';
 import { AppComponent } from 'src/app/app.component';
@@ -10,13 +10,18 @@ import { CommonModule } from '@angular/common';
   selector: 'app-footer-menu',
   templateUrl: 'footer-menu.component.html',
   styleUrls: ['footer-menu.component.scss'],
-  imports: [CommonModule, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, RouterModule],
+  imports: [CommonModule,  IonIcon, IonTabButton, IonTabBar,  IonTabs],
 })
 export class FooterMenuComponent { 
-  constructor(private appComponent: AppComponent) {
+  constructor(private appComponent: AppComponent, private router: Router) {
     addIcons({ person, home, golf});
-  }  
-  handlerTabs(title: string) {
-    this.appComponent.setPageTitle(title);    
   }
+  currentTitle = '';
+  
+    handlerTabs(title: string) {
+      this.appComponent.setPageTitle(title);    
+    }  
+
+   
 }
+

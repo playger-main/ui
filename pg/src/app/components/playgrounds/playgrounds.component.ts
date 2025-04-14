@@ -1,0 +1,21 @@
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { IGround } from 'src/app/interfaces/interfaces';
+
+@Component({
+  selector: 'app-playgrounds',
+  templateUrl: './playgrounds.component.html',
+  styleUrls: ['./playgrounds.component.scss'],
+  imports: [CommonModule]
+})
+export class PlaygroundsComponent  implements OnInit {
+
+  constructor() { }
+
+  
+  ngOnInit() {}
+
+  @Input() listPlaygrounds: IGround[] | null = null;
+  
+  @Input() currentKindOfSport: string | null = null;
+}

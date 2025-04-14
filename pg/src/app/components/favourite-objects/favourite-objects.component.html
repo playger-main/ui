@@ -1,5 +1,5 @@
 <div class="list-container">
-  <ion-segment [(ngModel)]="selectedKindOfSport">
+  <ion-segment [(ngModel)]="selectedKindOfSport" (ionChange)="onSegmentChange($event)">
     <ion-segment-button *ngFor="let item of listfavoriteKindOfSport" [value]="item.type">
       <ion-icon [name]="item.icon"></ion-icon>
       <ion-label>{{ item.type }}</ion-label>
