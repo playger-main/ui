@@ -13,19 +13,5 @@ import { MapComponent } from 'src/app/components/map/map.component';
 })
 export class HomePage {
   
-  isExpanded = false;
-  selectedTransport: string = 'car';
 
-  addresses: string[] = [
-    '123 Main Street',
-    '456 Elm Street',
-    '789 Oak Avenue',
-    '101 Pine Road',
-    '202 Maple Lane'
-  ];
-
-  
-
-
- 
 }
