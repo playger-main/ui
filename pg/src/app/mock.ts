@@ -179,25 +179,22 @@ export const fakeGrounds2: IGround[] = [
     updatedAt: new Date().toISOString(),
     locationId: 'vilnius-pilaite-18'
   },
-  {
-    id: crypto.randomUUID(),
-    name: 'Ground S',
-    coverage: 'Grass',
-    description: 'Large field by Liepkalnis ski area.',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    locationId: 'vilnius-liepkalnis-19'
-  },
-  {
-    id: crypto.randomUUID(),
-    name: 'Ground T',
-    coverage: 'Gravel',
-    description: 'Multi-purpose ground near Gariūnai market.',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    locationId: 'vilnius-gariunai-20'
-  }
+
 ];
+
+export const fakeGrounds3: IGround[] = Array.from({ length: 20 }).map((_, i) => {
+  const id = crypto.randomUUID();
+  const now = new Date().toISOString();
+  return {
+    id,
+    name: `Ground ${i + 1} - Workout`,
+    coverage: ['Grass', 'Gravel', 'Concrete', 'Synthetic'][i % 4],
+    description: `This is a description for Ground ${i + 1} located in Vilnius. It features ${['great drainage', 'multi-use fields', 'evening lighting', 'seating areas'][i % 4]}.`,
+    createdAt: now,
+    updatedAt: now,
+    locationId: `vilnius-loc-${i + 1}`
+  };
+});
 
   
 
