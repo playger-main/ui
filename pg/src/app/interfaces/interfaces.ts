@@ -18,11 +18,10 @@ export interface IGround {
     description: string;
     createdAt: string;
     updatedAt: string;
-    locationId: string;
+    location: ILocation
 }
 
 export interface ILocation {
-    id: string;
     lat: string;
     lng: string;
     address: string;
