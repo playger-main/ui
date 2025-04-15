@@ -28,18 +28,24 @@ listfavoriteKindOfSport$!: Observable<IFavoriteListSport[]>;
 
 listPlaygrounds$!: Observable<IGround[]>;
 
-currentKindOfSport: string = '';
+selectedKindOfSport: string = '';
 
 private loadUserData () {
 
- this.listfavoriteKindOfSport$ =  this.userService.getListOfFavKindSport().pipe(map((data)=> data));
+ this.listfavoriteKindOfSport$ =  this.userService.getListOfFavKindSport().pipe(map((data)=> {
+  this.playGroundService.setSelectedGround(data[0].type.toLowerCase());
+  this.selectedKindOfSport = data[0].type.toLowerCase();
 
- this.listPlaygrounds$ = this.playGroundService.getListOfGroundsForChosenSport(this.currentKindOfSport).pipe(map((data)=> data));
+  this.listPlaygrounds$ = this.playGroundService.getListOfGroundsForChosenSport().pipe(map((data)=> data));
+  return data;
+ }));
+
 
 }
 
 chooseKindOfSport (sport: string) {
-  console.log(sport);
-   this.currentKindOfSport = sport ;
+   this.playGroundService.setSelectedGround(sport);
+   this.listPlaygrounds$ = this.playGroundService.getListOfGroundsForChosenSport().pipe(map((data)=> data));
+
 }
 }

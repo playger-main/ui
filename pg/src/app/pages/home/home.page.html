@@ -7,7 +7,7 @@
          <app-search></app-search>
     </ng-container>
     <ng-container favoriteSports>
-      <app-favourite-objects [listfavoriteKindOfSport]="listfavoriteKindOfSport$ | async" (kindOfSportChanged)="chooseKindOfSport($event)" ></app-favourite-objects>
+      <app-favourite-objects [listfavoriteKindOfSport]="listfavoriteKindOfSport$ | async" [selectedKindOfSport]="selectedKindOfSport" (kindOfSportChanged)="chooseKindOfSport($event)" ></app-favourite-objects>
     </ng-container>
     <ng-container playgrounds>
       <app-playgrounds [listPlaygrounds]="listPlaygrounds$ | async" ></app-playgrounds>

@@ -18,7 +18,9 @@ export class GroundService {
     return this.selectedSport;
   }
 
+  //get list of Ground for chosen kind of Sport from API
   getListOfGroundsForChosenSport(): Observable<IGround[]> {
+    console.log('request GET')
     const selectedKindOfSport = this.getSelectedGGround(); 
     const kind = selectedKindOfSport(); 
     switch (kind) {
