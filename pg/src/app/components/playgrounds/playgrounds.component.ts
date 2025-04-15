@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { IonItem, IonLabel, IonList } from '@ionic/angular/standalone';
 import { IGround } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-playgrounds',
   templateUrl: './playgrounds.component.html',
   styleUrls: ['./playgrounds.component.scss'],
-  imports: [CommonModule]
+  imports: [CommonModule,IonItem, IonLabel, IonList]
 })
 export class PlaygroundsComponent  implements OnInit {
 
@@ -16,6 +17,6 @@ export class PlaygroundsComponent  implements OnInit {
   ngOnInit() {}
 
   @Input() listPlaygrounds: IGround[] | null = null;
-  
+
   @Input() currentKindOfSport: string | null = null;
 }

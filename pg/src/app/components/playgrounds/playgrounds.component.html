@@ -1,3 +1,7 @@
-<p>
-{{listPlaygrounds | json }}
-</p>
+
+
+<ion-list *ngFor="let item of listPlaygrounds">
+  <ion-item>
+    <ion-label>{{item.name}}</ion-label>
+  </ion-item>
+</ion-list>
