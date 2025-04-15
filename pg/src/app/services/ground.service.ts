@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { fakeGrounds, fakeGrounds2, fakeListFavKindSport } from '../mock';
+import { fakeGrounds, fakeGrounds2, fakeGrounds3, fakeListFavKindSport } from '../mock';
 import { Observable, of } from 'rxjs';
 import { IGround } from '../interfaces/interfaces';
 
@@ -7,8 +7,6 @@ import { IGround } from '../interfaces/interfaces';
   providedIn: 'root',
 })
 export class GroundService {
-
-   
 
  selectedSport = signal<string>(''); 
 
@@ -20,12 +18,20 @@ export class GroundService {
     return this.selectedSport;
   }
 
-  getListOfGroundsForChosenSport (): Observable<IGround[]>  {
-
-    const selectedKindOfSport = this.selectedSport();
-    console.log(selectedKindOfSport);
-     return selectedKindOfSport == 'football' ? of(fakeGrounds) : of(fakeGrounds2);
+  getListOfGroundsForChosenSport(): Observable<IGround[]> {
+    const selectedKindOfSport = this.getSelectedGGround(); 
+    const kind = selectedKindOfSport(); 
+    switch (kind) {
+      case 'football':
+        return of(fakeGrounds);
+      case 'basketball':
+        return of(fakeGrounds2);
+      case 'workout':
+        return of(fakeGrounds3);
+      default:
+        return of([]); 
+    }
   }
-}
+}  
 
 
