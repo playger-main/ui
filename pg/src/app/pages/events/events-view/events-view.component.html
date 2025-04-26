@@ -1,3 +1,17 @@
-<p>
-  events-view works!
-</p>
+
+<ion-content [fullscreen]="true">  
+  <ion-list>
+    <ion-card *ngFor="let event of listEvents">
+      <ion-card-header>
+        <ion-card-title>{{ event.name }}</ion-card-title>
+        <ion-card-subtitle>{{ event.category }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Date:</strong> {{ event.date }} {{ event.startTime }}</p>
+        <p><strong>Duration:</strong> {{ event.duration }} min</p>
+        <p><strong>Location:</strong> {{ event.location.address }}</p>
+        <p>{{ event.description }}</p>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { EventsComponent } from './events.component';
+import { GroundViewComponent } from './ground-view.component';
 
-describe('EventsComponent', () => {
-  let component: EventsComponent;
-  let fixture: ComponentFixture<EventsComponent>;
+describe('GroundViewComponent', () => {
+  let component: GroundViewComponent;
+  let fixture: ComponentFixture<GroundViewComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ EventsComponent ],
+      declarations: [ GroundViewComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EventsComponent);
+    fixture = TestBed.createComponent(GroundViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

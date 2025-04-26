@@ -10,6 +10,8 @@ export const routes: Routes = [
   { path: 'profile', loadComponent: () => import('./pages/profile/profile.page').then(c => c.ProfilePage), canActivate: [AuthGuard]},
   { path: 'settings', loadComponent: () => import('./pages/settings/settings.page').then(c => c.SettingsPage)},    
   { path: 'events', loadComponent: () => import('./pages/events/events/events.component').then(c => c.EventsComponent)},  
+  {  path: 'ground/:id', title: 'Ground', loadComponent: () => import('./pages/grounds/ground/ground.component').then(c => c.GroundComponent)},  
+
   {
     path: '',
     component: FooterMenuComponent,

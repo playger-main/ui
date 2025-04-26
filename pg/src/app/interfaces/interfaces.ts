@@ -8,7 +8,9 @@ export interface IEvent {
     createdAt: string;
     updatedAt: string;
     userId: string;
-    groundId: string;
+    location: ILocation;
+    category: string;
+    groundId?: string;
 }
 
 export interface IGround {

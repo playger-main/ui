@@ -35,7 +35,7 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss", "node_modules/mapbox-gl/dist/mapbox-gl.css"],
+            "styles": ["src/SCSS/global.scss", "src/SCSS/theme/variables.scss", "node_modules/mapbox-gl/dist/mapbox-gl.css"],
             "scripts": [],
             "browser": "src/main.ts"
           },
