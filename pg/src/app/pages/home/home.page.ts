@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import {  IonContent, IonModal, IonSegment, IonSegmentButton, IonItem, IonLabel, IonList, IonToggle, Gesture, GestureController, IonIcon, IonTabButton, IonTabBar, IonTabs } from '@ionic/angular/standalone';
+import {  IonContent, IonCard, IonCardHeader, IonCardTitle } from '@ionic/angular/standalone';
 import { map, Observable, Subscription } from 'rxjs';
 import { FavouriteObjectsComponent } from 'src/app/components/favourite-objects/favourite-objects.component';
 import { MapComponent } from 'src/app/components/map/map.component';
@@ -12,9 +12,9 @@ import { IFavoriteListSport, IGround } from 'src/app/interfaces/interfaces';
 import { GroundService } from 'src/app/services/ground.service';
 import { UserService } from 'src/app/services/user.service';
 import { Router, NavigationEnd } from '@angular/router';
-import { filter, of } from 'rxjs';
-import {ChangeDetectionStrategy } from '@angular/core';
+
 import { AppComponent } from 'src/app/app.component';
+import { DropDownPanelComponent } from 'src/app/components/drop-down-panel/drop-down-panel.component';
 
 
 
@@ -22,14 +22,14 @@ import { AppComponent } from 'src/app/app.component';
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [CommonModule, MapComponent, FormsModule, IonContent],
+  imports: [CommonModule, IonCard, IonCardHeader, IonCardTitle, PlaygroundsComponent,FavouriteObjectsComponent, SearchComponent, DropDownPanelComponent, MapComponent, FormsModule, IonContent],
 })
 export class HomePage implements OnInit {
 constructor(public appComponent: AppComponent,private userService: UserService, private playGroundService: GroundService, private router: Router) { }
 
 ngOnInit(): void {
   
-
+console.log('home page');
 this.loadUserData();
   this.loadUserData();
 }
@@ -57,6 +57,7 @@ private loadUserData () {
   this.selectedKindOfSport = data[0].type.toLowerCase();
 
   this.listPlaygrounds$ = this.playGroundService.getListOfGroundsForChosenSport().pipe(map((data)=> data));
+  console.log(data)
   return data;
  }));
 

@@ -19,7 +19,7 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [CommonModule, PlaygroundsComponent, IonApp, FavouriteObjectsComponent, SearchComponent, DropDownPanelComponent, FooterMenuComponent, IonRouterOutlet, MenuComponent, HeaderComponent],
+  imports: [CommonModule, IonApp, FooterMenuComponent, IonRouterOutlet, MenuComponent, HeaderComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ], 
@@ -27,13 +27,7 @@ import { UserService } from 'src/app/services/user.service';
 export class AppComponent {
 
   constructor( private router: Router, private playGroundService: GroundService, private userService: UserService) { 
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        const url = event.urlAfterRedirects;
-        this.isHomePage = url === '/home' ? true : false;
-        console.log('Current URL:', url, 'isHomePage:', this.isHomePage);
-      });
+    
   
   }
   

@@ -6,8 +6,7 @@ import {  IonModal } from '@ionic/angular/standalone';
   selector: 'app-drop-down-panel',
   templateUrl: './drop-down-panel.component.html',
   styleUrls: ['./drop-down-panel.component.scss'],
-  imports: [IonModal, CommonModule],
-  host: { 'class': 'modal-sheet' }, // 👈 This adds class to the host
+  imports: [ CommonModule],
 
 })
 export class DropDownPanelComponent  implements OnInit{
@@ -15,6 +14,7 @@ export class DropDownPanelComponent  implements OnInit{
   constructor() { }
 
   ngOnInit() {
+    console.log('drop-down-panel component')
   }
 
 }

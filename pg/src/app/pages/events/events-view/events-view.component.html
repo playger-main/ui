@@ -2,18 +2,15 @@
 
 <div class="page-content">
   <ion-content [fullscreen]="true">  
-   <ion-header>
-    <ion-toolbar>
-      <ion-title>Events</ion-title>
-      <ion-buttons slot="end">
+    <div class="header-container">
+      <h4>Events</h4>
+
         <ion-button fill="outline"  size="large" (click)="createEvent.emit($event)">
           <ion-icon slot="icon-only" name="add"></ion-icon>
         </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
+    </div>
+
     <ion-list>
-      
       <ion-card *ngFor="let event of listEvents" (click)="goToCurrentEventPage.emit(event.id)" style="cursor:pointer;">
         <ion-card-header>
           <ion-card-title>{{ event.name }}</ion-card-title>

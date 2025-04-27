@@ -21,6 +21,7 @@ export class GroundComponent  implements OnInit {
   ground$!: Observable<IGround>;
 
   ngOnInit(): void {
+    console.log(this.groundId)
     this.groundId = this.route.snapshot.paramMap.get('id')!;
     this.loadDataChosenGround(this.groundId);
   }

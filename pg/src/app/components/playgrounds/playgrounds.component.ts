@@ -15,7 +15,9 @@ export class PlaygroundsComponent  implements OnInit {
   constructor(private router: Router) { }
 
   
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('playgrounds component')
+  }
 
   @Input() listPlaygrounds: IGround[] | null = null;
 

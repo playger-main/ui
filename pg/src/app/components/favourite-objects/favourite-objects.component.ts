@@ -22,9 +22,10 @@ export class FavouriteObjectsComponent implements OnInit {
   } 
   ngOnInit(): void {
     this.selectedKindOfSport = this.listfavoriteKindOfSport ? this.listfavoriteKindOfSport[0].type : '';
+    console.log('favourite component')
   }
  
-  @Input() listfavoriteKindOfSport: IFavoriteListSport[] | null = null;
+  @Input() listfavoriteKindOfSport!: IFavoriteListSport[] | null;
   @Input()  selectedKindOfSport!: string;
 
 

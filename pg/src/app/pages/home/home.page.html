@@ -1,3 +1,40 @@
-<ion-content [fullscreen]="true">  
-  <app-map></app-map>
-</ion-content> 
+<div class="page-content">
+<ion-content [fullscreen]="true">
+  <ion-card>
+  <ion-card-header>
+    <ion-card-title>
+      <h4>Grounds</h4>
+
+    </ion-card-title>
+  </ion-card-header>
+  <app-search></app-search>
+  
+
+
+
+
+  
+    
+
+  
+
+   
+        <app-favourite-objects 
+          [listfavoriteKindOfSport]="listfavoriteKindOfSport$ | async"
+          [selectedKindOfSport]="selectedKindOfSport"
+          (kindOfSportChanged)="chooseKindOfSport($event)">
+        </app-favourite-objects>
+
+
+    
+      
+          <app-playgrounds [listPlaygrounds]="listPlaygrounds$ | async"></app-playgrounds>
+      
+  
+
+
+
+
+        </ion-card>
+</ion-content>
+</div>

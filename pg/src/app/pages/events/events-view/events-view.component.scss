@@ -12,3 +12,23 @@
     padding: 1rem;
     width: 300px;
   }
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 1rem 0px;
+  }
+  
+  .header-title {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  /* Optional: Make sure the button doesn't push the title off-center */
+  .header-container ion-button {
+    margin-left: auto;
+  }
