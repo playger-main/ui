@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { fakeGrounds, fakeListFavKindSport } from '../mock';
+import { fakeGrounds, fakeListFavKindSport, USERS_MOCK } from '../mock';
 import { Observable, of } from 'rxjs';
-import { IFavoriteListSport, IGround } from '../interfaces/interfaces';
+import { IFavoriteListSport, IGround, IUser } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -12,5 +12,9 @@ export class UserService {
         return of(fakeListFavKindSport)
     }
 
+    getUserById(id: string): Observable<IUser> {
+      return of(USERS_MOCK.find(user=> user.id === id) as IUser);
+    }
+    
     
 }

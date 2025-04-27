@@ -10,8 +10,9 @@ import { AppComponent } from 'src/app/app.component';
   imports: [IonItem, IonList, IonContent, IonMenu, IonTitle, IonToolbar, RouterModule ]
 })
 export class MenuComponent {
-  constructor(private menu: MenuController, private appComponent: AppComponent) {}
+  constructor(private menu: MenuController, private appComponent: AppComponent,) {}
   handlerMenu(title: string) {
+
     this.menu.close();
     this.appComponent.setPageTitle(title);    
   }  

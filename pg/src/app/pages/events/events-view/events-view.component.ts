@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IEvent } from 'src/app/interfaces/interfaces';
 import { IonCard, IonContent, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonList } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
@@ -18,5 +18,6 @@ export class EventsViewComponent  implements OnInit {
   ngOnInit() {}
 
   @Input()  listEvents!: IEvent[] | null;
+  @Output() goToCurrentEventPage = new EventEmitter<string>()
 
 }

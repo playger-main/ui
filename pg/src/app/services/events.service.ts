@@ -3,13 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { EVENTS_MOCK } from '../mock';
+import { IEvent } from '../interfaces/interfaces';
 
-export interface Event {
-  id: string;
-  name: string;
-  date: string;
-  // Add other event properties as needed
-}
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +15,14 @@ export class EventsService {
   constructor(private http: HttpClient) {}
 
   // Get all events
-  getEvents(): Observable<Event[]> {
+  getEvents(): Observable<IEvent[]> {
     return of(EVENTS_MOCK);
     // return this.http.get<Event[]>(this.apiUrl);
   }
 
   // Get a special event by ID
-  getEventById(id: string): Observable<Event> {
-    return of(EVENTS_MOCK.find(event => event.id === id) as Event);
+  getEventById(id: string): Observable<IEvent> {
+    return of(EVENTS_MOCK.find(event => event.id === id) as IEvent);
     // return this.http.get<Event>(`${this.apiUrl}/${id}`);
   }
 }

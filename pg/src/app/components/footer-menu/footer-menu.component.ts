@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonNav, NavController, IonButton, IonButtons, IonToolbar, IonContent, IonTitle, IonHeader, IonTab } from '@ionic/angular/standalone';
+import { IonTabs, IonTabBar, IonRouterOutlet, IonTabButton, IonIcon, IonLabel, IonNav, NavController, IonButton, IonButtons, IonToolbar, IonContent, IonTitle, IonHeader, IonTab } from '@ionic/angular/standalone';
 import { Router, RouterModule } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { person, home, rocket, golf } from 'ionicons/icons';
@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-footer-menu',
   templateUrl: 'footer-menu.component.html',
   styleUrls: ['footer-menu.component.scss'],
-  imports: [CommonModule,  IonIcon, IonTabButton, IonTabBar,  IonTabs],
+  imports: [CommonModule, IonRouterOutlet, IonContent, IonIcon, IonTabButton, IonTabBar,  IonTabs],
 })
 export class FooterMenuComponent { 
   constructor(private appComponent: AppComponent, private router: Router) {

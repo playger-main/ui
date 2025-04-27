@@ -1,6 +1,28 @@
-<ion-app>    
-  <app-header [title]="pageTitle"></app-header>
+
+<ion-app>
+  <app-header></app-header>
   <app-menu></app-menu>  
   <ion-router-outlet id="main-content"></ion-router-outlet>
+
+  <!-- <div [class.hidden]="!isHomePage" class="bottom-modal-component"> -->
+    <div class="bottom-modal-component">
+
+    <app-drop-down-panel>
+      <ng-container search>
+        <app-search></app-search>
+      </ng-container>
+      <ng-container favoriteSports>
+        <app-favourite-objects 
+          [listfavoriteKindOfSport]="listfavoriteKindOfSport$ | async"
+          [selectedKindOfSport]="selectedKindOfSport"
+          (kindOfSportChanged)="chooseKindOfSport($event)">
+        </app-favourite-objects>
+      </ng-container>
+      <ng-container playgrounds>
+        <app-playgrounds [listPlaygrounds]="listPlaygrounds$ | async"></app-playgrounds>
+      </ng-container>
+    </app-drop-down-panel>
+  </div>
+
   <app-footer-menu></app-footer-menu>
 </ion-app>

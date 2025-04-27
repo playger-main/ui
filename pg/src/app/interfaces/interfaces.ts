@@ -20,7 +20,18 @@ export interface IGround {
     description: string;
     createdAt: string;
     updatedAt: string;
-    location: ILocation
+    location: ILocation;
+    feedbacks: IFeedback[] | null;
+}
+
+export interface IFeedback {
+    id: string;
+    userId: string;
+    groundId: string;
+    rating: number;
+    comment: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface ILocation {

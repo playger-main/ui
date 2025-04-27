@@ -9,6 +9,6 @@ import { IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons } from '@ion
   imports: [ IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, CommonModule]
 })
 export class HeaderComponent {
-  @Input() title: string = 'Home'; 
+  @Input() title!: boolean; 
   constructor() {}
 }

@@ -4,11 +4,7 @@ import { Observable, of } from 'rxjs';
 import { IEvent } from 'src/app/interfaces/interfaces';
 import { EVENTS_MOCK} from 'src/app/mock';
 import { EventsViewComponent } from '../events-view/events-view.component';
-
-
-
-
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-events',
@@ -23,7 +19,7 @@ export class EventsComponent  implements OnInit {
 
 
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.getEvents();
@@ -37,5 +33,8 @@ export class EventsComponent  implements OnInit {
   getEventById(id: string): Observable<IEvent | undefined> {
     return of(EVENTS_MOCK.find(event => event.id === id));
   }
+
+  goToCurrentEventPage(id: string){
+    this.router.navigate(['/event', id]);  }
 
 }

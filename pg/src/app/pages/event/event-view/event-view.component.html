@@ -1,0 +1,24 @@
+<div class="page-content">
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ event?.name }}</ion-card-title>
+      <ion-card-subtitle>{{ event?.category }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Date:</strong> {{ event?.date }} {{ event?.startTime }}</p>
+      <p><strong>Duration:</strong> {{ event?.duration }} min</p>
+      <p><strong>Location:</strong> {{ event?.location?.address }}</p>
+      <p>{{ event?.description }}</p>
+      <div >
+        <hr>
+        <h3>Organizer Information</h3>
+        <p><strong>Name:</strong> {{ user?.username }}</p>
+        <p><strong>Email:</strong> {{ user?.email }}</p>
+        <p><strong>Role:</strong> {{ user?.roles }}</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+</div>
+
