@@ -7,13 +7,17 @@ import { AppComponent } from 'src/app/app.component';
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
-  imports: [IonItem, IonList, IonContent, IonMenu, IonTitle, IonToolbar, RouterModule ]
+  imports: [IonItem, IonList, IonContent, IonTitle, IonToolbar, RouterModule ]
 })
 export class MenuComponent {
-  constructor(private menu: MenuController, private appComponent: AppComponent,) {}
+  constructor(private menu: MenuController, private appComponent: AppComponent,) {
+    console.log('menu component')
+  }
   handlerMenu(title: string) {
 
     this.menu.close();
     this.appComponent.setPageTitle(title);    
   }  
+
+ 
 }

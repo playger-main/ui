@@ -1,5 +1,5 @@
-import { IGround, IEvent } from "./interfaces/interfaces";
-import { IUser } from './interfaces/interfaces';
+import { IEvent, IGround, IUser } from "./interfaces/interfaces";
+
 
 export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
   const id = crypto.randomUUID();
@@ -38,6 +38,22 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
     }
   ];
 
+  // Calculate average rating
+  const averageRating =
+    feedbacks.length > 0
+      ? feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length
+      : 0;
+
+  // Example avatar: you can use a URL or an icon name
+  const avatars = [
+    'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80', // football field
+    'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80', // basketball court
+    'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80', // workout area
+    'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80', // stadium
+    'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80', // park field
+    ];
+  const avatar = avatars[i % avatars.length];
+
   return {
     id,
     name: `Ground ${i + 1} - Football`,
@@ -50,7 +66,9 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
       lng,
       address
     },
-    feedbacks
+    feedbacks,
+    avatar,
+    averageRating: Number(averageRating.toFixed(2))
   };
 });
 
@@ -82,6 +100,20 @@ export const fakeGrounds2: IGround[] = Array.from({ length: 20 }).map((_, i) => 
     }
   ];
 
+  const averageRating =
+    feedbacks.length > 0
+      ? feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length
+      : 0;
+
+      const avatars = [
+        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80', // football field
+        'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80', // basketball court
+        'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80', // workout area
+        'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80', // stadium
+        'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80', // park field
+        ];
+  const avatar = avatars[i % avatars.length];
+
   return {
     id,
     name: `Ground ${i + 1} - Basketball`,
@@ -94,7 +126,9 @@ export const fakeGrounds2: IGround[] = Array.from({ length: 20 }).map((_, i) => 
       lng,
       address
     },
-    feedbacks
+    feedbacks,
+    avatar,
+    averageRating: Number(averageRating.toFixed(2))
   };
 });
 
@@ -126,6 +160,20 @@ export const fakeGrounds3: IGround[] = Array.from({ length: 20 }).map((_, i) => 
     }
   ];
 
+  const averageRating =
+    feedbacks.length > 0
+      ? feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length
+      : 0;
+
+  const avatars = [
+  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80', // football field
+  'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80', // basketball court
+  'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80', // workout area
+  'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80', // stadium
+  'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80', // park field
+  ];
+  const avatar = avatars[i % avatars.length];
+
   return {
     id,
     name: `Ground ${i + 1} - Workout`,
@@ -138,7 +186,9 @@ export const fakeGrounds3: IGround[] = Array.from({ length: 20 }).map((_, i) => 
       lng,
       address
     },
-    feedbacks
+    feedbacks,
+    avatar,
+    averageRating: Number(averageRating.toFixed(2))
   };
 });
 
@@ -240,36 +290,20 @@ export const USERS_MOCK: IUser[] = [
   }
 ];
 
-export const FAKE_GROUND: IGround = {
-  id: 'ground1',
-  name: 'Vingio Parkas Football Ground',
-  coverage: 'Grass',
-  description: 'A well-maintained football ground located in the heart of Vilnius, suitable for both amateur and professional matches.',
-  createdAt: '2024-06-01T10:00:00Z',
-  updatedAt: '2024-06-10T12:00:00Z',
-  location: {
-    lat: '54.6872',
-    lng: '25.2797',
-    address: 'Vingio Parkas, Vilnius'
-  },
-  feedbacks: [
-    {
-      id: 'f1',
-      userId: '1',
-      groundId: 'ground1',
-      rating: 5,
-      comment: 'Great field, very well maintained!',
-      createdAt: '2024-06-11T09:00:00Z',
-      updatedAt: '2024-06-11T09:00:00Z'
-    },
-    {
-      id: 'f2',
-      userId: '2',
-      groundId: 'ground1',
-      rating: 4,
-      comment: 'Nice place, but can get crowded on weekends.',
-      createdAt: '2024-06-12T10:00:00Z',
-      updatedAt: '2024-06-12T10:00:00Z'
-    }
-  ]
+// ... other imports
+
+export const currentUser: IUser = {
+  id: '1',
+  username: 'john_doe',
+  email: 'john.doe@example.com',
+  geolocation: '54.6872,25.2797',
+  password: 'hashedpassword1',
+  createdId: 'admin',
+  updatedId: 'admin',
+  roles: 'user',
+  isEmailConfirmed: true,
+  confirmationToken: 'token1',
+  favoriteGroundIds: ['ground1', 'ground3', 'ground7'] // Example favorites
 };
+
+

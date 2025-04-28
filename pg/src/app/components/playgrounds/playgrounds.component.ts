@@ -1,23 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonItem, IonLabel, IonList } from '@ionic/angular/standalone';
+import { IonCard, IonAvatar, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonItem, IonLabel, IonList } from '@ionic/angular/standalone';
 import { IGround } from 'src/app/interfaces/interfaces';
-
+import { star ,heart,  starOutline, locationOutline} from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 @Component({
   selector: 'app-playgrounds',
   templateUrl: './playgrounds.component.html',
   styleUrls: ['./playgrounds.component.scss'],
-  imports: [CommonModule,IonItem, IonLabel, IonList,  RouterModule, ]
+  imports: [CommonModule, IonItem, IonIcon, IonLabel, IonList,  RouterModule, ]
 })
 export class PlaygroundsComponent  implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    addIcons({ heart,star, starOutline, locationOutline });
+   }
 
   
   ngOnInit() {
     console.log('playgrounds component')
   }
+
+  Math = Math;
 
   @Input() listPlaygrounds: IGround[] | null = null;
 

@@ -3,7 +3,7 @@ import { GroundViewComponent } from '../ground-view/ground-view.component';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of, tap, map } from 'rxjs';
 import { IGround } from 'src/app/interfaces/interfaces';
-import { FAKE_GROUND, fakeGrounds } from 'src/app/mock';
+import {  fakeGrounds } from 'src/app/mock';
 import { CommonModule } from '@angular/common';
 
 @Component({

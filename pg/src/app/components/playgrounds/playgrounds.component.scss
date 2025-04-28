@@ -1,0 +1,68 @@
+.playground-item {
+    margin-bottom: 0.5rem;
+    --background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  
+  .playground-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  
+  .playground-address {
+    color: #666;
+    font-size: 0.98rem;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .playground-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2px;
+  }
+  
+  .rating-stars {
+    display: flex;
+    align-items: center;
+  }
+  
+  .rating-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .playground-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .favorite-heart {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 2em;
+    z-index: 10;
+    pointer-events: none; // So it doesn't block clicks on the card
+  }
+  
+  .playground-photo {
+    width: 33%;
+    min-width: 100px;
+    max-width: 160px;
+    height: auto;
+    border-radius: 12px;
+    margin-right: 16px;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  ion-label {
+    width: 67%;
+    flex: 1;
+  }

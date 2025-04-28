@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonApp,IonContent,IonMenu, IonRouterOutlet } from '@ionic/angular/standalone';
 import { HeaderComponent } from './core/header/header.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -19,7 +19,7 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [CommonModule, IonApp, FooterMenuComponent, IonRouterOutlet, MenuComponent, HeaderComponent],
+  imports: [CommonModule, IonContent, IonMenu, IonApp, FooterMenuComponent, IonRouterOutlet, MenuComponent, HeaderComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ], 
@@ -71,4 +71,11 @@ export class AppComponent {
   setPageTitle(title: string) {
     this.pageTitle = title;
   }  
+
+  onMenuClosed() {
+    if (document.activeElement instanceof HTMLElement) {
+      console.log(document.activeElement)
+      document.activeElement.blur();
+    }
+  }
 }

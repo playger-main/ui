@@ -22,6 +22,9 @@ export interface IGround {
     updatedAt: string;
     location: ILocation;
     feedbacks: IFeedback[] | null;
+    avatar: string;         // <-- new field
+    averageRating?: number;  
+   // //listImgs://
 }
 
 export interface IFeedback {
@@ -50,7 +53,8 @@ export interface IUser {
     updatedId: string;
     roles: string;
     isEmailConfirmed: boolean;
-    confirmationToken: string
+    confirmationToken: string;
+    favoriteGroundIds?: string[]; 
 
 }
 
