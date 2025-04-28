@@ -9,7 +9,7 @@ import { addIcons } from 'ionicons';
   selector: 'app-playgrounds',
   templateUrl: './playgrounds.component.html',
   styleUrls: ['./playgrounds.component.scss'],
-  imports: [CommonModule, IonItem, IonIcon, IonLabel, IonList,  RouterModule, ]
+  imports: [CommonModule, IonCardTitle, IonCardHeader, IonCardContent, IonCardSubtitle, IonItem, IonIcon, IonLabel, IonList,  RouterModule, ]
 })
 export class PlaygroundsComponent  implements OnInit {
 

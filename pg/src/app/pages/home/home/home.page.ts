@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import {  IonContent, IonCard, IonCardHeader, IonCardTitle } from '@ionic/angular/standalone';
+import { IonButton, IonIcon, IonContent, IonCard, IonCardHeader, IonCardTitle } from '@ionic/angular/standalone';
 import { map, Observable, Subscription } from 'rxjs';
 import { FavouriteObjectsComponent } from 'src/app/components/favourite-objects/favourite-objects.component';
 import { MapComponent } from 'src/app/components/map/map.component';
@@ -12,9 +12,10 @@ import { IFavoriteListSport, IGround } from 'src/app/interfaces/interfaces';
 import { GroundService } from 'src/app/services/ground.service';
 import { UserService } from 'src/app/services/user.service';
 import { Router, NavigationEnd } from '@angular/router';
-
+import { add } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 import { AppComponent } from 'src/app/app.component';
-import { DropDownPanelComponent } from 'src/app/components/drop-down-panel/drop-down-panel.component';
+import { HomeViewComponent } from '../home-view/home-view.component';
 
 
 
@@ -22,46 +23,39 @@ import { DropDownPanelComponent } from 'src/app/components/drop-down-panel/drop-
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [CommonModule, IonCard, IonCardHeader, IonCardTitle, PlaygroundsComponent,FavouriteObjectsComponent, SearchComponent, DropDownPanelComponent, MapComponent, FormsModule, IonContent],
+  imports: [CommonModule, HomeViewComponent   ],
 })
 export class HomePage implements OnInit {
-constructor(public appComponent: AppComponent,private userService: UserService, private playGroundService: GroundService, private router: Router) { }
+constructor(public appComponent: AppComponent,private userService: UserService, private playGroundService: GroundService, private router: Router) { 
+  addIcons({ add });
+}
 
 ngOnInit(): void {
-  
-console.log('home page');
 this.loadUserData();
-  this.loadUserData();
 }
-isHomePage = false;
-routerSubscription!: Subscription;
+
+
 
 ionViewWillEnter(): void {
   // This triggers every time you ENTER the Home page
-  this.checkIfHomePage();
+
   this.loadUserData();
 }
-
-
 
 listfavoriteKindOfSport$!: Observable<IFavoriteListSport[]>;
 
 listPlaygrounds$!: Observable<IGround[]>;
 
-selectedKindOfSport: string = '';
 
 private loadUserData () {
 
  this.listfavoriteKindOfSport$ =  this.userService.getListOfFavKindSport().pipe(map((data)=> {
   this.playGroundService.setSelectedGround(data[0].type.toLowerCase());
-  this.selectedKindOfSport = data[0].type.toLowerCase();
 
   this.listPlaygrounds$ = this.playGroundService.getListOfGroundsForChosenSport().pipe(map((data)=> data));
-  console.log(data)
+
   return data;
  }));
-
-
 }
 
 chooseKindOfSport (sport: string) {
@@ -70,14 +64,7 @@ chooseKindOfSport (sport: string) {
 
 }
 
-private checkIfHomePage() {
-  const url = this.router.url;
-  console.log(url);
-  this.isHomePage = url === '/home';
-}
-ngOnDestroy() {
-  if (this.routerSubscription) {
-    this.routerSubscription.unsubscribe();
-  }
+createEvent (event: Event) {
+  console.log(event);
 }
 }
