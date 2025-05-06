@@ -4,7 +4,7 @@ import { IEvent, IGround, IUser } from "./interfaces/interfaces";
 export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
   const id = crypto.randomUUID();
   const now = new Date().toISOString();
-
+  const kindOfSport = ['Football', 'Basketball', 'Workout'];
   const addresses = [
     'Vingio Parkas, Vilnius',
     'Ozo g. 18, Vilnius',
@@ -56,7 +56,8 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
 
   return {
     id,
-    name: `Ground ${i + 1} - Football`,
+    name: `Ground ${i + 1} - ${kindOfSport[i % kindOfSport.length]}`,
+    kindOfsport: ['Football', 'Basketball', 'Workout'][i % 3],
     coverage: ['Grass', 'Gravel', 'Concrete', 'Synthetic'][i % 4],
     description: `This is a description for Ground ${i + 1} located in Vilnius. It features ${['great drainage', 'multi-use fields', 'evening lighting', 'seating areas'][i % 4]}.`,
     createdAt: now,
@@ -126,6 +127,7 @@ export const fakeGrounds2: IGround[] = Array.from({ length: 20 }).map((_, i) => 
       lng,
       address
     },
+    kindOfsport: 'Basketball',
     feedbacks,
     avatar,
     averageRating: Number(averageRating.toFixed(2))
@@ -135,6 +137,7 @@ export const fakeGrounds2: IGround[] = Array.from({ length: 20 }).map((_, i) => 
 export const fakeGrounds3: IGround[] = Array.from({ length: 20 }).map((_, i) => {
   const id = crypto.randomUUID();
   const now = new Date().toISOString();
+  const kindOfSport = ['Football', 'Basketball', 'Workout'];
 
   const addresses = [
     'Vingio Parkas, Vilnius',
@@ -177,6 +180,7 @@ export const fakeGrounds3: IGround[] = Array.from({ length: 20 }).map((_, i) => 
   return {
     id,
     name: `Ground ${i + 1} - Workout`,
+    kindOfsport: 'Workout',
     coverage: ['Grass', 'Gravel', 'Concrete', 'Synthetic'][i % 4],
     description: `This is a description for Ground ${i + 1} located in Vilnius. It features ${['great drainage', 'multi-use fields', 'evening lighting', 'seating areas'][i % 4]}.`,
     createdAt: now,

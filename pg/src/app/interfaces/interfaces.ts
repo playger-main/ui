@@ -16,6 +16,7 @@ export interface IEvent {
 export interface IGround {
     id: string;
     name: string;
+    kindOfsport: string;
     coverage: string;
     description: string;
     createdAt: string;
@@ -24,7 +25,7 @@ export interface IGround {
     feedbacks: IFeedback[] | null;
     avatar: string;         // <-- new field
     averageRating?: number;  
-   // //listImgs://
+    listImgs?: string[];
 }
 
 export interface IFeedback {

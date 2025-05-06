@@ -1,0 +1,49 @@
+
+
+<div class="ion-page">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Add ground</ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="modal.dismiss()">Close</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <form (ngSubmit)="onSubmit()">
+      <ion-list>
+        <ion-item>
+          <ion-label position="stacked">Name</ion-label>
+          <ion-input [(ngModel)]="ground.name" name="name" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Coverage</ion-label>
+          <ion-input [(ngModel)]="ground.coverage" name="coverage"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Kind of sport</ion-label>
+          <ion-input [(ngModel)]="ground.kindOfsport" name="kindOfsport"></ion-input>
+        </ion-item>
+
+        <!-- <ion-item>
+          <ion-label position="stacked">Description</ion-label>
+          <ion-textarea [(ngModel)]="ground.description" name="description"></ion-textarea>
+        </ion-item> -->
+        <ion-item>
+        
+          <ion-label position="stacked">Address</ion-label>
+          <ion-input [(ngModel)]="ground.location.address" name="address"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Avatar URL</ion-label>
+          <ion-input [(ngModel)]="ground.avatar" name="avatar"></ion-input>
+        </ion-item>
+        <!-- Add more fields as needed -->
+        <ion-item lines="none">
+          <ion-button expand="block" type="submit">Save Playground</ion-button>
+        </ion-item>
+        
+      </ion-list>
+    </form>
+  </ion-content>
+</div>

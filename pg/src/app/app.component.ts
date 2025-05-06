@@ -5,14 +5,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MenuComponent } from './components/menu/menu.component';
 import { FooterMenuComponent } from './components/footer-menu/footer-menu.component';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { DropDownPanelComponent } from 'src/app/components/drop-down-panel/drop-down-panel.component';
-import { SearchComponent } from './components/search/search.component';
-import { FavouriteObjectsComponent } from './components/favourite-objects/favourite-objects.component';
-import { PlaygroundsComponent } from './components/playgrounds/playgrounds.component';
-import { map, Observable, Subscription } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { IFavoriteListSport, IGround } from 'src/app/interfaces/interfaces';
 import { GroundService } from 'src/app/services/ground.service';
 import { UserService } from 'src/app/services/user.service';
@@ -28,7 +23,6 @@ export class AppComponent {
 
   constructor( private router: Router, private playGroundService: GroundService, private userService: UserService) { 
     
-  
   }
   
   currentUrl = '';

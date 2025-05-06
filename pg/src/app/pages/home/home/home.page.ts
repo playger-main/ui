@@ -64,7 +64,7 @@ chooseKindOfSport (sport: string) {
 
 }
 
-createEvent (event: Event) {
-  console.log(event);
+onNewGroundForm (ground: IGround) {
+  console.log(ground);
 }
 }
