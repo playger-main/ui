@@ -1,21 +1,23 @@
 <div class="page-content">
   <ion-content [fullscreen]="true">
-
     <div class="header-container">
       <h4>Grounds</h4>
-  
         <ion-button fill="outline"  size="large" (click)="createEvent.emit($event)">
           <ion-icon slot="icon-only" name="add"></ion-icon>
         </ion-button>
-    </div>
 
+ 
+        
     
-    <app-search></app-search>
-    
-      
+    </div>
+  <div class="header-menu">
+    <div class="map-container">  <app-map></app-map></div>
   
-            <app-playgrounds [listPlaygrounds]="listPlaygrounds"></app-playgrounds>
-      
+    <app-search></app-search>
+  </div>
    
+
+ 
+    <app-playgrounds [listPlaygrounds]="listPlaygrounds"></app-playgrounds>
   </ion-content>
   </div>

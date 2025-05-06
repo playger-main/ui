@@ -9,7 +9,7 @@ import { addIcons } from 'ionicons';
   selector: 'app-events-view',
   templateUrl: './events-view.component.html',
   styleUrls: ['./events-view.component.scss'],
-  imports: [CommonModule, IonHeader, IonTitle, IonToolbar, IonButtons, IonIcon, IonButton,IonCard, IonContent, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonList],
+  imports: [CommonModule, IonIcon, IonButton,IonCard, IonContent, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonList],
 
 })
 export class EventsViewComponent  implements OnInit {
