@@ -39,7 +39,7 @@ export class AddEventComponent  implements OnInit {
     createdAt: '',
     updatedAt: '',
     location: { lat: '', lng: '', address: '' },
-    feedbacks: null,
+    reviews: null,
     avatar: '',
     averageRating: 0,
     listImgs: []

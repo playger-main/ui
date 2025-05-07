@@ -2,7 +2,7 @@ import { IEvent, IGround, IUser } from "./interfaces/interfaces";
 
 
 export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
-  const id = crypto.randomUUID();
+  const id = (i + 1).toString(); // <-- number as string ('1', '2', ... '20')
   const now = new Date().toISOString();
   const kindOfSport = ['Football', 'Basketball', 'Workout'];
   const addresses = [
@@ -16,8 +16,9 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
   const lat = (54.6872 + i * 0.001).toFixed(6);
   const lng = (25.2797 + i * 0.001).toFixed(6);
   const address = addresses[i % addresses.length];
+  const isEvent = i%2 == 0;
 
-  const feedbacks = [
+  const reviews = [
     {
       id: crypto.randomUUID(),
       userId: `user${(i % 3) + 1}`,
@@ -40,8 +41,8 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
 
   // Calculate average rating
   const averageRating =
-    feedbacks.length > 0
-      ? feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length
+    reviews.length > 0
+      ? reviews.reduce((sum, f) => sum + f.rating, 0) / reviews.length
       : 0;
 
   // Example avatar: you can use a URL or an icon name
@@ -67,134 +68,17 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
       lng,
       address
     },
-    feedbacks,
+    reviews,
     avatar,
+    isEvent,
+
     averageRating: Number(averageRating.toFixed(2))
   };
 });
 
-export const fakeGrounds2: IGround[] = Array.from({ length: 20 }).map((_, i) => {
-  const id = crypto.randomUUID();
-  const now = new Date().toISOString();
 
-  const addresses = [
-    'Vingio Parkas, Vilnius',
-    'Ozo g. 18, Vilnius',
-    'Antakalnio g. 11, Vilnius',
-    'Gedimino pr. 9, Vilnius',
-    'Naugarduko g. 24, Vilnius'
-  ];
 
-  const lat = (54.6872 + i * 0.001).toFixed(6);
-  const lng = (25.2797 + i * 0.001).toFixed(6);
-  const address = addresses[i % addresses.length];
 
-  const feedbacks = [
-    {
-      id: crypto.randomUUID(),
-      userId: `user${(i % 3) + 1}`,
-      groundId: id,
-      rating: 3 + (i % 3), // 3, 4, or 5
-      comment: i % 2 === 0 ? 'Good for basketball!' : 'Could use more benches.',
-      createdAt: now,
-      updatedAt: now
-    }
-  ];
-
-  const averageRating =
-    feedbacks.length > 0
-      ? feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length
-      : 0;
-
-      const avatars = [
-        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80', // football field
-        'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80', // basketball court
-        'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80', // workout area
-        'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80', // stadium
-        'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80', // park field
-        ];
-  const avatar = avatars[i % avatars.length];
-
-  return {
-    id,
-    name: `Ground ${i + 1} - Basketball`,
-    coverage: ['Grass', 'Gravel', 'Concrete', 'Synthetic'][i % 4],
-    description: `This is a description for Ground ${i + 1} located in Vilnius. It features ${['great drainage', 'multi-use fields', 'evening lighting', 'seating areas'][i % 4]}.`,
-    createdAt: now,
-    updatedAt: now,
-    location: {
-      lat,
-      lng,
-      address
-    },
-    kindOfsport: 'Basketball',
-    feedbacks,
-    avatar,
-    averageRating: Number(averageRating.toFixed(2))
-  };
-});
-
-export const fakeGrounds3: IGround[] = Array.from({ length: 20 }).map((_, i) => {
-  const id = crypto.randomUUID();
-  const now = new Date().toISOString();
-  const kindOfSport = ['Football', 'Basketball', 'Workout'];
-
-  const addresses = [
-    'Vingio Parkas, Vilnius',
-    'Ozo g. 18, Vilnius',
-    'Antakalnio g. 11, Vilnius',
-    'Gedimino pr. 9, Vilnius',
-    'Naugarduko g. 24, Vilnius'
-  ];
-
-  const lat = (54.6872 + i * 0.001).toFixed(6);
-  const lng = (25.2797 + i * 0.001).toFixed(6);
-  const address = addresses[i % addresses.length];
-
-  const feedbacks = [
-    {
-      id: crypto.randomUUID(),
-      userId: `user${(i % 3) + 1}`,
-      groundId: id,
-      rating: 5,
-      comment: 'Perfect for workouts!',
-      createdAt: now,
-      updatedAt: now
-    }
-  ];
-
-  const averageRating =
-    feedbacks.length > 0
-      ? feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length
-      : 0;
-
-  const avatars = [
-  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80', // football field
-  'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80', // basketball court
-  'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80', // workout area
-  'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80', // stadium
-  'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80', // park field
-  ];
-  const avatar = avatars[i % avatars.length];
-
-  return {
-    id,
-    name: `Ground ${i + 1} - Workout`,
-    kindOfsport: 'Workout',
-    coverage: ['Grass', 'Gravel', 'Concrete', 'Synthetic'][i % 4],
-    description: `This is a description for Ground ${i + 1} located in Vilnius. It features ${['great drainage', 'multi-use fields', 'evening lighting', 'seating areas'][i % 4]}.`,
-    createdAt: now,
-    updatedAt: now,
-    location: {
-      lat,
-      lng,
-      address
-    },
-    feedbacks,
-    avatar,
-    averageRating: Number(averageRating.toFixed(2))
-  };
-});
 
 export const fakeListFavKindSport = [{icon: 'football', type: 'Football'}, {icon: 'basketball', type: 'Basketball'}, {icon: 'barbell', type: 'Workout'}]
 
@@ -215,7 +99,7 @@ export const EVENTS_MOCK: IEvent[] = [
       address: 'Central Park, Vilnius'
     },
     category: 'Festival',
-    groundId: 'ground1'
+    groundId: '1'
   },
   {
     id: '2',
@@ -233,7 +117,7 @@ export const EVENTS_MOCK: IEvent[] = [
       address: 'Convention Center, Vilnius'
     },
     category: 'Conference',
-    groundId: 'ground2'
+    groundId: '1'
   },
   {
     id: '3',
@@ -250,8 +134,8 @@ export const EVENTS_MOCK: IEvent[] = [
       lng: '25.2800',
       address: 'Art Gallery, Vilnius'
     },
-    category: 'Exhibition'
-    // groundId is optional and omitted here
+    category: 'Exhibition',
+    groundId: '3'
   }
 ];
 

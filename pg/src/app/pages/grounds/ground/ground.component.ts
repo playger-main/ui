@@ -2,9 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { GroundViewComponent } from '../ground-view/ground-view.component';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of, tap, map } from 'rxjs';
-import { IGround } from 'src/app/interfaces/interfaces';
+import { IEvent, IGround } from 'src/app/interfaces/interfaces';
 import {  fakeGrounds } from 'src/app/mock';
 import { CommonModule } from '@angular/common';
+import { EventsService } from 'src/app/services/events.service';
+
 
 @Component({
   selector: 'app-ground',
@@ -14,11 +16,14 @@ import { CommonModule } from '@angular/common';
 })
 export class GroundComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private eventsService: EventsService) { }
 
   private route = inject(ActivatedRoute);
   groundId!: string;
+
   ground$!: Observable<IGround>;
+
+  eventsForGround$!: Observable<IEvent[]>;
 
   ngOnInit(): void {
     console.log(this.groundId)
@@ -27,8 +32,17 @@ export class GroundComponent  implements OnInit {
   }
 
   loadDataChosenGround (id: string) {
-    return this.ground$ = of(fakeGrounds.find(ground => ground.id === id)!);
+    return this.ground$ = of(fakeGrounds.find(ground => ground.id === id)!).pipe(tap(ground => {
+      this.loadEventsForGround(ground.id);
+    }));
+    }
   
+
+  loadEventsForGround(groundId: string) {
+    console.log(groundId)
+    this.eventsService.getEventsForGround(groundId).subscribe(events => {
+      this.eventsForGround$ = of(events);
+    });
   }
   
 }

@@ -1,5 +1,5 @@
 <ion-list>
-  <ion-card *ngFor="let item of listPlaygrounds" [routerLink]="['/ground', item.id]" class="playground-item">
+  <ion-card class="playground-item" [ngClass]="{'green-card': item.isEvent}" *ngFor="let item of listPlaygrounds" [routerLink]="['/ground', item.id]" class="playground-item">
     <div class="playground-card-content">
       <img [src]="item.avatar" alt="photo" class="playground-photo" />
       <div class="playground-info">
@@ -28,6 +28,8 @@
           </ion-icon>
         </div>
       </div>
+      <ion-icon *ngIf="item.isEvent" name="calendar" color="success" style="font-size: 1.4em; position: absolute; top: 10px; right: 10px;"></ion-icon>
+
     </div>
   </ion-card>
 </ion-list>

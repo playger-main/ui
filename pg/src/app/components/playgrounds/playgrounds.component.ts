@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { Router, RouterModule } from '@angular/router';
 import { IonCard, IonAvatar, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon, IonItem, IonLabel, IonList } from '@ionic/angular/standalone';
 import { IGround } from 'src/app/interfaces/interfaces';
-import { star ,heart,  starOutline, locationOutline} from 'ionicons/icons';
+import { star ,heart, calendar, starOutline, locationOutline} from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 @Component({
   selector: 'app-playgrounds',
@@ -14,7 +14,7 @@ import { addIcons } from 'ionicons';
 export class PlaygroundsComponent  implements OnInit {
 
   constructor(private router: Router) {
-    addIcons({ heart,star, starOutline, locationOutline });
+    addIcons({ heart,star, calendar, starOutline, locationOutline });
    }
 
   

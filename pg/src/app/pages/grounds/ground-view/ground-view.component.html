@@ -15,34 +15,52 @@
 
 
         <ion-button expand="block" fill="outline" (click)="toggleFeedback()">
-          {{ showFeedback ? 'Hide Feedback' : 'Show Feedback' }}
+          {{ showFeedback ? 'Hide Reviews' : 'Show Reviews' }}
         </ion-button>
 
-
-        <ng-container *ngIf="ground?.feedbacks && ground?.feedbacks?.length && showFeedback">
+        <ng-container *ngIf="ground?.reviews && ground?.reviews?.length && showFeedback">
         <ion-list>
-          <ion-item *ngFor="let feedback of ground?.feedbacks" class="chat-feedback-item">
+          <ion-item *ngFor="let review of ground?.reviews" class="chat-feedback-item">
             <ion-label>
               <div class="chat-bubble">
                 <div class="stars">
                   <ng-container *ngFor="let star of [1,2,3,4,5]">
                     <ion-icon
-                      [name]="star <= feedback.rating ? 'star' : 'star-outline'"
+                      [name]="star <= review.rating ? 'star' : 'star-outline'"
                       color="warning"
                       style="font-size: 1.2em; vertical-align: middle;">
                     </ion-icon>
                   </ng-container>
                 </div>
                 <div class="comment">
-                  {{ feedback.comment }}
+                  {{ review.comment }}
                 </div>
                 <div class="date">
-                  <small>{{ feedback.createdAt | date:'short' }}</small>
+                  <small>{{ review.createdAt | date:'short' }}</small>
                 </div>
               </div>
             </ion-label>
           </ion-item>
         </ion-list>
+        </ng-container>
+        <ion-button *ngIf="eventsForGround && eventsForGround.length" expand="block" fill="outline" (click)="toggleEvents()">
+          {{ showEvents ? 'Hide Events' : 'Show Events' }}
+        </ion-button>
+        <ng-container *ngIf="eventsForGround && eventsForGround.length && showEvents">
+          <ion-list>
+            <ion-item *ngFor="let event of eventsForGround" class="chat-feedback-item">
+              <ion-label>
+                <div class="chat-bubble">
+                  <div class="event-title">
+                    {{ event.name }}
+                  </div>
+                  <div class="event-date">
+                    <small>{{ event.date | date:'short' }}</small>
+                  </div>
+                </div>
+              </ion-label>
+            </ion-item>
+          </ion-list>
         </ng-container>
       </ion-card-content>
     </ion-card>

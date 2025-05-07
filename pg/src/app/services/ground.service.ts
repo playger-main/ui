@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { fakeGrounds, fakeGrounds2, fakeGrounds3, fakeListFavKindSport } from '../mock';
+import { fakeGrounds } from '../mock';
 import { Observable, of } from 'rxjs';
 import { IGround } from '../interfaces/interfaces';
 
@@ -26,10 +26,10 @@ export class GroundService {
     switch (kind) {
       case 'football':
         return of(fakeGrounds);
-      case 'basketball':
-        return of(fakeGrounds2);
-      case 'workout':
-        return of(fakeGrounds3);
+      // case 'basketball':
+      //   return of(fakeGrounds2);
+      // case 'workout':
+      //   return of(fakeGrounds3);
       default:
         return of([]); 
     }

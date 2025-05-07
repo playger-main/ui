@@ -22,13 +22,14 @@ export interface IGround {
     createdAt: string;
     updatedAt: string;
     location: ILocation;
-    feedbacks: IFeedback[] | null;
+    isEvent?: boolean;
+    reviews: IReview[] | null;
     avatar: string;         // <-- new field
     averageRating?: number;  
     listImgs?: string[];
 }
 
-export interface IFeedback {
+export interface IReview {
     id: string;
     userId: string;
     groundId: string;

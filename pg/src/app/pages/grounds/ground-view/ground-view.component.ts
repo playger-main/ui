@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
-import { IGround } from 'src/app/interfaces/interfaces';
+import { IEvent, IGround } from 'src/app/interfaces/interfaces';
 import { CommonModule } from '@angular/common';
 import { IonCardContent,IonButton, IonCard, IonList, IonIcon, IonItem, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonLabel } from '@ionic/angular/standalone';
 import { star , starOutline} from 'ionicons/icons';
@@ -17,7 +17,13 @@ export class GroundViewComponent  implements OnInit, OnChanges {
     addIcons({ star, starOutline });
 
    }
+
+   showFeedback = false;
+   showEvents = false;
+
   @Input() ground!: IGround | null;
+  @Input() eventsForGround!: IEvent[] | null;
+
   ngOnInit() {
     console.log(this.ground)
   }
@@ -28,10 +34,14 @@ export class GroundViewComponent  implements OnInit, OnChanges {
       console.log(this.ground)
     }
   }
-  showFeedback = false;
+ 
 
   toggleFeedback() {
     this.showFeedback = !this.showFeedback;
+  }
+
+  toggleEvents() {
+    this.showEvents = !this.showEvents;
   }
 
 }
