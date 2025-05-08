@@ -11,6 +11,9 @@ export interface IEvent {
     location: ILocation;
     category: string;
     groundId?: string;
+    maxPeople?: number; // Maximum number of people allowed
+    requestCount?: number; // 
+
 }
 
 export interface IGround {
@@ -51,12 +54,14 @@ export interface IUser {
     email: string;
     geolocation: string;
     password: string;
-    createdId: string;
+    createdAt: string;
     updatedId: string;
     roles: string;
     isEmailConfirmed: boolean;
     confirmationToken: string;
     favoriteGroundIds?: string[]; 
+    listOrganizeEvents?: string[];
+    listParticipateEvents?: string[];
 
 }
 

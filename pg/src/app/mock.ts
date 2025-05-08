@@ -117,7 +117,9 @@ export const EVENTS_MOCK: IEvent[] = [
       address: 'Convention Center, Vilnius'
     },
     category: 'Conference',
-    groundId: '1'
+    groundId: '1',
+    maxPeople: 100,
+    requestCount: 50
   },
   {
     id: '3',
@@ -146,7 +148,7 @@ export const USERS_MOCK: IUser[] = [
     email: 'john.doe@example.com',
     geolocation: '54.6872,25.2797',
     password: 'hashedpassword1',
-    createdId: 'admin',
+    createdAt: '2024-05-01T09:00:00Z',
     updatedId: 'admin',
     roles: 'user',
     isEmailConfirmed: true,
@@ -158,7 +160,7 @@ export const USERS_MOCK: IUser[] = [
     email: 'jane.smith@example.com',
     geolocation: '54.6890,25.2765',
     password: 'hashedpassword2',
-    createdId: 'admin',
+    createdAt: '2024-05-01T09:00:00Z',
     updatedId: 'admin',
     roles: 'user',
     isEmailConfirmed: false,
@@ -170,7 +172,7 @@ export const USERS_MOCK: IUser[] = [
     email: 'admin@example.com',
     geolocation: '54.6900,25.2800',
     password: 'hashedpassword3',
-    createdId: 'system',
+    createdAt: '2024-05-01T09:00:00Z',
     updatedId: 'system',
     roles: 'admin',
     isEmailConfirmed: true,
@@ -186,7 +188,7 @@ export const currentUser: IUser = {
   email: 'john.doe@example.com',
   geolocation: '54.6872,25.2797',
   password: 'hashedpassword1',
-  createdId: 'admin',
+  createdAt: new Date().toISOString(), // ✅ date of adding
   updatedId: 'admin',
   roles: 'user',
   isEmailConfirmed: true,

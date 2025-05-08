@@ -6,16 +6,28 @@
       <ion-card-subtitle>{{ event?.category }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
+      <div class="organizer-box">
+        <div class="organizer-name">        <ion-icon name="accessibility-outline" color="primary" style="font-size: 1.4em; vertical-align: middle; cursor: pointer;" (click)="onOrganizerClick.emit(user?.id)"></ion-icon>
+          <strong></strong> {{ user?.username }}</div>
+        <div class="organizer-joined">
+       Joined {{ user?.createdAt  | date: 'dd MMM yyyy' }}</div>
+      </div>
+      <div class="event-info">
       <p><strong>Date:</strong> {{ event?.date }} {{ event?.startTime }}</p>
       <p><strong>Duration:</strong> {{ event?.duration }} min</p>
       <p><strong>Location:</strong> {{ event?.location?.address }}</p>
+      <p><strong>Ground:</strong> {{ ground?.name }}</p>
       <p>{{ event?.description }}</p>
-      <div >
-        <hr>
-        <h3>Organizer Information</h3>
-        <p><strong>Name:</strong> {{ user?.username }}</p>
-        <p><strong>Email:</strong> {{ user?.email }}</p>
-        <p><strong>Role:</strong> {{ user?.roles }}</p>
+      </div>
+   
+      <div class="participants-box">
+        <div class="participants-count">{{ 'Participants: ' + (event?.requestCount ? event?.requestCount : 0)}}</div>
+
+        <div class="participants-count-max">{{ event?.maxPeople ? 'Maximum People: ' + event?.maxPeople : 'Unlimited' }}</div>
+      </div>
+      <div class="button-container">
+        <ion-button expand="block" fill="solid" (click)="onAttendClick.emit(event?.id)">I will attend</ion-button>
+        <ion-button expand="block" fill="outline" (click)="onShareClick.emit(event?.id)">Share Event</ion-button>
       </div>
     </ion-card-content>
   </ion-card>

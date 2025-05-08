@@ -1,1 +1,1 @@
-<app-event-view [event]="event$ | async" [user]="user$ | async"></app-event-view>
+<app-event-view [event]="event$ | async" [user]="user$ | async" [ground]="ground$ | async" (onAttendClick)="onAttendClick($event)" (onShareClick)="onShareClick(event$)"> </app-event-view>

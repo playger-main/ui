@@ -48,7 +48,7 @@
         </ion-button>
         <ng-container *ngIf="eventsForGround && eventsForGround.length && showEvents">
           <ion-list>
-            <ion-item *ngFor="let event of eventsForGround" class="chat-feedback-item">
+            <ion-item *ngFor="let event of eventsForGround" class="chat-feedback-item" (click)="eventClicked.emit(event.id)">
               <ion-label>
                 <div class="chat-bubble">
                   <div class="event-title">

@@ -6,6 +6,8 @@ import { IEvent, IGround } from 'src/app/interfaces/interfaces';
 import {  fakeGrounds } from 'src/app/mock';
 import { CommonModule } from '@angular/common';
 import { EventsService } from 'src/app/services/events.service';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -16,7 +18,7 @@ import { EventsService } from 'src/app/services/events.service';
 })
 export class GroundComponent  implements OnInit {
 
-  constructor(private eventsService: EventsService) { }
+  constructor(private eventsService: EventsService, private router: Router) { }
 
   private route = inject(ActivatedRoute);
   groundId!: string;
@@ -44,5 +46,11 @@ export class GroundComponent  implements OnInit {
       this.eventsForGround$ = of(events);
     });
   }
+
+  eventClicked (eventId: string) {
+    console.log(eventId);
+    this.router.navigate(['/event', eventId]);  }
+
+  }
   
-}
+

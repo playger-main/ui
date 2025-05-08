@@ -1,0 +1,47 @@
+.organizer-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.event-info {
+    margin-bottom: 20px;
+}
+
+.organizer-name {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.organizer-joined {
+    font-size: 0.8em;
+    color: #666;
+}
+.participants-box {
+    margin-bottom: 20px;
+
+}
+
+.participants-count {
+    font-size: 0.8em;
+    color: #264563;
+
+    &-max {
+        font-size: 0.7em;
+        color: #F0a500;
+    }
+}
+
+.button-container {
+    margin-top: 10px;
+    gap: 10px;
+}

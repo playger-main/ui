@@ -34,6 +34,10 @@ export class GroundService {
         return of([]); 
     }
   }
+
+  getGroundById(id: string) : Observable<IGround> {
+    return of(fakeGrounds.find(ground => ground.id === id)!);
+  }
 }  
 
 

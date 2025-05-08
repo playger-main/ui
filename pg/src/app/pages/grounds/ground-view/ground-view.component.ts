@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { IEvent, IGround } from 'src/app/interfaces/interfaces';
 import { CommonModule } from '@angular/common';
 import { IonCardContent,IonButton, IonCard, IonList, IonIcon, IonItem, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonLabel } from '@ionic/angular/standalone';
@@ -23,6 +23,9 @@ export class GroundViewComponent  implements OnInit, OnChanges {
 
   @Input() ground!: IGround | null;
   @Input() eventsForGround!: IEvent[] | null;
+
+  @Output() eventClicked = new EventEmitter<string>();
+
 
   ngOnInit() {
     console.log(this.ground)
