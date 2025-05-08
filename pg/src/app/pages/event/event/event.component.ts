@@ -4,7 +4,7 @@ import { EventViewComponent } from '../event-view/event-view.component';
 import { ActivatedRoute } from '@angular/router';
 import { IEvent, IUser, IGround } from 'src/app/interfaces/interfaces';
 import { EVENTS_MOCK } from 'src/app/mock';
-import { map, Observable, switchMap , of} from 'rxjs';
+import { map, Observable, switchMap , of, catchError, throwError, tap} from 'rxjs';
 import { EventsService } from 'src/app/services/events.service';
 import { UserService } from 'src/app/services/user.service';
 import { GroundService } from 'src/app/services/ground.service';
@@ -20,23 +20,27 @@ export class EventComponent  implements OnInit {
 
   event$!: Observable<IEvent>;
   user$!: Observable<IUser>;
-  ground$!: Observable<IGround>;
+  ground$!: Observable<IGround | null>;
 
   constructor(private route: ActivatedRoute, private eventService: EventsService, private groundService: GroundService, private userService: UserService, private router: Router) {}
 
   ngOnInit() {
-
-
     const id = this.route.snapshot.paramMap.get('id');
-    if(id){
-      this.event$ =  this.getEventById(id).pipe(
-        switchMap((ev)=> {
-         if(ev.groundId) {
-          this.ground$ = this.groundService.getGroundById(ev.groundId).pipe(map(data=> data));
-
-         }
-          this.user$ = this.getUserById(ev.userId).pipe(map(data=> data));
-          return of(ev);
+  
+    if (id) {
+      this.event$ = this.getEventById(id).pipe(
+        switchMap(ev => {
+          const ground$ = ev.groundId
+            ? this.groundService.getGroundById(ev.groundId)
+            : of(null);
+  
+          const user$ = this.getUserById(ev.userId);
+  
+          // save to component properties if needed
+          this.ground$ = ground$;
+          this.user$ = user$;
+  
+          return of(ev); // pass event as main observable
         })
       );
     }
@@ -44,7 +48,17 @@ export class EventComponent  implements OnInit {
 
 
   getEventById(id: string): Observable<IEvent> {
-    return this.eventService.getEventById(id);
+    return this.eventService.getEventById(id).pipe(
+      tap(event => {
+        if (!event) {
+          this.router.navigate(['/error']);
+        }
+      }),
+      catchError(err => {
+        this.router.navigate(['/error']);
+        return throwError(() => err);
+      })
+    );
   }
 
   getUserById(id: string): Observable<IUser> {

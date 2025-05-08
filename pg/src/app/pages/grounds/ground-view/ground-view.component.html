@@ -1,17 +1,17 @@
-<div class="page-content">
+<div class="page-content" *ngIf="ground">
   <ion-content [fullscreen]="true"> 
     <ion-card>
       <ion-card-header>
-        <ion-card-title>{{ ground?.name }}</ion-card-title>
-        <ion-card-subtitle>{{ ground?.coverage }}</ion-card-subtitle>
+        <ion-card-title>{{ ground.name }}</ion-card-title>
+        <ion-card-subtitle>{{ ground.coverage }}</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
-        <p><strong>Description:</strong> {{ ground?.description }}</p>
-        <p><strong>Created At:</strong> {{ ground?.createdAt }}</p>
-        <p><strong>Updated At:</strong> {{ ground?.updatedAt }}</p>
-        <p><strong>Address:</strong> {{ ground?.location?.address }}</p>
-        <p><strong>Latitude:</strong> {{ ground?.location?.lat }}</p>
-        <p><strong>Longitude:</strong> {{ ground?.location?.lng }}</p>
+        <p><strong>Description:</strong> {{ ground.description }}</p>
+        <p><strong>Created At:</strong> {{ ground.createdAt }}</p>
+        <p><strong>Updated At:</strong> {{ ground.updatedAt }}</p>
+        <p><strong>Address:</strong> {{ ground.location.address }}</p>
+        <p><strong>Latitude:</strong> {{ ground.location.lat }}</p>
+        <p><strong>Longitude:</strong> {{ ground.location.lng }}</p>
 
 
         <ion-button expand="block" fill="outline" (click)="toggleFeedback()">

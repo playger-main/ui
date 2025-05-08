@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { GroundViewComponent } from '../ground-view/ground-view.component';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of, tap, map } from 'rxjs';
+import { Observable, of, catchError, throwError,tap, map } from 'rxjs';
 import { IEvent, IGround } from 'src/app/interfaces/interfaces';
 import {  fakeGrounds } from 'src/app/mock';
 import { CommonModule } from '@angular/common';
@@ -21,23 +21,34 @@ export class GroundComponent  implements OnInit {
   constructor(private eventsService: EventsService, private router: Router) { }
 
   private route = inject(ActivatedRoute);
-  groundId!: string;
+  groundId!: string | null;
 
-  ground$!: Observable<IGround>;
+  ground$!: Observable<IGround | null>;
 
-  eventsForGround$!: Observable<IEvent[]>;
+  eventsForGround$!: Observable<IEvent[] | null>;
 
   ngOnInit(): void {
-    console.log(this.groundId)
-    this.groundId = this.route.snapshot.paramMap.get('id')!;
-    this.loadDataChosenGround(this.groundId);
-  }
+ 
+     this.groundId = this.route.snapshot.paramMap.get('id')!;
+    
+  this.loadDataChosenGround(this.groundId);
+}
 
-  loadDataChosenGround (id: string) {
-    return this.ground$ = of(fakeGrounds.find(ground => ground.id === id)!).pipe(tap(ground => {
-      this.loadEventsForGround(ground.id);
-    }));
-    }
+
+  
+
+loadDataChosenGround(id: string) {
+  const ground = fakeGrounds.find(g => g.id === id) || null;
+
+  if (ground) {
+    this.loadEventsForGround(ground.id);
+    this.ground$ = of(ground);
+  } else {
+    this.router.navigate(['/error']);
+    // ⚠️ Do NOT assign this.ground$ if you're navigating immediately
+  }
+}
+
   
 
   loadEventsForGround(groundId: string) {
