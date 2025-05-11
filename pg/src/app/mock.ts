@@ -17,7 +17,7 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
   const lng = (25.2797 + i * 0.001).toFixed(6);
   const address = addresses[i % addresses.length];
   const isEvent = i%2 == 0;
-
+  const isFavorite = i%2 == 0;
   const reviews = [
     {
       id: crypto.randomUUID(),
@@ -71,7 +71,7 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
     reviews,
     avatar,
     isEvent,
-
+isFavorite,
     averageRating: Number(averageRating.toFixed(2))
   };
 });

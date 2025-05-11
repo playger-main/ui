@@ -19,6 +19,7 @@ export interface IEvent {
 export interface IGround {
     id: string;
     name: string;
+    isFavorite: boolean;
     kindOfsport: string;
     coverage: string;
     description: string;
@@ -27,7 +28,7 @@ export interface IGround {
     location: ILocation;
     isEvent?: boolean;
     reviews: IReview[] | null;
-    avatar: string;         // <-- new field
+    avatar: string;        
     averageRating?: number;  
     listImgs?: string[];
 }

@@ -42,7 +42,8 @@ export class AddEventComponent  implements OnInit {
     reviews: null,
     avatar: '',
     averageRating: 0,
-    listImgs: []
+    listImgs: [],
+    isFavorite: false
   };
 
   constructor() { }

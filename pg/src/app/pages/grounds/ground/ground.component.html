@@ -1,1 +1,1 @@
-<app-ground-view [ground]="ground$ | async" [eventsForGround]="eventsForGround$ | async" (eventClicked)="eventClicked($event)"></app-ground-view>
+<app-ground-view [ground]="ground$ | async" [eventsForGround]="eventsForGround$ | async" (eventClicked)="eventClicked($event)"   [isFavorite]="isGroundInFavorites()" (addToFavorites)="addToFavorites($event)" (removeFromFavorites)="removeFromFavorites($event)"></app-ground-view>

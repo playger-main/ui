@@ -7,7 +7,7 @@ import {  fakeGrounds } from 'src/app/mock';
 import { CommonModule } from '@angular/common';
 import { EventsService } from 'src/app/services/events.service';
 import { Router } from '@angular/router';
-
+import { GroundService } from 'src/app/services/ground.service';
 
 
 @Component({
@@ -18,9 +18,10 @@ import { Router } from '@angular/router';
 })
 export class GroundComponent  implements OnInit {
 
-  constructor(private eventsService: EventsService, private router: Router) { }
+  constructor(private eventsService: EventsService, private router: Router, private groundService: GroundService) { }
 
   private route = inject(ActivatedRoute);
+
   groundId!: string | null;
 
   ground$!: Observable<IGround | null>;
@@ -30,6 +31,7 @@ export class GroundComponent  implements OnInit {
   ngOnInit(): void {
  
      this.groundId = this.route.snapshot.paramMap.get('id')!;
+     console.log(this.groundId);
     
   this.loadDataChosenGround(this.groundId);
 }
@@ -62,6 +64,18 @@ loadDataChosenGround(id: string) {
     console.log(eventId);
     this.router.navigate(['/event', eventId]);  }
 
+  addToFavorites(ground: IGround) {
+    console.log('Added to favorites:', ground);
+    this.groundService.saveFavoriteGround(ground)
+  }
+
+  removeFromFavorites(ground: IGround): void {
+    this.groundService.deleteFavoriteGround(ground.id);
+  }
+
+  isGroundInFavorites(): boolean {
+    return this.groundService.getFavoriteGrounds().some(f => f.id === this.groundId);
   }
   
 
+}

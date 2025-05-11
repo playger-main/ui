@@ -28,4 +28,20 @@
     color: #888;
     font-size: 0.85em;
   }
+
+  .card-header-with-icon {
+    position: relative;
+    padding-top: 1.5rem;
+  
+    .favorite-icon {
+      position: absolute;
+      top: 0.25rem;
+      right: 0.5rem;
+      z-index: 1;
+    }
+  
+    ion-card-title {
+      margin-top: 0.5rem;
+    }
+  }
   

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChange
 import { IEvent, IGround } from 'src/app/interfaces/interfaces';
 import { CommonModule } from '@angular/common';
 import { IonCardContent,IonButton, IonCard, IonList, IonIcon, IonItem, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonLabel } from '@ionic/angular/standalone';
-import { star , starOutline} from 'ionicons/icons';
+import { star , starOutline, heartOutline, heart} from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 @Component({
@@ -14,7 +14,7 @@ import { addIcons } from 'ionicons';
 export class GroundViewComponent  implements OnInit, OnChanges {
 
   constructor() {
-    addIcons({ star, starOutline });
+    addIcons({ heart, heartOutline, star, starOutline });
 
    }
 
@@ -22,10 +22,12 @@ export class GroundViewComponent  implements OnInit, OnChanges {
    showEvents = false;
 
   @Input() ground!: IGround | null;
+  @Input() isFavorite = false;
   @Input() eventsForGround!: IEvent[] | null;
 
   @Output() eventClicked = new EventEmitter<string>();
-
+  @Output() addToFavorites = new EventEmitter<IGround>();
+  @Output() removeFromFavorites = new EventEmitter<IGround>();
 
   ngOnInit() {
     console.log(this.ground)
@@ -46,6 +48,17 @@ export class GroundViewComponent  implements OnInit, OnChanges {
   toggleEvents() {
     this.showEvents = !this.showEvents;
   }
+
+  onToggleFavorite(ground: IGround) {
+    if (this.isFavorite) {
+      this.removeFromFavorites.emit(ground);
+    } else {
+      this.addToFavorites.emit(ground);
+    }
+  }
+  
+
+
 
 }
 
