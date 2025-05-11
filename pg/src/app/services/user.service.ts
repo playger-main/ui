@@ -15,6 +15,8 @@ export class UserService {
     getUserById(id: string): Observable<IUser> {
       return of(USERS_MOCK.find(user=> user.id === id) as IUser);
     }
+
+  
     
     
 }

@@ -6,7 +6,7 @@
       <ion-card-subtitle>{{ event.category }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <div class="organizer-box">
+      <div class="organizer-box" (click)="onOrganizerClick.emit(event.userId)">
         <div class="organizer-name">       
            <ion-icon name="accessibility-outline" color="primary" style="font-size: 1.4em; vertical-align: middle; cursor: pointer;" (click)="onOrganizerClick.emit(user?.id)"></ion-icon>
           <strong></strong> {{ user?.username }}</div>

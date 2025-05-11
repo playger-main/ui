@@ -65,9 +65,15 @@ export class EventComponent  implements OnInit {
    return this.userService.getUserById(id);
   }
 
-  onOrganizerClick(id: string) {
-    this.router.navigate(['/user', id]);
+  onOrganizerClick(id: string | null | undefined) {
+    if (id) {
+      this.router.navigate(['/user', id]);
+    } else {
+      console.warn('Missing user ID');
+    }
   }
+  
+  
 
   onAttendClick(eventId: string){
     console.log(eventId);

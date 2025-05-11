@@ -1,0 +1,29 @@
+.user-profile-card {
+    ion-card-header {
+      text-align: center;
+      padding-bottom: 0;
+    }
+  
+    ion-card-title {
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+  
+    ion-card-subtitle {
+      font-size: 1.1rem;
+    }
+  
+    ion-list-header {
+      margin-top: 1rem;
+    }
+  
+    ion-icon {
+      font-size: 1.2rem;
+    }
+  
+    ion-item {
+      --padding-start: 12px;
+      --inner-padding-end: 8px;
+    }
+  }
+  

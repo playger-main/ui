@@ -138,6 +138,42 @@ export const EVENTS_MOCK: IEvent[] = [
     },
     category: 'Exhibition',
     groundId: '3'
+  },
+  {
+    id: '4',
+    name: 'Winter Workout',
+    description: 'Outdoor winter fitness event.',
+    date: '2023-12-20',
+    startTime: '08:30',
+    duration: 90,
+    createdAt: '2023-11-15T10:00:00Z',
+    updatedAt: '2023-12-01T10:00:00Z',
+    userId: 'user1',
+    location: {
+      lat: '54.6865',
+      lng: '25.2755',
+      address: 'Snow Park, Vilnius'
+    },
+    category: 'Fitness',
+    groundId: '4'
+  },
+  {
+    id: '5',
+    name: 'Autumn Run',
+    description: '5km fun run through the city parks.',
+    date: '2023-10-10',
+    startTime: '07:00',
+    duration: 60,
+    createdAt: '2023-09-01T08:00:00Z',
+    updatedAt: '2023-09-25T09:00:00Z',
+    userId: 'user2',
+    location: {
+      lat: '54.6880',
+      lng: '25.2780',
+      address: 'Green Park, Vilnius'
+    },
+    category: 'Running',
+    groundId: '5'
   }
 ];
 
@@ -146,39 +182,99 @@ export const USERS_MOCK: IUser[] = [
     id: 'user1',
     username: 'john_doe',
     email: 'john.doe@example.com',
-    geolocation: '54.6872,25.2797',
+    geolocation: {
+      lat: '54.6872',
+      lng: '25.2797',
+      address: 'Gedimino pr. 9, Vilnius'
+    },
     password: 'hashedpassword1',
-    createdAt: '2024-05-01T09:00:00Z',
-    updatedId: 'admin',
+    createdAt: '2024-01-01T09:00:00Z',
+    updatedAt: '2024-05-01T10:00:00Z',
     roles: 'user',
     isEmailConfirmed: true,
-    confirmationToken: 'token1'
+    confirmationToken: 'token1',
+    favoriteGroundIds: ['1', '3'],
+    listOrganizeEvents: ['1', '4'],
+    listParticipateEvents: ['2', '5']
   },
   {
     id: 'user2',
-    username: 'jane_smith',
-    email: 'jane.smith@example.com',
-    geolocation: '54.6890,25.2765',
+    username: 'sandra_dev',
+    email: 'sandra.dev@example.com',
+    geolocation: {
+      lat: '54.6890',
+      lng: '25.2765',
+      address: 'Ozo g. 18, Vilnius'
+    },
     password: 'hashedpassword2',
-    createdAt: '2024-05-01T09:00:00Z',
-    updatedId: 'admin',
-    roles: 'user',
-    isEmailConfirmed: false,
-    confirmationToken: 'token2'
+    createdAt: '2023-11-10T12:00:00Z',
+    updatedAt: '2024-05-05T14:00:00Z',
+    roles: 'admin',
+    isEmailConfirmed: true,
+    confirmationToken: 'token2',
+    favoriteGroundIds: ['2'],
+    listOrganizeEvents: ['5'],
+    listParticipateEvents: ['1']
   },
   {
     id: 'user3',
-    username: 'admin_user',
-    email: 'admin@example.com',
-    geolocation: '54.6900,25.2800',
+    username: 'julia_sporty',
+    email: 'julia@example.com',
+    geolocation: {
+      lat: '54.6900',
+      lng: '25.2800',
+      address: 'Naugarduko g. 24, Vilnius'
+    },
     password: 'hashedpassword3',
-    createdAt: '2024-05-01T09:00:00Z',
-    updatedId: 'system',
-    roles: 'admin',
+    createdAt: '2023-09-20T08:30:00Z',
+    updatedAt: '2024-04-10T09:15:00Z',
+    roles: 'organizer',
+    isEmailConfirmed: false,
+    confirmationToken: 'token3',
+    favoriteGroundIds: [],
+    listOrganizeEvents: ['3'],
+    listParticipateEvents: ['2']
+  },
+  {
+    id: 'user4',
+    username: 'martynas_fit',
+    email: 'martynas.fit@example.com',
+    geolocation: {
+      lat: '54.6881',
+      lng: '25.2789',
+      address: 'Vingio Parkas, Vilnius'
+    },
+    password: 'hashedpassword4',
+    createdAt: '2023-12-15T07:45:00Z',
+    updatedAt: '2024-03-01T08:00:00Z',
+    roles: 'user',
     isEmailConfirmed: true,
-    confirmationToken: 'token3'
+    confirmationToken: 'token4',
+    favoriteGroundIds: ['4', '5'],
+    listOrganizeEvents: [],
+    listParticipateEvents: ['1', '3']
+  },
+  {
+    id: 'user5',
+    username: 'greta_event',
+    email: 'greta.events@example.com',
+    geolocation: {
+      lat: '54.6911',
+      lng: '25.2771',
+      address: 'Antakalnio g. 11, Vilnius'
+    },
+    password: 'hashedpassword5',
+    createdAt: '2024-02-10T10:00:00Z',
+    updatedAt: '2024-05-10T12:00:00Z',
+    roles: 'organizer',
+    isEmailConfirmed: true,
+    confirmationToken: 'token5',
+    favoriteGroundIds: ['2', '3'],
+    listOrganizeEvents: ['5'],
+    listParticipateEvents: ['4']
   }
 ];
+
 
 // ... other imports
 
@@ -186,14 +282,20 @@ export const currentUser: IUser = {
   id: '1',
   username: 'john_doe',
   email: 'john.doe@example.com',
-  geolocation: '54.6872,25.2797',
+  geolocation: {
+    lat: '54.6872',
+    lng: '25.2797',
+    address: 'Gedimino pr. 9, Vilnius'
+  },
   password: 'hashedpassword1',
-  createdAt: new Date().toISOString(), // ✅ date of adding
-  updatedId: 'admin',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
   roles: 'user',
   isEmailConfirmed: true,
   confirmationToken: 'token1',
-  favoriteGroundIds: ['ground1', 'ground3', 'ground7'] // Example favorites
+  favoriteGroundIds: ['ground1', 'ground3', 'ground7'],
+  listOrganizeEvents: [],
+  listParticipateEvents: []
 };
 
 

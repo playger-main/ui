@@ -53,17 +53,16 @@ export interface IUser {
     id: string;
     username: string;
     email: string;
-    geolocation: string;
+    geolocation: ILocation;
     password: string;
     createdAt: string;
-    updatedId: string;
+    updatedAt: string;
     roles: string;
     isEmailConfirmed: boolean;
     confirmationToken: string;
     favoriteGroundIds?: string[]; 
     listOrganizeEvents?: string[];
     listParticipateEvents?: string[];
-
 }
 
 export interface IRefreshToken {
