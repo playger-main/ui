@@ -26,6 +26,11 @@ export class EventsService {
     // return this.http.get<Event>(`${this.apiUrl}/${id}`);
   }
 
+  getUserEvents (id: string): Observable<IEvent[]> {
+    return of(EVENTS_MOCK.filter(event => event.id === id) as IEvent[]);
+    // return this.http.get<Event>(`${this.apiUrl}/${id}`);
+  }
+
   getEventsForGround(groundId: string): Observable<IEvent[]> {
     return of(EVENTS_MOCK.filter(event => event.groundId === groundId) as IEvent[]);
   }

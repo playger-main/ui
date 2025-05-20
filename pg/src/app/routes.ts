@@ -14,7 +14,9 @@ export const routes: Routes = [
 
   { path: 'events', loadComponent: () => import('./pages/events/events/events.component').then(m => m.EventsComponent) },
 
-  { path: 'profile', loadComponent: () => import('./pages/profile/profile.page').then(m => m.ProfilePage), canActivate: [AuthGuard] },
+  // { path: 'profile', loadComponent: () => import('./pages/profile/profile.page').then(m => m.ProfilePage),
+  //    canActivate: [AuthGuard] },
+     { path: 'profile', loadComponent: () => import('./pages/profile/profile/profile.component').then(m => m.ProfileComponent),},
   
   { path: 'error', loadComponent: () => import('./pages/error/error/error.component').then(m => m.ErrorComponent) },
   { path: '**', redirectTo: '/error', pathMatch: 'full' }];

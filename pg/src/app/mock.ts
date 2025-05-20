@@ -1,4 +1,4 @@
-import { IEvent, IGround, IUser } from "./interfaces/interfaces";
+import { ICurrentUser, IEvent, IGround, IUser } from "./interfaces/interfaces";
 
 
 export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
@@ -187,15 +187,14 @@ export const USERS_MOCK: IUser[] = [
       lng: '25.2797',
       address: 'Gedimino pr. 9, Vilnius'
     },
-    password: 'hashedpassword1',
     createdAt: '2024-01-01T09:00:00Z',
     updatedAt: '2024-05-01T10:00:00Z',
     roles: 'user',
     isEmailConfirmed: true,
-    confirmationToken: 'token1',
     favoriteGroundIds: ['1', '3'],
     listOrganizeEvents: ['1', '4'],
-    listParticipateEvents: ['2', '5']
+    listParticipateEvents: ['2', '5'],
+    listFutureEvents: ['5']
   },
   {
     id: 'user2',
@@ -206,15 +205,14 @@ export const USERS_MOCK: IUser[] = [
       lng: '25.2765',
       address: 'Ozo g. 18, Vilnius'
     },
-    password: 'hashedpassword2',
     createdAt: '2023-11-10T12:00:00Z',
     updatedAt: '2024-05-05T14:00:00Z',
     roles: 'admin',
     isEmailConfirmed: true,
-    confirmationToken: 'token2',
     favoriteGroundIds: ['2'],
     listOrganizeEvents: ['5'],
-    listParticipateEvents: ['1']
+    listParticipateEvents: ['1'],
+    listFutureEvents: ['2']
   },
   {
     id: 'user3',
@@ -225,15 +223,14 @@ export const USERS_MOCK: IUser[] = [
       lng: '25.2800',
       address: 'Naugarduko g. 24, Vilnius'
     },
-    password: 'hashedpassword3',
     createdAt: '2023-09-20T08:30:00Z',
     updatedAt: '2024-04-10T09:15:00Z',
     roles: 'organizer',
     isEmailConfirmed: false,
-    confirmationToken: 'token3',
     favoriteGroundIds: [],
     listOrganizeEvents: ['3'],
-    listParticipateEvents: ['2']
+    listParticipateEvents: ['2'],
+    listFutureEvents: ['3']
   },
   {
     id: 'user4',
@@ -244,15 +241,14 @@ export const USERS_MOCK: IUser[] = [
       lng: '25.2789',
       address: 'Vingio Parkas, Vilnius'
     },
-    password: 'hashedpassword4',
     createdAt: '2023-12-15T07:45:00Z',
     updatedAt: '2024-03-01T08:00:00Z',
     roles: 'user',
     isEmailConfirmed: true,
-    confirmationToken: 'token4',
     favoriteGroundIds: ['4', '5'],
     listOrganizeEvents: [],
-    listParticipateEvents: ['1', '3']
+    listParticipateEvents: ['1', '3'],
+    listFutureEvents: []
   },
   {
     id: 'user5',
@@ -263,22 +259,22 @@ export const USERS_MOCK: IUser[] = [
       lng: '25.2771',
       address: 'Antakalnio g. 11, Vilnius'
     },
-    password: 'hashedpassword5',
     createdAt: '2024-02-10T10:00:00Z',
     updatedAt: '2024-05-10T12:00:00Z',
     roles: 'organizer',
     isEmailConfirmed: true,
-    confirmationToken: 'token5',
     favoriteGroundIds: ['2', '3'],
     listOrganizeEvents: ['5'],
-    listParticipateEvents: ['4']
+    listParticipateEvents: ['4'],
+    listFutureEvents: ['5']
   }
 ];
 
 
+
 // ... other imports
 
-export const currentUser: IUser = {
+export const currentUser: ICurrentUser = {
   id: '1',
   username: 'john_doe',
   email: 'john.doe@example.com',

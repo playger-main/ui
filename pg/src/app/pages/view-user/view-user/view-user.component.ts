@@ -4,7 +4,7 @@ import { ViewUserViewComponent} from '../view-user-view/view-user-view.component
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { catchError, Observable, of } from 'rxjs';
-import { IUser } from 'src/app/interfaces/interfaces';
+import {  IUser } from 'src/app/interfaces/interfaces';
 
 
 @Component({

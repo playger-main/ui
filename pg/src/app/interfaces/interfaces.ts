@@ -49,20 +49,37 @@ export interface ILocation {
     address: string;
 }
 
+export interface ICurrentUser {
+    id: string;
+    username: string;
+    email: string;
+    geolocation: ILocation;
+    createdAt: string;
+    updatedAt: string;
+    roles: string;
+    password: string;
+    isEmailConfirmed: boolean;
+    confirmationToken: string;
+    favoriteGroundIds?: string[];
+    listOrganizeEvents?: string[];
+    listParticipateEvents?: string[];
+    listFutureEvents?: string[]; //new
+  }
+  
+
 export interface IUser {
     id: string;
     username: string;
     email: string;
     geolocation: ILocation;
-    password: string;
     createdAt: string;
     updatedAt: string;
     roles: string;
     isEmailConfirmed: boolean;
-    confirmationToken: string;
-    favoriteGroundIds?: string[]; 
+    favoriteGroundIds?: string[];
     listOrganizeEvents?: string[];
     listParticipateEvents?: string[];
+    listFutureEvents?: string[]; //new
 }
 
 export interface IRefreshToken {
