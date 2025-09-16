@@ -2,9 +2,11 @@ import { ICurrentUser, IEvent, IGround, IUser } from "./interfaces/interfaces";
 
 
 export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
-  const id = (i + 1).toString(); // <-- number as string ('1', '2', ... '20')
-  const now = new Date().toISOString();
-  const kindOfSport = ['Football', 'Basketball', 'Workout'];
+  const id = (i + 1).toString();
+  const now = new Date();
+  const createdAt = new Date(now.getTime() - i * 86400000).toISOString(); // spread creation times
+  const updatedAt = new Date(now.getTime() - i * 43200000).toISOString(); // update a bit after
+
   const addresses = [
     'Vingio Parkas, Vilnius',
     'Ozo g. 18, Vilnius',
@@ -13,68 +15,69 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
     'Naugarduko g. 24, Vilnius'
   ];
 
-  const lat = (54.6872 + i * 0.001).toFixed(6);
-  const lng = (25.2797 + i * 0.001).toFixed(6);
+  const lat = (54.6872 + i * 0.0015).toFixed(6);
+  const lng = (25.2797 + i * 0.0013).toFixed(6);
   const address = addresses[i % addresses.length];
-  const isEvent = i%2 == 0;
-  const isFavorite = i%2 == 0;
+
+  const kindOfsport = ['Football', 'Basketball', 'Workout'][i % 3];
+  const isEvent = i % 3 === 0;
+  const isFavorite = i % 4 === 0;
+
+  const name = `Ground`;
+  const coverage = ['Grass', 'Gravel', 'Concrete', 'Synthetic'][i % 4];
+
+  const feature = ['great drainage', 'multi-use fields', 'evening lighting', 'seating areas'][i % 4];
+  const description = `A ${kindOfsport.toLowerCase()} ground located at ${address}. Known for its ${feature}.`;
+
+  const avatars = [
+    'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80',
+  ];
+  const avatar = avatars[i % avatars.length];
+
   const reviews = [
     {
       id: crypto.randomUUID(),
       userId: `user${(i % 3) + 1}`,
       groundId: id,
-      rating: 4 + (i % 2), // 4 or 5
+      rating: 4 + (i % 2),
       comment: i % 2 === 0 ? 'Great ground!' : 'Nice place, but can get crowded.',
-      createdAt: now,
-      updatedAt: now
+      createdAt,
+      updatedAt
     },
     {
       id: crypto.randomUUID(),
       userId: `user${(i % 3) + 2}`,
       groundId: id,
-      rating: 3 + (i % 3), // 3, 4, or 5
+      rating: 3 + (i % 3),
       comment: i % 3 === 0 ? 'Needs better lighting.' : 'Well maintained.',
-      createdAt: now,
-      updatedAt: now
+      createdAt,
+      updatedAt
     }
   ];
 
-  // Calculate average rating
-  const averageRating =
-    reviews.length > 0
-      ? reviews.reduce((sum, f) => sum + f.rating, 0) / reviews.length
-      : 0;
-
-  // Example avatar: you can use a URL or an icon name
-  const avatars = [
-    'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80', // football field
-    'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80', // basketball court
-    'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80', // workout area
-    'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80', // stadium
-    'https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=400&q=80', // park field
-    ];
-  const avatar = avatars[i % avatars.length];
+  const averageRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 
   return {
     id,
-    name: `Ground ${i + 1} - ${kindOfSport[i % kindOfSport.length]}`,
-    kindOfsport: ['Football', 'Basketball', 'Workout'][i % 3],
-    coverage: ['Grass', 'Gravel', 'Concrete', 'Synthetic'][i % 4],
-    description: `This is a description for Ground ${i + 1} located in Vilnius. It features ${['great drainage', 'multi-use fields', 'evening lighting', 'seating areas'][i % 4]}.`,
-    createdAt: now,
-    updatedAt: now,
-    location: {
-      lat,
-      lng,
-      address
-    },
+    name,
+    kindOfsport,
+    coverage,
+    description,
+    createdAt,
+    updatedAt,
+    location: { lat, lng, address },
     reviews,
     avatar,
     isEvent,
-isFavorite,
-    averageRating: Number(averageRating.toFixed(2))
+    isFavorite,
+    averageRating: +averageRating.toFixed(2)
   };
 });
+
 
 
 
