@@ -1,2 +1,5 @@
-<app-events-view [listEvents]="listEvents$ | async" (goToCurrentEventPage)="goToCurrentEventPage($event)"></app-events-view>
-
+<app-events-view
+  [listEvents]="listEvents$ | async"
+  (goToCurrentEventPage)="goToCurrentEventPage($event)"
+  (onNewEventForm)="onNewEventForm($event)"
+></app-events-view>

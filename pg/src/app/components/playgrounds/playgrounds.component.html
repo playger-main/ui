@@ -1,35 +1,62 @@
 <ion-list>
-  <ion-card class="playground-item" [ngClass]="{'green-card': item.isEvent}" *ngFor="let item of listPlaygrounds" [routerLink]="['/ground', item.id]" class="playground-item">
+  <ion-card
+    class="playground-item"
+    [ngClass]="{ 'green-card': item.isEvent }"
+    *ngFor="let item of listPlaygrounds"
+    [routerLink]="['/ground', item.id]"
+  >
     <div class="playground-card-content">
       <img [src]="item.avatar" alt="photo" class="playground-photo" />
+
       <div class="playground-info">
-        <h2 class="playground-title">{{ item.name }} - {{ item.kindOfsport }}</h2>
+        <h2 class="playground-title">
+          {{ item.name }} - {{ item.kindOfsport }}
+        </h2>
         <p class="playground-address">
-          <ion-icon name="location-outline" color="primary" style="vertical-align: middle; margin-right: 4px;"></ion-icon>
+          <ion-icon
+            name="location-outline"
+            color="primary"
+            style="vertical-align: middle; margin-right: 4px"
+          ></ion-icon>
           {{ item.location.address }}
         </p>
+
         <div *ngIf="item?.averageRating" class="playground-rating-row">
           <div class="rating-stars">
-            <ng-container *ngFor="let star of [1,2,3,4,5]">
+            <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
               <ion-icon
-                [name]="star <= Math.round(item?.averageRating ?? 0) ? 'star' : 'star-outline'"
+                [name]="
+                  star <= Math.round(item?.averageRating ?? 0)
+                    ? 'star'
+                    : 'star-outline'
+                "
                 color="warning"
-                style="font-size: 1.2em; vertical-align: middle;">
+                style="font-size: 1.2em; vertical-align: middle"
+              >
               </ion-icon>
             </ng-container>
-            <span class="rating-value" style="margin-left: 8px;">
+            <span class="rating-value" style="margin-left: 8px">
               {{ item.averageRating }}/5
             </span>
           </div>
+
+          <!-- сердечко с кликом -->
           <ion-icon
-            name="heart"
-            color="medium"
-            style="font-size: 1.4em; vertical-align: middle; margin-left: 12px;">
+            [name]="item.isFavorite ? 'heart' : 'heart'"
+            color="danger"
+            style="font-size: 1.4em; vertical-align: middle; margin-left: 12px"
+            (click)="toggleFavorite(item, $event)"
+          >
           </ion-icon>
         </div>
       </div>
-      <ion-icon *ngIf="item.isEvent" name="calendar" color="success" style="font-size: 1.4em; position: absolute; top: 10px; right: 10px;"></ion-icon>
 
+      <ion-icon
+        *ngIf="item.isEvent"
+        name="calendar"
+        color="success"
+        style="font-size: 1.4em; position: absolute; top: 10px; right: 10px"
+      ></ion-icon>
     </div>
   </ion-card>
 </ion-list>

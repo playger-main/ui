@@ -1,0 +1,31 @@
+<div class="page-content">
+  <ion-content [fullscreen]="true">
+    <div class="header-container">
+      <h4>Grounds</h4>
+      <ion-button fill="outline" id="open-modal" expand="block" size="large">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+      <ion-modal
+        #modal
+        trigger="open-modal"
+        [presentingElement]="presentingElement"
+        (willPresent)="onWillPresent()"
+      >
+        <ng-template>
+          <app-add-ground
+            [modal]="modal"
+            (newGroundForm)="onNewGroundForm.emit($event)"
+          ></app-add-ground>
+        </ng-template>
+      </ion-modal>
+    </div>
+    <div class="header-menu">
+      <div class="map-container"><app-map></app-map></div>
+      <app-search></app-search>
+    </div>
+    <app-playgrounds
+      [listPlaygrounds]="listPlaygrounds"
+      [listFavoriteGrounds]="listFavoriteGrounds()"
+    ></app-playgrounds>
+  </ion-content>
+</div>

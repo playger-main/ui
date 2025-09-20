@@ -5,9 +5,8 @@ import { Observable, of } from 'rxjs';
 import { EVENTS_MOCK } from '../mock';
 import { IEvent } from '../interfaces/interfaces';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventsService {
   private apiUrl = 'https://your-api-url.com/api/events'; // Replace with your actual API URL
@@ -22,16 +21,24 @@ export class EventsService {
 
   // Get a special event by ID
   getEventById(id: string): Observable<IEvent> {
-    return of(EVENTS_MOCK.find(event => event.id === id) as IEvent);
+    return of(EVENTS_MOCK.find((event) => event.id === id) as IEvent);
     // return this.http.get<Event>(`${this.apiUrl}/${id}`);
   }
 
-  getUserEvents (id: string): Observable<IEvent[]> {
-    return of(EVENTS_MOCK.filter(event => event.id === id) as IEvent[]);
+  getUserEvents(id: string): Observable<IEvent[]> {
+    return of(EVENTS_MOCK.filter((event) => event.id === id) as IEvent[]);
     // return this.http.get<Event>(`${this.apiUrl}/${id}`);
   }
 
   getEventsForGround(groundId: string): Observable<IEvent[]> {
-    return of(EVENTS_MOCK.filter(event => event.groundId === groundId) as IEvent[]);
+    return of(
+      EVENTS_MOCK.filter((event) => event.groundId === groundId) as IEvent[]
+    );
+  }
+
+  createEvent(event: IEvent) {
+    console.log('Creating event:', event);
+    // здесь можно отправить HTTP POST на backend
+    return of(event);
   }
 }

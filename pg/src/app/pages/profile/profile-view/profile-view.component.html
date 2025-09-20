@@ -1,11 +1,20 @@
 <ion-content fullscreen class="profile-page" *ngIf="user">
   <ion-card class="profile-card">
     <ion-list-header>
-      <ion-icon name="heart-outline" slot="start" color="danger" style="margin-right: 8px;"></ion-icon>
-      <ion-label><strong>{{user.username}}</strong></ion-label>
-      <ion-label><strong>{{user.roles}}</strong></ion-label>
+      <ion-icon
+        name="heart"
+        slot="start"
+        color="danger"
+        style="margin-right: 8px"
+      ></ion-icon>
+      <ion-label
+        ><strong>{{ user.username }}</strong></ion-label
+      >
+      <ion-label
+        ><strong>{{ user.roles }}</strong></ion-label
+      >
     </ion-list-header>
-    
+
     <ion-card-content>
       <ion-list lines="none">
         <ion-item>
@@ -17,7 +26,11 @@
         </ion-item>
 
         <ion-item>
-          <ion-icon name="location-outline" slot="start" color="tertiary"></ion-icon>
+          <ion-icon
+            name="location-outline"
+            slot="start"
+            color="tertiary"
+          ></ion-icon>
           <ion-label>
             <strong>Location:</strong>
             <div>{{ user.geolocation.address }}</div>
@@ -25,16 +38,24 @@
         </ion-item>
 
         <ion-item>
-          <ion-icon name="calendar-outline" slot="start" color="medium"></ion-icon>
+          <ion-icon
+            name="calendar-outline"
+            slot="start"
+            color="medium"
+          ></ion-icon>
           <ion-label>
             <strong>Account Created:</strong>
-            <div>{{ user.createdAt | date:'medium' }}</div>
+            <div>{{ user.createdAt | date : "medium" }}</div>
           </ion-label>
         </ion-item>
       </ion-list>
 
-      <ion-button expand="block" fill="outline" (click)="showPasswordSettings = !showPasswordSettings">
-        {{ showPasswordSettings ? 'Hide' : 'Change' }} Password Settings
+      <ion-button
+        expand="block"
+        fill="outline"
+        (click)="showPasswordSettings = !showPasswordSettings"
+      >
+        {{ showPasswordSettings ? "Hide" : "Change" }} Password Settings
       </ion-button>
 
       <div *ngIf="showPasswordSettings" class="password-settings">
@@ -68,8 +89,6 @@
           <ion-label color="medium">No favorite grounds added yet.</ion-label>
         </ion-item>
       </ng-template>
-
-     
 
       <ion-list *ngIf="showEvents && futureEvents?.length">
         <ion-list-header>

@@ -1,12 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  OnInit,
-  output,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import {
@@ -28,9 +21,9 @@ import {
 
 import { IGround } from 'src/app/interfaces/interfaces';
 @Component({
-  selector: 'app-add-event',
-  templateUrl: './add-event.component.html',
-  styleUrls: ['./add-event.component.scss'],
+  selector: 'app-add-ground',
+  templateUrl: './add-ground.component.html',
+  styleUrls: ['./add-ground.component.scss'],
   imports: [
     CommonModule,
     FormsModule,
@@ -46,7 +39,7 @@ import { IGround } from 'src/app/interfaces/interfaces';
     IonTitle,
   ],
 })
-export class AddEventComponent implements OnInit {
+export class AddGroundComponent implements OnInit {
   ground: IGround = {
     id: '',
     name: '',
@@ -69,9 +62,9 @@ export class AddEventComponent implements OnInit {
 
   @Input() modal!: IonModal;
   @Output() newGroundForm = new EventEmitter<IGround>();
-  newEventForme = output<any>();
+
   onSubmit() {
     this.modal.dismiss(this.ground);
-    this.newEventForme.emit(this.ground);
+    this.newGroundForm.emit(this.ground);
   }
 }
