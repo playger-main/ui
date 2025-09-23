@@ -1,12 +1,16 @@
 .profile-page {
-    --ion-background-color: #f4f5f8;
-  }
+  --ion-background-color: #f4f5f8;
+}
 
-  .profile-card {
-    margin: 16px;
-    border-radius: 16px;
-  }
+.profile-card {
+  margin: 16px;
+  border-radius: 16px;
+}
 
-  .password-settings ion-item {
-    margin-top: 8px;
-  }
+.password-settings ion-item {
+  margin-top: 8px;
+}
+///
+ion-segment {
+  --background: #54dc98;
+}

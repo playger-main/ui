@@ -45,32 +45,10 @@
           ></ion-icon>
           <ion-label>
             <strong>Account Created:</strong>
-            <div>{{ user.createdAt | date : "medium" }}</div>
+            <div>{{ user.createdAt | date: "medium" }}</div>
           </ion-label>
         </ion-item>
       </ion-list>
-
-      <ion-button
-        expand="block"
-        fill="outline"
-        (click)="showPasswordSettings = !showPasswordSettings"
-      >
-        {{ showPasswordSettings ? "Hide" : "Change" }} Password Settings
-      </ion-button>
-
-      <div *ngIf="showPasswordSettings" class="password-settings">
-        <ion-item>
-          <ion-label position="floating">Current Password</ion-label>
-          <ion-input type="password"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">New Password</ion-label>
-          <ion-input type="password"></ion-input>
-        </ion-item>
-
-        <ion-button expand="block" color="primary">Update Password</ion-button>
-      </div>
 
       <ion-list-header>
         <ion-label><strong>Favorite Grounds</strong></ion-label>
@@ -99,6 +77,30 @@
           <ion-label>{{ event.date }}</ion-label>
         </ion-item>
       </ion-list>
+      <div class="password-box">
+        <ion-button
+          expand="block"
+          fill="outline"
+          (click)="showPasswordSettings = !showPasswordSettings"
+        >
+          {{ showPasswordSettings ? "Hide" : "Change" }} Password Settings
+        </ion-button>
+        <div *ngIf="showPasswordSettings" class="password-settings">
+          <ion-item>
+            <ion-label position="floating">Current Password</ion-label>
+            <ion-input type="password"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">New Password</ion-label>
+            <ion-input type="password"></ion-input>
+          </ion-item>
+
+          <ion-button expand="block" color="primary"
+            >Update Password</ion-button
+          >
+        </div>
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>

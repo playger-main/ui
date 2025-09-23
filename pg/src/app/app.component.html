@@ -1,17 +1,16 @@
 <ion-app>
-  <ion-menu
-    contentId="main-content"
-    side="start"
-    type="overlay"
-    (ionDidClose)="onMenuClosed()"
-  >
-    <ion-content>
-      <app-menu></app-menu>
+  <app-header></app-header>
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <app-menu />
     </ion-content>
   </ion-menu>
-  <ion-content id="main-content">
-    <app-header></app-header>
-    <ion-router-outlet></ion-router-outlet>
-    <app-footer-menu></app-footer-menu>
-  </ion-content>
+  <div class="ion-page" id="main-content"></div>
+  <ion-router-outlet></ion-router-outlet>
+  <app-footer-menu></app-footer-menu>
 </ion-app>

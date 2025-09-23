@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
-import { IonApp,IonContent,IonMenu, IonRouterOutlet } from '@ionic/angular/standalone';
+import {
+  IonApp,
+  IonContent,
+  IonMenu,
+  IonRouterOutlet,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 import { HeaderComponent } from './core/header/header.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -14,61 +22,66 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [CommonModule, IonContent, IonMenu, IonApp, FooterMenuComponent, IonRouterOutlet, MenuComponent, HeaderComponent],
+  imports: [
+    CommonModule,
+    IonContent,
+    IonMenu,
+    IonApp,
+    FooterMenuComponent,
+    IonRouterOutlet,
+    MenuComponent,
+    HeaderComponent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  ], 
+  ],
 })
 export class AppComponent {
+  constructor(
+    private playGroundService: GroundService,
+    private userService: UserService,
+  ) {}
 
-  constructor( private router: Router, private playGroundService: GroundService, private userService: UserService) { 
-    
-  }
-  
   currentUrl = '';
   pageTitle: string = 'PG';
   listfavoriteKindOfSport$!: Observable<IFavoriteListSport[]>;
 
   listPlaygrounds$!: Observable<IGround[]>;
-  
+
   selectedKindOfSport: string = '';
 
   isHomePage = false;
 
   ngOnInit(): void {
-    
-      this.loadUserData();
+    this.loadUserData();
   }
 
-  private loadUserData () {
+  private loadUserData() {
+    this.listfavoriteKindOfSport$ = this.userService
+      .getListOfFavKindSport()
+      .pipe(
+        map((data) => {
+          this.playGroundService.setSelectedGround(data[0].type.toLowerCase());
+          this.selectedKindOfSport = data[0].type.toLowerCase();
 
-    this.listfavoriteKindOfSport$ =  this.userService.getListOfFavKindSport().pipe(map((data)=> {
-     this.playGroundService.setSelectedGround(data[0].type.toLowerCase());
-     this.selectedKindOfSport = data[0].type.toLowerCase();
-   
-     this.listPlaygrounds$ = this.playGroundService.getListOfGroundsForChosenSport().pipe(map((data)=> data));
-     return data;
-    }));
-   
-   
-   }
-   
-   chooseKindOfSport (sport: string) {
-      this.playGroundService.setSelectedGround(sport);
-      this.listPlaygrounds$ = this.playGroundService.getListOfGroundsForChosenSport().pipe(map((data)=> data));
-   
-   }
-
-  
-
+          this.listPlaygrounds$ = this.playGroundService
+            .getListOfGroundsForChosenSport()
+            .pipe(map((data) => data));
+          return data;
+        }),
+      );
+  }
 
   setPageTitle(title: string) {
     this.pageTitle = title;
-  }  
+  }
 
   onMenuClosed() {
     if (document.activeElement instanceof HTMLElement) {
-      console.log(document.activeElement)
+      console.log(document.activeElement);
       document.activeElement.blur();
     }
   }

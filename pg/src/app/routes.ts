@@ -29,7 +29,7 @@ export const routes: Routes = [
     path: 'ground/:id',
     loadComponent: () =>
       import('./pages/ground/ground/ground.component').then(
-        (c) => c.GroundComponent
+        (c) => c.GroundComponent,
       ),
   },
 
@@ -37,14 +37,14 @@ export const routes: Routes = [
     path: 'event/:id',
     loadComponent: () =>
       import('./pages/event/event/event.component').then(
-        (c) => c.EventComponent
+        (c) => c.EventComponent,
       ),
   },
   {
     path: 'user/:id',
     loadComponent: () =>
       import('./pages/view-user/view-user/view-user.component').then(
-        (c) => c.ViewUserComponent
+        (c) => c.ViewUserComponent,
       ),
   },
 
@@ -52,7 +52,14 @@ export const routes: Routes = [
     path: 'events',
     loadComponent: () =>
       import('./pages/events/events/events.component').then(
-        (m) => m.EventsComponent
+        (m) => m.EventsComponent,
+      ),
+  },
+  {
+    path: 'calendar',
+    loadComponent: () =>
+      import('./pages/my-events/my-events/my-events.component').then(
+        (m) => m.MyEventsComponent,
       ),
   },
 
@@ -62,7 +69,7 @@ export const routes: Routes = [
     path: 'profile',
     loadComponent: () =>
       import('./pages/profile/profile/profile.component').then(
-        (m) => m.ProfileComponent
+        (m) => m.ProfileComponent,
       ),
   },
 
@@ -70,7 +77,7 @@ export const routes: Routes = [
     path: 'error',
     loadComponent: () =>
       import('./pages/error/error/error.component').then(
-        (m) => m.ErrorComponent
+        (m) => m.ErrorComponent,
       ),
   },
   { path: '**', redirectTo: '/error', pathMatch: 'full' },

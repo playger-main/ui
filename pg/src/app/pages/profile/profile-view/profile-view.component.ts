@@ -29,6 +29,14 @@ import {
   calendarNumberOutline,
   checkmarkDoneCircleOutline,
 } from 'ionicons/icons';
+import {
+  IonSegment,
+  IonSegmentButton,
+  IonSegmentContent,
+  IonSegmentView,
+  IonToolbar,
+  IonHeader,
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-profile-view',
@@ -46,6 +54,14 @@ import {
     IonLabel,
     IonCard,
     IonCardContent,
+    IonLabel,
+    IonSegment,
+    IonSegmentButton,
+
+    IonLabel,
+    IonSegment,
+    IonSegmentButton,
+    IonToolbar,
   ],
 })
 export class ProfileViewComponent implements OnInit {

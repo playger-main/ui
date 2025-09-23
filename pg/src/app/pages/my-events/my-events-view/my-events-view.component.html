@@ -1,0 +1,78 @@
+<!-- <div class="page-content">
+  <ion-content [fullscreen]="true">
+    <div class="header-container">
+      <h4>My Events</h4>
+    </div>
+    <ion-segment>
+      <ion-segment-button value="first" content-id="first">
+        <ion-label>I'm Going To</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="second" content-id="second">
+        <ion-label>I went To</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    <ion-segment-view>
+      <ion-segment-content id="first">I'm Going To</ion-segment-content>
+      <ion-segment-content id="second">I went To</ion-segment-content>
+    </ion-segment-view>
+  </ion-content>
+</div> -->
+<div class="page-content">
+  <ion-content [fullscreen]="true">
+    <div class="header-container">
+      <h4>My Events</h4>
+    </div>
+
+    <ion-segment [value]="selectedSegment" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="going">
+        <ion-label>I'm Going To</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="went">
+        <ion-label>I went To</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- I'm Going To -->
+    @if (selectedSegment === "going") {
+      @for (event of upcomingEvents; track $index) {
+        <ion-card (click)="goToCurrentEventPage(event.id)">
+          <ion-card-header>
+            <ion-card-title>{{ event.name }}</ion-card-title>
+            <ion-card-subtitle>
+              {{ event.date | date: "mediumDate" }} • {{ event.startTime }}
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <p>{{ event.description }}</p>
+            <p><strong>Location:</strong> {{ event.location.address }}</p>
+            @if (event.maxPeople) {
+              <p>Max People: {{ event.maxPeople }}</p>
+            }
+          </ion-card-content>
+        </ion-card>
+      }
+    }
+
+    @if (selectedSegment === "went") {
+      <div>
+        @for (event of pastEvents; track $index) {
+          <ion-card (click)="goToCurrentEventPage(event.id)">
+            <ion-card-header>
+              <ion-card-title>{{ event.name }}</ion-card-title>
+              <ion-card-subtitle>
+                {{ event.date | date: "mediumDate" }} • {{ event.startTime }}
+              </ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <p>{{ event.description }}</p>
+              <p><strong>Location:</strong> {{ event.location.address }}</p>
+              @if (event.requestCount) {
+                <p>Requests: {{ event.requestCount }}</p>
+              }
+            </ion-card-content>
+          </ion-card>
+        }
+      </div>
+    }
+  </ion-content>
+</div>
