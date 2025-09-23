@@ -1,11 +1,30 @@
 <ion-list>
-  <ion-item routerLink="/home" (click)="handlerMenu('Home')">Home</ion-item>
-  <ion-item routerLink="/settings" (click)="handlerMenu('Settings')"
-    >Settings</ion-item
+  <ion-item routerLink="/home" (click)="handlerMenu('Home')">
+    <ion-icon color="primary" name="home-outline"></ion-icon>
+    <span class="section-title">Home</span>
+  </ion-item>
+  <ion-item routerLink="/settings" (click)="handlerMenu('MyGrounds')">
+    <ion-icon color="primary" name="grid-outline"></ion-icon>
+    <span class="section-title">My Grounds</span></ion-item
   >
-  <ion-item routerLink="/settings" (click)="handlerMenu('MyGrounds')"
-    >My Grounds</ion-item
-  ><ion-item routerLink="/settings" (click)="handlerMenu('MyEvents')"
-    >My Events</ion-item
+  <ion-item routerLink="/settings" (click)="handlerMenu('Chat')">
+    <ion-icon color="primary" name="chatbubble-outline"></ion-icon>
+    <span class="section-title">Chat</span></ion-item
   >
+  <ion-item routerLink="/settings" (click)="handlerMenu('Notifications')">
+    <ion-icon color="primary" name="notifications-outline"></ion-icon>
+    <span class="section-title">Notifications</span></ion-item
+  >
+  <ion-item routerLink="/settings" (click)="handlerMenu('Subscription')">
+    <ion-icon color="primary" color="primary" name="balloon-outline"></ion-icon>
+    <span class="section-title">Subscription</span></ion-item
+  >
+  <ion-item routerLink="/settings" (click)="handlerMenu('Donations')">
+    <ion-icon color="primary" name="cash-outline"></ion-icon>
+    <span class="section-title">Donations</span></ion-item
+  >
+  <ion-item routerLink="/settings" (click)="handlerMenu('Settings')">
+    <ion-icon color="primary" name="settings-outline"></ion-icon>
+    <span class="section-title">Settings</span>
+  </ion-item>
 </ion-list>
