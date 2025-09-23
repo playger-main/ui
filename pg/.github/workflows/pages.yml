@@ -2,8 +2,8 @@ name: Deploy Angular (pg) to GitHub Pages
 
 on:
   push:
-    branches: [ main ]      # автодеплой при push/merge в main
-  workflow_dispatch:        # возможность запустить вручную
+    branches: [ main ]     # автодеплой при push/merge в main
+  workflow_dispatch:       # ручной запуск
 
 permissions:
   contents: read
@@ -14,9 +14,9 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
-defaults:                  # ВСЕ шаги выполняем из папки pg
+defaults:
   run:
-    working-directory: pg
+    working-directory: pg   # все команды выполняем из папки pg
 
 jobs:
   build:
@@ -37,21 +37,28 @@ jobs:
       - name: Build Angular (auto base-href)
         shell: bash
         run: |
+          # если репо user.github.io → '/', иначе '/ui/'
           if [[ "${{ github.repository }}" == "${{ github.repository_owner }}/${{ github.repository_owner }}.github.io" ]]; then
             BASE="/"
           else
-            BASE="/${{ github.event.repository.name }}/"
+            BASE="/ui/"
           fi
 
           npx ng build --configuration production --base-href "$BASE" --output-path=dist/browser
 
-          # SPA fallback для маршрутов (F5 на вложенных URL)
+          # SPA fallback для F5/прямых ссылок
           cp dist/browser/index.html dist/browser/404.html
+
+      - name: List build output (debug)
+        run: |
+          echo "PWD=$(pwd)"
+          ls -lah dist/browser
+          find dist/browser -maxdepth 2 -type f | head -n 50
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: pg/dist/browser   # указываем путь относительно корня репо
+          path: pg/dist/browser
 
   deploy:
     environment:
