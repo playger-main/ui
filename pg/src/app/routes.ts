@@ -24,6 +24,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/settings/settings.page').then((c) => c.SettingsPage),
   },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./pages/profile/profile/profile.component').then(
+        (m) => m.ProfileComponent,
+      ),
+  },
 
   {
     path: 'ground/:id',
@@ -62,16 +69,16 @@ export const routes: Routes = [
         (m) => m.MyEventsComponent,
       ),
   },
+  {
+    path: 'fav-grounds',
+    loadComponent: () =>
+      import('./pages/my-grounds/my-grounds/my-grounds.component').then(
+        (m) => m.MyGroundsComponent,
+      ),
+  },
 
   // { path: 'profile', loadComponent: () => import('./pages/profile/profile.page').then(m => m.ProfilePage),
   //    canActivate: [AuthGuard] },
-  {
-    path: 'profile',
-    loadComponent: () =>
-      import('./pages/profile/profile/profile.component').then(
-        (m) => m.ProfileComponent,
-      ),
-  },
 
   {
     path: 'error',

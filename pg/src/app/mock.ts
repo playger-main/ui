@@ -1,5 +1,4 @@
-import { ICurrentUser, IEvent, IGround, IUser } from "./interfaces/interfaces";
-
+import { ICurrentUser, IEvent, IGround, IUser } from './interfaces/interfaces';
 
 export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
   const id = (i + 1).toString();
@@ -12,7 +11,7 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
     'Ozo g. 18, Vilnius',
     'Antakalnio g. 11, Vilnius',
     'Gedimino pr. 9, Vilnius',
-    'Naugarduko g. 24, Vilnius'
+    'Naugarduko g. 24, Vilnius',
   ];
 
   const lat = (54.6872 + i * 0.0015).toFixed(6);
@@ -21,12 +20,17 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
 
   const kindOfsport = ['Football', 'Basketball', 'Workout'][i % 3];
   const isEvent = i % 3 === 0;
-  const isFavorite = i % 4 === 0;
+  const isFavorite = i % 1 === 0;
 
   const name = `Ground`;
   const coverage = ['Grass', 'Gravel', 'Concrete', 'Synthetic'][i % 4];
 
-  const feature = ['great drainage', 'multi-use fields', 'evening lighting', 'seating areas'][i % 4];
+  const feature = [
+    'great drainage',
+    'multi-use fields',
+    'evening lighting',
+    'seating areas',
+  ][i % 4];
   const description = `A ${kindOfsport.toLowerCase()} ground located at ${address}. Known for its ${feature}.`;
 
   const avatars = [
@@ -44,9 +48,10 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
       userId: `user${(i % 3) + 1}`,
       groundId: id,
       rating: 4 + (i % 2),
-      comment: i % 2 === 0 ? 'Great ground!' : 'Nice place, but can get crowded.',
+      comment:
+        i % 2 === 0 ? 'Great ground!' : 'Nice place, but can get crowded.',
       createdAt,
-      updatedAt
+      updatedAt,
     },
     {
       id: crypto.randomUUID(),
@@ -55,11 +60,12 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
       rating: 3 + (i % 3),
       comment: i % 3 === 0 ? 'Needs better lighting.' : 'Well maintained.',
       createdAt,
-      updatedAt
-    }
+      updatedAt,
+    },
   ];
 
-  const averageRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+  const averageRating =
+    reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
 
   return {
     id,
@@ -74,16 +80,15 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
     avatar,
     isEvent,
     isFavorite,
-    averageRating: +averageRating.toFixed(2)
+    averageRating: +averageRating.toFixed(2),
   };
 });
 
-
-
-
-
-
-export const fakeListFavKindSport = [{icon: 'football', type: 'Football'}, {icon: 'basketball', type: 'Basketball'}, {icon: 'barbell', type: 'Workout'}]
+export const fakeListFavKindSport = [
+  { icon: 'football', type: 'Football' },
+  { icon: 'basketball', type: 'Basketball' },
+  { icon: 'barbell', type: 'Workout' },
+];
 
 export const EVENTS_MOCK: IEvent[] = [
   {
@@ -99,15 +104,16 @@ export const EVENTS_MOCK: IEvent[] = [
     location: {
       lat: '54.6872',
       lng: '25.2797',
-      address: 'Central Park, Vilnius'
+      address: 'Central Park, Vilnius',
     },
     category: 'Festival',
-    groundId: '1'
+    groundId: '1',
   },
   {
     id: '2',
     name: 'Tech Conference',
-    description: 'Annual technology conference with speakers from around the world.',
+    description:
+      'Annual technology conference with speakers from around the world.',
     date: '2024-07-15',
     startTime: '09:00',
     duration: 480,
@@ -117,12 +123,12 @@ export const EVENTS_MOCK: IEvent[] = [
     location: {
       lat: '54.6890',
       lng: '25.2765',
-      address: 'Convention Center, Vilnius'
+      address: 'Convention Center, Vilnius',
     },
     category: 'Conference',
     groundId: '1',
     maxPeople: 100,
-    requestCount: 50
+    requestCount: 50,
   },
   {
     id: '3',
@@ -137,10 +143,10 @@ export const EVENTS_MOCK: IEvent[] = [
     location: {
       lat: '54.6900',
       lng: '25.2800',
-      address: 'Art Gallery, Vilnius'
+      address: 'Art Gallery, Vilnius',
     },
     category: 'Exhibition',
-    groundId: '3'
+    groundId: '3',
   },
   {
     id: '4',
@@ -155,10 +161,10 @@ export const EVENTS_MOCK: IEvent[] = [
     location: {
       lat: '54.6865',
       lng: '25.2755',
-      address: 'Snow Park, Vilnius'
+      address: 'Snow Park, Vilnius',
     },
     category: 'Fitness',
-    groundId: '4'
+    groundId: '4',
   },
   {
     id: '5',
@@ -173,11 +179,11 @@ export const EVENTS_MOCK: IEvent[] = [
     location: {
       lat: '54.6880',
       lng: '25.2780',
-      address: 'Green Park, Vilnius'
+      address: 'Green Park, Vilnius',
     },
     category: 'Running',
-    groundId: '5'
-  }
+    groundId: '5',
+  },
 ];
 
 export const USERS_MOCK: IUser[] = [
@@ -188,7 +194,7 @@ export const USERS_MOCK: IUser[] = [
     geolocation: {
       lat: '54.6872',
       lng: '25.2797',
-      address: 'Gedimino pr. 9, Vilnius'
+      address: 'Gedimino pr. 9, Vilnius',
     },
     createdAt: '2024-01-01T09:00:00Z',
     updatedAt: '2024-05-01T10:00:00Z',
@@ -197,7 +203,7 @@ export const USERS_MOCK: IUser[] = [
     favoriteGroundIds: ['1', '3'],
     listOrganizeEvents: ['1', '4'],
     listParticipateEvents: ['2', '5'],
-    listFutureEvents: ['5']
+    listFutureEvents: ['5'],
   },
   {
     id: 'user2',
@@ -206,7 +212,7 @@ export const USERS_MOCK: IUser[] = [
     geolocation: {
       lat: '54.6890',
       lng: '25.2765',
-      address: 'Ozo g. 18, Vilnius'
+      address: 'Ozo g. 18, Vilnius',
     },
     createdAt: '2023-11-10T12:00:00Z',
     updatedAt: '2024-05-05T14:00:00Z',
@@ -215,7 +221,7 @@ export const USERS_MOCK: IUser[] = [
     favoriteGroundIds: ['2'],
     listOrganizeEvents: ['5'],
     listParticipateEvents: ['1'],
-    listFutureEvents: ['2']
+    listFutureEvents: ['2'],
   },
   {
     id: 'user3',
@@ -224,7 +230,7 @@ export const USERS_MOCK: IUser[] = [
     geolocation: {
       lat: '54.6900',
       lng: '25.2800',
-      address: 'Naugarduko g. 24, Vilnius'
+      address: 'Naugarduko g. 24, Vilnius',
     },
     createdAt: '2023-09-20T08:30:00Z',
     updatedAt: '2024-04-10T09:15:00Z',
@@ -233,7 +239,7 @@ export const USERS_MOCK: IUser[] = [
     favoriteGroundIds: [],
     listOrganizeEvents: ['3'],
     listParticipateEvents: ['2'],
-    listFutureEvents: ['3']
+    listFutureEvents: ['3'],
   },
   {
     id: 'user4',
@@ -242,7 +248,7 @@ export const USERS_MOCK: IUser[] = [
     geolocation: {
       lat: '54.6881',
       lng: '25.2789',
-      address: 'Vingio Parkas, Vilnius'
+      address: 'Vingio Parkas, Vilnius',
     },
     createdAt: '2023-12-15T07:45:00Z',
     updatedAt: '2024-03-01T08:00:00Z',
@@ -251,7 +257,7 @@ export const USERS_MOCK: IUser[] = [
     favoriteGroundIds: ['4', '5'],
     listOrganizeEvents: [],
     listParticipateEvents: ['1', '3'],
-    listFutureEvents: []
+    listFutureEvents: [],
   },
   {
     id: 'user5',
@@ -260,7 +266,7 @@ export const USERS_MOCK: IUser[] = [
     geolocation: {
       lat: '54.6911',
       lng: '25.2771',
-      address: 'Antakalnio g. 11, Vilnius'
+      address: 'Antakalnio g. 11, Vilnius',
     },
     createdAt: '2024-02-10T10:00:00Z',
     updatedAt: '2024-05-10T12:00:00Z',
@@ -269,11 +275,9 @@ export const USERS_MOCK: IUser[] = [
     favoriteGroundIds: ['2', '3'],
     listOrganizeEvents: ['5'],
     listParticipateEvents: ['4'],
-    listFutureEvents: ['5']
-  }
+    listFutureEvents: ['5'],
+  },
 ];
-
-
 
 // ... other imports
 
@@ -284,7 +288,7 @@ export const currentUser: ICurrentUser = {
   geolocation: {
     lat: '54.6872',
     lng: '25.2797',
-    address: 'Gedimino pr. 9, Vilnius'
+    address: 'Gedimino pr. 9, Vilnius',
   },
   password: 'hashedpassword1',
   createdAt: new Date().toISOString(),
@@ -294,7 +298,5 @@ export const currentUser: ICurrentUser = {
   confirmationToken: 'token1',
   favoriteGroundIds: ['ground1', 'ground3', 'ground7'],
   listOrganizeEvents: [],
-  listParticipateEvents: []
+  listParticipateEvents: [],
 };
-
-

@@ -50,33 +50,6 @@
         </ion-item>
       </ion-list>
 
-      <ion-list-header>
-        <ion-label><strong>Favorite Grounds</strong></ion-label>
-      </ion-list-header>
-
-      <ion-list *ngIf="favoriteGrounds?.length; else noFavorites">
-        <ion-item *ngFor="let ground of favoriteGrounds">
-          <ion-icon name="heart" slot="start" color="danger"></ion-icon>
-          <ion-label>{{ ground.name }}</ion-label>
-          <ion-label>{{ ground.location.address }}</ion-label>
-        </ion-item>
-      </ion-list>
-
-      <ng-template #noFavorites>
-        <ion-item>
-          <ion-label color="medium">No favorite grounds added yet.</ion-label>
-        </ion-item>
-      </ng-template>
-
-      <ion-list *ngIf="showEvents && futureEvents?.length">
-        <ion-list-header>
-          <ion-label><strong>Attended Events</strong></ion-label>
-        </ion-list-header>
-        <ion-item *ngFor="let event of futureEvents">
-          <ion-icon name="calendar" slot="start" color="secondary"></ion-icon>
-          <ion-label>{{ event.date }}</ion-label>
-        </ion-item>
-      </ion-list>
       <div class="password-box">
         <ion-button
           expand="block"

@@ -15,6 +15,7 @@ import {
   IonCardTitle,
   IonCardHeader,
   IonCard,
+  IonListHeader,
 } from '@ionic/angular/standalone';
 import { IEvent } from 'src/app/interfaces/interfaces';
 import { DatePipe, NgIf, NgFor } from '@angular/common';
@@ -28,7 +29,7 @@ import { Router } from '@angular/router';
     IonSegment,
     IonSegmentButton,
     IonLabel,
-
+    IonListHeader,
     IonCardContent,
     IonCardSubtitle,
     IonCardTitle,

@@ -1,8 +1,8 @@
 <div class="page-content">
   <ion-content [fullscreen]="true">
-    <div class="header-container">
-      <h4>My Events</h4>
-    </div>
+    <ion-list-header>
+      <ion-label><strong>My Favorite Events</strong></ion-label>
+    </ion-list-header>
 
     <ion-segment [value]="selectedSegment" (ionChange)="segmentChanged($event)">
       <ion-segment-button value="going">
