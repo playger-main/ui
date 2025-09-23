@@ -2,8 +2,8 @@ name: Deploy Angular (pg) to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ main ]     # автодеплой при push/merge в main
+  workflow_dispatch:       # ручной запуск из Actions
 
 permissions:
   contents: read
@@ -14,6 +14,7 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+# ВСЕ shell-команды выполняем из папки pg
 defaults:
   run:
     working-directory: pg
@@ -38,23 +39,20 @@ jobs:
           ls -lah
           test -f package-lock.json && echo "lock: yes" || echo "lock: no"
 
-      - name: Install deps (ci or install)
+      - name: Install deps (ci or install fallback)
         shell: bash
         run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
+          npm ci || npm install
 
       - name: Build Angular (base-href=/ui/)
         shell: bash
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
         run: |
-          BASE="/ui/"
+          BASE="/ui/"   # имя репозитория
           npx ng version
           npx ng build --configuration production --base-href "$BASE" --output-path=dist/browser --verbose
+          # SPA fallback, чтобы F5 на вложенных маршрутах не давал 404
           cp dist/browser/index.html dist/browser/404.html
 
       - name: List build output (debug)
@@ -66,6 +64,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          # путь относительно КОРНЯ репозитория
           path: pg/dist/browser
 
   deploy:
