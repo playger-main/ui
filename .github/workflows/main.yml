@@ -14,7 +14,7 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
-# ВСЕ shell-команды выполняем из папки pg
+# Все shell-команды выполняем в подпапке pg
 defaults:
   run:
     working-directory: pg
@@ -52,20 +52,47 @@ jobs:
           BASE="/ui/"   # имя репозитория
           npx ng version
           npx ng build --configuration production --base-href "$BASE" --output-path=dist/browser --verbose
-          # SPA fallback, чтобы F5 на вложенных маршрутах не давал 404
-          cp dist/browser/index.html dist/browser/404.html
+
+      # Найти index.html где бы он ни лежал в dist/… и сделать 404.html рядом
+      - id: detect_out
+        name: Detect output dir & create 404 fallback
+        shell: bash
+        run: |
+          set -e
+          echo "PWD=$(pwd)"
+
+          # 1) Если index.html там, где ожидали:
+          if [ -f dist/browser/index.html ]; then
+            OUT_DIR="dist/browser"
+          else
+            # 2) Ищем первый попавшийся index.html в dist (на 3 уровня вложенности)
+            CANDIDATE="$(find dist -maxdepth 3 -type f -name index.html | head -n 1 || true)"
+            if [ -n "$CANDIDATE" ]; then
+              OUT_DIR="$(dirname "$CANDIDATE")"
+            else
+              echo "::error::index.html не найден в dist/. Содержимое dist:"
+              find dist -maxdepth 3 -type f | sed 's/^/  /'
+              exit 1
+            fi
+          fi
+
+          echo "Output dir: $OUT_DIR"
+          ls -lah "$OUT_DIR"
+
+          # SPA fallback (чтобы F5/прямые ссылки не давали 404 на GitHub Pages)
+          cp "$OUT_DIR/index.html" "$OUT_DIR/404.html" || true
+
+          # Передадим путь, относительно корня репозитория
+          echo "artifact=pg/$OUT_DIR" >> "$GITHUB_OUTPUT"
 
       - name: List build output (debug)
         run: |
-          echo "PWD=$(pwd)"
-          ls -lah dist/browser
-          find dist/browser -maxdepth 2 -type f | head -n 50
+          find dist -maxdepth 3 -type f | sed 's/^/  /'
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # путь относительно КОРНЯ репозитория
-          path: pg/dist/browser
+          path: ${{ steps.detect_out.outputs.artifact }}
 
   deploy:
     environment:
