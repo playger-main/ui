@@ -1,7 +1,9 @@
 import { Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { fakeGrounds } from '../mock';
 import { Observable, of } from 'rxjs';
 import { IGround } from '../interfaces/interfaces';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +11,9 @@ import { IGround } from '../interfaces/interfaces';
 export class GroundService {
   selectedSport = signal<string>('');
   private readonly FAVORITES_KEY = 'favoriteGrounds';
+  private apiUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) {}
 
   setSelectedGround(value: string) {
     this.selectedSport.set(value);
