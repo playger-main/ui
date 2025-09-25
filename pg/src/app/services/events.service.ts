@@ -4,12 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { EVENTS_MOCK } from '../mock';
 import { IEvent } from '../interfaces/interfaces';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventsService {
-  private apiUrl = 'https://your-api-url.com/api/events'; // Replace with your actual API URL
+  private apiUrl = environment.apiUrl; 
 
   constructor(private http: HttpClient) {}
 

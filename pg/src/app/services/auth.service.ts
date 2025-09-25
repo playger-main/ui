@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://playground-back-production.up.railway.app';  // URL бэкенда
+  private apiUrl = environment.apiUrl;  // URL бэкенда
+  
   constructor(private http: HttpClient, private router: Router) {}
 
   // Логин: получаем access_token и refresh_token
