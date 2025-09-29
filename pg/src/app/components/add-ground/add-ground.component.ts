@@ -54,6 +54,7 @@ export class AddGroundComponent implements OnInit {
     averageRating: 0,
     listImgs: [],
     isFavorite: false,
+    idsEvents: [],
   };
 
   constructor() {}

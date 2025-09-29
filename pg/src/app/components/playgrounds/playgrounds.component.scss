@@ -4,8 +4,29 @@
 }
 
 .playground-card-content {
+  display: grid;
+  justify-content: space-between;
+  grid-template-columns: 1fr 50px;
+  height: 100%;
+}
+
+.info-left-section {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+}
+
+.fav-icon-box,
+.calendar-icon-box {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  width: 100%;
+
+  height: 50%;
+}
+
+icon-icon {
+  margin-left: 0;
 }
 
 .playground-photo {
@@ -14,11 +35,11 @@
   border-radius: 12px;
   object-fit: cover;
   margin-right: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .playground-info {
-  flex: 1;
+  // flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;

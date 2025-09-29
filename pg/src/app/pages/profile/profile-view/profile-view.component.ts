@@ -55,13 +55,8 @@ import {
     IonCard,
     IonCardContent,
     IonLabel,
-    IonSegment,
-    IonSegmentButton,
 
     IonLabel,
-    IonSegment,
-    IonSegmentButton,
-    IonToolbar,
   ],
 })
 export class ProfileViewComponent implements OnInit {

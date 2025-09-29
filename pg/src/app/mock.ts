@@ -32,7 +32,7 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
     'seating areas',
   ][i % 4];
   const description = `A ${kindOfsport.toLowerCase()} ground located at ${address}. Known for its ${feature}.`;
-
+  const idsEvents = ['1', '2', '3'];
   const avatars = [
     'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
     'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80',
@@ -81,6 +81,7 @@ export const fakeGrounds: IGround[] = Array.from({ length: 20 }).map((_, i) => {
     isEvent,
     isFavorite,
     averageRating: +averageRating.toFixed(2),
+    idsEvents,
   };
 });
 

@@ -6,57 +6,64 @@
     [routerLink]="['/ground', item.id]"
   >
     <div class="playground-card-content">
-      <img [src]="item.avatar" alt="photo" class="playground-photo" />
+      <div class="info-left-section">
+        <img [src]="item.avatar" alt="photo" class="playground-photo" />
 
-      <div class="playground-info">
-        <h2 class="playground-title">
-          {{ item.name }} - {{ item.kindOfsport }}
-        </h2>
-        <p class="playground-address">
-          <ion-icon
-            name="location-outline"
-            color="primary"
-            style="vertical-align: middle; margin-right: 4px"
-          ></ion-icon>
-          {{ item.location.address }}
-        </p>
+        <div class="playground-info">
+          <h2 class="playground-title">
+            {{ item.name }} - {{ item.kindOfsport }}
+          </h2>
+          <p class="playground-address">
+            <ion-icon
+              name="location-outline"
+              color="primary"
+              style="vertical-align: middle; margin-right: 4px"
+            ></ion-icon>
+            {{ item.location.address }}
+          </p>
 
-        <div *ngIf="item?.averageRating" class="playground-rating-row">
-          <div class="rating-stars">
-            <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
-              <ion-icon
-                [name]="
-                  star <= Math.round(item?.averageRating ?? 0)
-                    ? 'star'
-                    : 'star-outline'
-                "
-                color="warning"
-                style="font-size: 1.2em; vertical-align: middle"
-              >
-              </ion-icon>
-            </ng-container>
-            <span class="rating-value" style="margin-left: 8px">
-              {{ item.averageRating }}/5
-            </span>
+          <div *ngIf="item?.averageRating" class="playground-rating-row">
+            <div class="rating-stars">
+              <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+                <ion-icon
+                  [name]="
+                    star <= Math.round(item?.averageRating ?? 0)
+                      ? 'star'
+                      : 'star-outline'
+                  "
+                  color="warning"
+                  style="font-size: 1.2em; vertical-align: middle"
+                >
+                </ion-icon>
+              </ng-container>
+              <span class="rating-value" style="margin-left: 8px">
+                {{ item.averageRating }}/5
+              </span>
+            </div>
           </div>
+        </div>
+      </div>
 
-          <!-- сердечко с кликом -->
+      <div class="icons-section">
+        <div class="fav-icon-box">
           <ion-icon
             [name]="item.isFavorite ? 'heart' : 'heart'"
             color="danger"
-            style="font-size: 1.4em; vertical-align: middle; margin-left: 12px"
+            style="font-size: 1.4em; vertical-align: middle"
             (click)="toggleFavorite(item, $event)"
           >
           </ion-icon>
         </div>
-      </div>
 
-      <ion-icon
-        *ngIf="item.isEvent"
-        name="calendar"
-        color="success"
-        style="font-size: 1.4em; position: absolute; top: 10px; right: 10px"
-      ></ion-icon>
+        @if (item.idsEvents.length) {
+          <div class="calendar-icon-box">
+            <ion-tab-button>
+              <ion-icon name="calendar"></ion-icon>
+              <ion-badge color="primary">{{ item.idsEvents.length }}</ion-badge>
+            </ion-tab-button>
+          </div>
+        }
+      </div>
     </div>
   </ion-card>
 </ion-list>

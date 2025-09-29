@@ -61,6 +61,7 @@ export class AddEventComponent implements OnInit {
     averageRating: 0,
     listImgs: [],
     isFavorite: false,
+    idsEvents: [],
   };
 
   constructor() {}

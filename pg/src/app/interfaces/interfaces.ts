@@ -26,6 +26,7 @@ export interface IGround {
   updatedAt: string;
   location: ILocation;
   isEvent?: boolean;
+  idsEvents: string[];
   reviews: IReview[] | null;
   avatar: string;
   averageRating?: number;
