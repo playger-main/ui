@@ -28,6 +28,7 @@ import {
   gridOutline,
   balloonOutline,
   heart,
+  heartOutline,
 } from 'ionicons/icons';
 import { AppComponent } from 'src/app/app.component';
 import { IGround } from 'src/app/interfaces/interfaces';
@@ -61,7 +62,7 @@ export class MyGroundsViewComponent implements OnInit {
       settingsOutline,
       notificationsOutline,
       gridOutline,
-      heart,
+      heartOutline,
     });
   }
   favoriteGrounds = fakeGrounds.splice(0, 7);

@@ -47,21 +47,20 @@
       <div class="icons-section">
         <div class="fav-icon-box">
           <ion-icon
-            [name]="item.isFavorite ? 'heart' : 'heart'"
-            color="danger"
-            style="font-size: 1.4em; vertical-align: middle"
+            [ngClass]="item.isFavorite ? 'icon-heart' : 'icon-heart-outline'"
+            [name]="item.isFavorite ? 'heart' : 'heart-outline'"
             (click)="toggleFavorite(item, $event)"
           >
           </ion-icon>
         </div>
 
         @if (item.idsEvents.length) {
-          <div class="calendar-icon-box">
-            <ion-tab-button>
-              <ion-icon name="calendar"></ion-icon>
-              <ion-badge color="primary">{{ item.idsEvents.length }}</ion-badge>
-            </ion-tab-button>
-          </div>
+        <div class="calendar-icon-box">
+          <ion-tab-button>
+            <ion-icon name="golf-outline"></ion-icon>
+            <ion-badge color="primary">{{ item.idsEvents.length }}</ion-badge>
+          </ion-tab-button>
+        </div>
         }
       </div>
     </div>

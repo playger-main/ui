@@ -15,6 +15,9 @@ import {
   calendar,
   starOutline,
   locationOutline,
+  heartOutline,
+  peopleOutline,
+  golfOutline,
 } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 @Component({
@@ -39,6 +42,8 @@ export class PlaygroundsComponent implements OnInit {
       calendar,
       starOutline,
       locationOutline,
+      heartOutline,
+      golfOutline,
     });
   }
 
@@ -86,7 +91,7 @@ export class PlaygroundsComponent implements OnInit {
     } else {
       localStorage.setItem(
         'favorites',
-        JSON.stringify(this.listFavoriteGrounds),
+        JSON.stringify(this.listFavoriteGrounds)
       );
     }
   }

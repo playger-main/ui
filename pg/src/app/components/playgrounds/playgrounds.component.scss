@@ -29,6 +29,19 @@ icon-icon {
   margin-left: 0;
 }
 
+.icon-heart {
+  font-size: 1.8em;
+  vertical-align: middle;
+  color: var(--warn-color);
+
+  &-outline {
+    font-size: 1.8em;
+    vertical-align: middle;
+    color: var(--gray-light-color);
+    cursor: pointer;
+  }
+}
+
 .playground-photo {
   width: 100px;
   height: 100px;
