@@ -1,87 +1,135 @@
+// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
+import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-@Injectable({
-  providedIn: 'root',
-})
+type AuthResponse = {
+  accessToken?: string;
+  refreshToken?: string;
+  access_token?: string;   // на случай snake_case
+  refresh_token?: string;  // на случай snake_case
+};
+
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = environment.apiUrl;  // URL бэкенда
-  
+  private api = environment.apiUrl.replace(/\/+$/, ''); // без завершающего /
+
+  // ключи хранения (оставляю как у тебя, snake_case)
+  private ACCESS_KEY = 'access_token';
+  private REFRESH_KEY = 'refresh_token';
+
   constructor(private http: HttpClient, private router: Router) {}
 
-  // Логин: получаем access_token и refresh_token
-   
+  /** Логин: запрос, сохранение токенов и переход */
   login(user: string, password: string) {
-    return this.http.post<any>(`${this.apiUrl}/auth/signin`, { user, password }).subscribe(async (response) => {
-      await this.saveTokens(response.access_token, response.refresh_token);      
-      this.router.navigate(['/profile']);
-    });
+    // возвращаем subscription как у тебя (минимум правок в компонентах)
+    return this.http
+      .post<AuthResponse>(`${this.api}/auth/signin`, { user, password })
+      .subscribe({
+        next: async (res) => {
+          const { accessToken, refreshToken } = this.pickTokens(res);
+          await this.saveTokens(accessToken, refreshToken);
+          this.router.navigate(['/profile']);
+        },
+        error: (err) => {
+          console.error('Ошибка входа', err);
+          alert(err?.error?.message ?? 'Ошибка входа');
+        },
+      });
   }
 
-  // Метод регистрации пользователя
+  /** Регистрация: без токенов, просто редирект и уведомление */
   register(username: string, email: string, password: string) {
-    return this.http.post<any>(`${this.apiUrl}/auth/signup`, {username, email, password }).subscribe(
-      (response) => {
-        // alert('Письмо с подтверждением отправлено на вашу почту');
-        alert(`На ${email} выслано письмо для подтверждения почты. Если вы не находите письмо, проверте спам`);
-        this.router.navigate(['/login']);
-      },
-      (error) => {
-        console.error('Ошибка регистрации', error);
-        alert(error.error.message || 'Ошибка регистрации');
-      }
-    );
+    return this.http
+      .post(`${this.api}/auth/signup`, { username, email, password })
+      .subscribe({
+        next: () => {
+          alert(
+            `На ${email} выслано письмо для подтверждения почты. `
+            + `Если не находите письмо, проверьте спам.`
+          );
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.error('Ошибка регистрации', error);
+          alert(error?.error?.message || 'Ошибка регистрации');
+        },
+      });
   }
 
-   // Обновление access_token через refresh_token
-   async refreshToken(): Promise<string | null>  {
-    const refreshToken = await this.getRefreshToken();
-    if (!refreshToken) {
-      this.logout();
+  /**
+   * Обновление access_token через refresh_token
+   * Возвращает новый access_token или null (если не удалось).
+   */
+  async refreshToken(): Promise<string | null> {
+    const refresh = await this.getRefreshToken();
+    if (!refresh) {
+      await this.logout();
       return null;
     }
+
     try {
-      const response = await this.http.post<any>(`${this.apiUrl}/refresh-token`, { refreshToken }).toPromise();
-      await this.saveTokens(response.access_token, refreshToken);
-      return response.accessToken;
+      // важный момент: путь должен совпадать с исключением в интерцепторе (shouldSkip)
+      const res = await firstValueFrom(
+        this.http.post<AuthResponse>(`${this.api}/auth/refresh`, { refreshToken: refresh })
+      );
+
+      const { accessToken, refreshToken } = this.pickTokens(res);
+
+      // сохраняем новый access; если пришёл новый refresh — тоже обновим
+      if (accessToken) {
+        await Preferences.set({ key: this.ACCESS_KEY, value: accessToken });
+      }
+      if (refreshToken && refreshToken !== refresh) {
+        await Preferences.set({ key: this.REFRESH_KEY, value: refreshToken });
+      }
+
+      return accessToken ?? null;
     } catch (error) {
       console.error('Ошибка обновления токена', error);
-      this.logout();
+      await this.logout();
       return null;
     }
   }
 
-    
-   
+  /** Достаём токены из ответа в любом кейсе (camelCase/snake_case) */
+  private pickTokens(res: AuthResponse): { accessToken: string; refreshToken: string } {
+    const accessToken = res.accessToken ?? res.access_token ?? '';
+    const refreshToken = res.refreshToken ?? res.refresh_token ?? '';
+    return { accessToken, refreshToken };
+  }
 
-  // Сохраняем токены в Preferences
+  /* ========= ХРАНИЛИЩЕ (Capacitor Preferences) ========= */
+
   async saveTokens(accessToken: string, refreshToken: string) {
-    await Preferences.set({ key: 'access_token', value: accessToken });
-    await Preferences.set({ key: 'refresh_token', value: refreshToken });
+    if (accessToken) {
+      await Preferences.set({ key: this.ACCESS_KEY, value: accessToken });
+    }
+    if (refreshToken) {
+      await Preferences.set({ key: this.REFRESH_KEY, value: refreshToken });
+    }
   }
 
-  // Получаем токены
-  async getAccessToken() {
-    const { value } = await Preferences.get({ key: 'access_token' });
-    return value;
+  async getAccessToken(): Promise<string | null> {
+    const { value } = await Preferences.get({ key: this.ACCESS_KEY });
+    return value ?? null;
   }
 
-  async getRefreshToken() {
-    const { value } = await Preferences.get({ key: 'refresh_token' });
-    return value;
+  async getRefreshToken(): Promise<string | null> {
+    const { value } = await Preferences.get({ key: this.REFRESH_KEY });
+    return value ?? null;
   }
 
-  // Удаление токенов
   async removeTokens() {
-    await Preferences.remove({ key: 'access_token' });
-    await Preferences.remove({ key: 'refresh_token' });
+    await Preferences.remove({ key: this.ACCESS_KEY });
+    await Preferences.remove({ key: this.REFRESH_KEY });
   }
 
-  // Логика выхода из системы
- async logout() {
+  /** Выход */
+  async logout() {
     await this.removeTokens();
     this.router.navigate(['/login']);
   }

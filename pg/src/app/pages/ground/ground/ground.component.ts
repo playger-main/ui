@@ -1,72 +1,59 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { GroundViewComponent } from '../ground-view/ground-view.component';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, of, catchError, throwError,tap, map } from 'rxjs';
-import { IEvent, IGround } from 'src/app/interfaces/interfaces';
-import {  fakeGrounds } from 'src/app/mock';
+// ui/pg/src/app/pages/ground/ground/ground.component.ts
 import { CommonModule } from '@angular/common';
-import { EventsService } from 'src/app/services/events.service';
-import { Router } from '@angular/router';
-import { GroundService } from 'src/app/services/ground.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
+import { IEvent, IGround } from 'src/app/interfaces/interfaces';
+import { EventsService } from 'src/app/services/events.service';
+import { GroundService } from 'src/app/services/ground.service';
+import { GroundViewComponent } from '../ground-view/ground-view.component';
 
 @Component({
   selector: 'app-ground',
   templateUrl: './ground.component.html',
   styleUrls: ['./ground.component.scss'],
-  imports:[CommonModule, GroundViewComponent]
+  standalone: true,
+  imports: [CommonModule, GroundViewComponent],
 })
-export class GroundComponent  implements OnInit {
-
-  constructor(private eventsService: EventsService, private router: Router, private groundService: GroundService) { }
-
+export class GroundComponent implements OnInit {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
-  groundId!: string | null;
+  groundId!: string;
 
   ground$!: Observable<IGround | null>;
+  eventsForGround$!: Observable<IEvent[]>;
 
-  eventsForGround$!: Observable<IEvent[] | null>;
+  constructor(
+    private eventsService: EventsService,
+    private groundService: GroundService
+  ) {}
 
   ngOnInit(): void {
- 
-     this.groundId = this.route.snapshot.paramMap.get('id')!;
-     console.log(this.groundId);
-    
-  this.loadDataChosenGround(this.groundId);
-}
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      this.router.navigate(['/error']);
+      return;
+    }
+    this.groundId = id;
 
+    this.ground$ = this.groundService.getGroundById(id).pipe(
+      catchError(() => of(null))
+    );
 
-  
-
-loadDataChosenGround(id: string) {
-  const ground = fakeGrounds.find(g => g.id === id) || null;
-
-  if (ground) {
-    this.loadEventsForGround(ground.id);
-    this.ground$ = of(ground);
-  } else {
-    this.router.navigate(['/error']);
-    // ⚠️ Do NOT assign this.ground$ if you're navigating immediately
-  }
-}
-
-  
-
-  loadEventsForGround(groundId: string) {
-    console.log(groundId)
-    this.eventsService.getEventsForGround(groundId).subscribe(events => {
-      this.eventsForGround$ = of(events);
-    });
+    this.eventsForGround$ = this.eventsService.getEventsForGround(id).pipe(
+      catchError(() => of([]))
+    );
   }
 
-  eventClicked (eventId: string) {
-    console.log(eventId);
-    this.router.navigate(['/event', eventId]);  }
+  eventClicked(eventId: string) {
+    this.router.navigate(['/event', eventId]);
+  }
 
   addToFavorites(ground: IGround) {
-    console.log('Added to favorites:', ground);
-    this.groundService.saveFavoriteGround(ground)
+    this.groundService.saveFavoriteGround(ground);
   }
 
   removeFromFavorites(ground: IGround): void {
@@ -74,8 +61,6 @@ loadDataChosenGround(id: string) {
   }
 
   isGroundInFavorites(): boolean {
-    return this.groundService.getFavoriteGrounds().some(f => f.id === this.groundId);
+    return this.groundService.getFavoriteGrounds().some((f) => f.id === this.groundId);
   }
-  
-
 }

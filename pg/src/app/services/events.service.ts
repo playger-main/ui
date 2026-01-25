@@ -1,45 +1,113 @@
-// pg/src/app/services/events.service.ts
+// ui/pg/src/app/services/events.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { EVENTS_MOCK } from '../mock';
-import { IEvent } from '../interfaces/interfaces';
+import { catchError, map } from 'rxjs/operators';
+
 import { environment } from '../../environments/environment';
+import { ICreateEventDto, IEvent } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventsService {
-  private apiUrl = environment.apiUrl; 
+  private readonly api = environment.apiUrl.replace(/\/+$/, '');
 
   constructor(private http: HttpClient) {}
 
-  // Get all events
+  private normalizeEvent(raw: any): IEvent {
+    return {
+      id: String(raw?.id ?? ''),
+      name: String(raw?.name ?? ''),
+      description: String(raw?.description ?? ''),
+      date: String(raw?.date ?? ''),
+      startTime: String(raw?.startTime ?? ''),
+      duration: String(raw?.duration ?? ''),
+      createdAt: String(raw?.createdAt ?? ''),
+      updatedAt: String(raw?.updatedAt ?? ''),
+      creator: raw?.creator
+        ? {
+            id: String(raw.creator.id ?? ''),
+            name: String(raw.creator.name ?? ''),
+            role: Array.isArray(raw.creator.role) ? raw.creator.role : [],
+          }
+        : undefined,
+      ground: raw?.ground
+        ? {
+            id: String(raw.ground.id ?? ''),
+            name: String(raw.ground.name ?? ''),
+            address: String(raw.ground.address ?? ''),
+          }
+        : undefined,
+    };
+  }
+
+  /** GET /event */
   getEvents(): Observable<IEvent[]> {
-    return of(EVENTS_MOCK);
-    // return this.http.get<Event[]>(this.apiUrl);
-  }
-
-  // Get a special event by ID
-  getEventById(id: string): Observable<IEvent> {
-    return of(EVENTS_MOCK.find((event) => event.id === id) as IEvent);
-    // return this.http.get<Event>(`${this.apiUrl}/${id}`);
-  }
-
-  getUserEvents(id: string): Observable<IEvent[]> {
-    return of(EVENTS_MOCK.filter((event) => event.id === id) as IEvent[]);
-    // return this.http.get<Event>(`${this.apiUrl}/${id}`);
-  }
-
-  getEventsForGround(groundId: string): Observable<IEvent[]> {
-    return of(
-      EVENTS_MOCK.filter((event) => event.groundId === groundId) as IEvent[]
+    return this.http.get<any[]>(`${this.api}/event`).pipe(
+      map((list) => (Array.isArray(list) ? list : []).map((e) => this.normalizeEvent(e))),
+      catchError((err) => {
+        console.warn('GET /event failed:', err);
+        return of<IEvent[]>([]);
+      })
     );
   }
 
-  createEvent(event: IEvent) {
-    console.log('Creating event:', event);
-    // здесь можно отправить HTTP POST на backend
-    return of(event);
+  /** GET /event/:id */
+  getEventById(id: string): Observable<IEvent | null> {
+    return this.http.get<any>(`${this.api}/event/${id}`).pipe(
+      map((e) => this.normalizeEvent(e)),
+      catchError((err) => {
+        console.warn(`GET /event/${id} failed:`, err);
+        return of(null);
+      })
+    );
+  }
+
+  /** GET /event/ground/:groundId (optional jwt) */
+  getEventsForGround(groundId: string): Observable<IEvent[]> {
+    return this.http.get<any[]>(`${this.api}/event/ground/${groundId}`).pipe(
+      map((list) => (Array.isArray(list) ? list : []).map((e) => this.normalizeEvent(e))),
+      catchError((err) => {
+        console.warn(`GET /event/ground/${groundId} failed:`, err);
+        return of<IEvent[]>([]);
+      })
+    );
+  }
+
+  /** GET /event/mine?groundId=... */
+  getMyEvents(groundId?: string): Observable<IEvent[]> {
+    let params = new HttpParams();
+    if (groundId) params = params.set('groundId', groundId);
+
+    return this.http.get<any[]>(`${this.api}/event/mine`, { params }).pipe(
+      map((list) => (Array.isArray(list) ? list : []).map((e) => this.normalizeEvent(e))),
+      catchError((err) => {
+        console.warn('GET /event/mine failed:', err);
+        return of<IEvent[]>([]);
+      })
+    );
+  }
+
+  /** GET /event/ground/:groundId/mine */
+  getMyEventsByGround(groundId: string): Observable<IEvent[]> {
+    return this.http.get<any[]>(`${this.api}/event/ground/${groundId}/mine`).pipe(
+      map((list) => (Array.isArray(list) ? list : []).map((e) => this.normalizeEvent(e))),
+      catchError((err) => {
+        console.warn(`GET /event/ground/${groundId}/mine failed:`, err);
+        return of<IEvent[]>([]);
+      })
+    );
+  }
+
+  /** POST /event */
+  createEvent(dto: ICreateEventDto): Observable<IEvent> {
+    return this.http.post<any>(`${this.api}/event`, dto).pipe(
+      map((e) => this.normalizeEvent(e)),
+      catchError((err) => {
+        console.warn('POST /event failed:', err);
+        throw err;
+      })
+    );
   }
 }

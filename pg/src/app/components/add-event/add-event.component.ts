@@ -1,16 +1,7 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  OnInit,
-  output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import {
-  CheckboxCustomEvent,
   IonButton,
   IonButtons,
   IonContent,
@@ -18,7 +9,6 @@ import {
   IonItem,
   IonList,
   IonModal,
-  IonNote,
   IonToolbar,
   IonTitle,
   IonLabel,
@@ -26,16 +16,19 @@ import {
   IonTextarea,
 } from '@ionic/angular/standalone';
 
-import { IGround } from 'src/app/interfaces/interfaces';
+import { ICreateEventDto } from 'src/app/interfaces/interfaces';
+
 @Component({
   selector: 'app-add-event',
   templateUrl: './add-event.component.html',
   styleUrls: ['./add-event.component.scss'],
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     IonLabel,
     IonInput,
+    IonTextarea,
     IonButton,
     IonButtons,
     IonContent,
@@ -47,31 +40,32 @@ import { IGround } from 'src/app/interfaces/interfaces';
   ],
 })
 export class AddEventComponent implements OnInit {
-  ground: IGround = {
-    id: '',
+  @Input() modal!: IonModal;
+
+  // ✅ если известно — подставляем автоматически
+  @Input() groundId: string | null = null;
+
+  @Output() newEventForm = new EventEmitter<ICreateEventDto>();
+
+  form: ICreateEventDto = {
     name: '',
-    coverage: '',
     description: '',
-    kindOfsport: '',
-    createdAt: '',
-    updatedAt: '',
-    location: { lat: '', lng: '', address: '' },
-    reviews: null,
-    avatar: '',
-    averageRating: 0,
-    listImgs: [],
-    isFavorite: false,
+    date: '',
+    startTime: '',
+    duration: '',
+    groundId: '',
   };
 
-  constructor() {}
+  ngOnInit() {
+    if (this.groundId) this.form.groundId = this.groundId;
+  }
 
-  ngOnInit() {}
-
-  @Input() modal!: IonModal;
-  @Output() newGroundForm = new EventEmitter<IGround>();
-  newEventForme = output<any>();
   onSubmit() {
-    this.modal.dismiss(this.ground);
-    this.newEventForme.emit(this.ground);
+    if (!this.form.name || !this.form.date || !this.form.startTime || !this.form.groundId) {
+      return;
+    }
+
+    this.newEventForm.emit({ ...this.form });
+    this.modal.dismiss();
   }
 }

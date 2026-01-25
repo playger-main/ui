@@ -1,10 +1,13 @@
+// ui/pg/src/app/pages/profile/profile/profile.component.ts
 import { Component, OnInit } from '@angular/core';
-import { ProfileViewComponent } from '../profile-view/profile-view.component';
-import { map, Observable, of, tap, switchMap, forkJoin, ObservableInputTuple } from 'rxjs';
-import { ICurrentUser, IEvent, IGround, IUser } from 'src/app/interfaces/interfaces';
-import { ActivatedRoute } from '@angular/router';
-import { UserService } from 'src/app/services/user.service';
 import { CommonModule } from '@angular/common';
+import { ProfileViewComponent } from '../profile-view/profile-view.component';
+
+import { Observable, of, forkJoin } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+
+import { ICurrentUser, IEvent, IGround } from 'src/app/interfaces/interfaces';
+import { UserService } from 'src/app/services/user.service';
 import { GroundService } from 'src/app/services/ground.service';
 import { EventsService } from 'src/app/services/events.service';
 
@@ -12,53 +15,49 @@ import { EventsService } from 'src/app/services/events.service';
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
-  imports: [ProfileViewComponent, CommonModule]
+  standalone: true,
+  imports: [ProfileViewComponent, CommonModule],
 })
-export class ProfileComponent  implements OnInit {
+export class ProfileComponent implements OnInit {
+  constructor(
+    private eventService: EventsService,
+    private userService: UserService,
+    private groundService: GroundService
+  ) {}
 
-  constructor(private route: ActivatedRoute, private eventService: EventsService, private userService: UserService, private groundService: GroundService) { }
-
-  ngOnInit() {
-    const id = '1';
-  
-    this.user$ = this.getCurrentUser(id);
-  
-    const loadedData$ = this.user$.pipe(
-      switchMap(user => {
-        const groundIds = user.favoriteGroundIds ?? [];
-        const eventIds = user.listFutureEvents ?? [];
-        console.log(eventIds)
-  
-        const groundRequests = groundIds.map(id => this.groundService.getGroundById(id));
-        const eventRequests = eventIds.map(id => this.eventService.getEventById(id));
-
-  
-        return forkJoin({
-          favoriteGrounds: groundRequests.length ? forkJoin(groundRequests) : of([]),
-          futureEvents: eventRequests.length ? forkJoin(eventRequests) : of([])
-        }).pipe(
-          map(({ favoriteGrounds, futureEvents }) => ({
-            favoriteGrounds,
-            futureEvents: futureEvents.filter(e => new Date(e.date) > new Date())
-          }))
-        );
-      })
-    );
-  
-    // Assign the individual streams for use with `async` in template
-    this.favoriteGrounds$ = loadedData$.pipe(map(data => data.favoriteGrounds));
-    this.futureEvents$ = loadedData$.pipe(map(data => data.futureEvents));
-  }
-  
-
-  user$!: Observable<ICurrentUser>;
-
+  user$!: Observable<ICurrentUser | null>;
   favoriteGrounds$!: Observable<IGround[]>;
-
   futureEvents$!: Observable<IEvent[]>;
 
-  getCurrentUser(id: string): Observable<ICurrentUser> {
-    return this.userService.getCurrentUser(id);
-   }
+  ngOnInit() {
+    this.user$ = this.userService.getMe();
 
+    const favoriteIds = (this.groundService.getFavoriteGrounds() ?? [])
+      .map((g) => g?.id)
+      .filter((id): id is string => Boolean(id));
+
+    this.favoriteGrounds$ = favoriteIds.length
+      ? forkJoin(favoriteIds.map((id) => this.groundService.getGroundById(id))).pipe(
+          map((list) => (list ?? []).filter((g): g is IGround => Boolean(g?.id))),
+          catchError((err) => {
+            console.warn('Load favorite grounds failed:', err);
+            return of<IGround[]>([]);
+          })
+        )
+      : of<IGround[]>([]);
+
+    this.futureEvents$ = this.eventService.getMyEvents().pipe(
+      map((list) => {
+        const now = new Date();
+        return (list ?? []).filter((e) => {
+          const d = new Date(e.date);
+          return !isNaN(d.getTime()) && d >= now;
+        });
+      }),
+      catchError((err) => {
+        console.warn('Load my events failed:', err);
+        return of<IEvent[]>([]);
+      })
+    );
+  }
 }

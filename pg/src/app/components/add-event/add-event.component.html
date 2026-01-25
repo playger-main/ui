@@ -7,41 +7,41 @@
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
+
   <ion-content>
     <form (ngSubmit)="onSubmit()">
       <ion-list>
         <ion-item>
           <ion-label position="stacked">Name</ion-label>
-          <ion-input [(ngModel)]="ground.name" name="name" required></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Coverage</ion-label>
-          <ion-input [(ngModel)]="ground.coverage" name="coverage"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Kind of sport</ion-label>
-          <ion-input
-            [(ngModel)]="ground.kindOfsport"
-            name="kindOfsport"
-          ></ion-input>
+          <ion-input [(ngModel)]="form.name" name="name" required></ion-input>
         </ion-item>
 
-        <!-- <ion-item>
+        <ion-item>
           <ion-label position="stacked">Description</ion-label>
-          <ion-textarea [(ngModel)]="ground.description" name="description"></ion-textarea>
-        </ion-item> -->
-        <ion-item>
-          <ion-label position="stacked">Address</ion-label>
-          <ion-input
-            [(ngModel)]="ground.location.address"
-            name="address"
-          ></ion-input>
+          <ion-textarea [(ngModel)]="form.description" name="description"></ion-textarea>
         </ion-item>
+
         <ion-item>
-          <ion-label position="stacked">Avatar URL</ion-label>
-          <ion-input [(ngModel)]="ground.avatar" name="avatar"></ion-input>
+          <ion-label position="stacked">Date</ion-label>
+          <ion-input [(ngModel)]="form.date" name="date" placeholder="2025-10-12" required></ion-input>
         </ion-item>
-        <!-- Add more fields as needed -->
+
+        <ion-item>
+          <ion-label position="stacked">Start time</ion-label>
+          <ion-input [(ngModel)]="form.startTime" name="startTime" placeholder="14:00" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Duration</ion-label>
+          <ion-input [(ngModel)]="form.duration" name="duration" placeholder="1.5 hours"></ion-input>
+        </ion-item>
+
+        <!-- ✅ если groundId не передан извне — вводим вручную -->
+        <ion-item *ngIf="!groundId">
+          <ion-label position="stacked">Ground ID</ion-label>
+          <ion-input [(ngModel)]="form.groundId" name="groundId" required></ion-input>
+        </ion-item>
+
         <ion-item lines="none">
           <ion-button expand="block" type="submit">Save Event</ion-button>
         </ion-item>

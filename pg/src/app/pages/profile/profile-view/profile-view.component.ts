@@ -1,23 +1,32 @@
-import { Component, Input, OnInit } from '@angular/core';
+// ui/pg/src/app/pages/profile/profile-view/profile-view.component.ts
+import { Component, Input } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+
 import {
-  IonCard,
-  IonCardTitle,
-  IonItem,
-  IonInput,
+  IonContent,
   IonList,
   IonListHeader,
-  IonContent,
+  IonItem,
   IonLabel,
-  IonButton,
   IonIcon,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-} from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
-import { ICurrentUser, IEvent, IGround } from 'src/app/interfaces/interfaces';
-import { addIcons } from 'ionicons';
+  IonButton,
 
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+
+  IonSegment,
+  IonSegmentButton,
+
+  IonInput,
+  IonToolbar,
+} from '@ionic/angular/standalone';
+
+import { ICurrentUser, IEvent, IGround } from 'src/app/interfaces/interfaces';
+
+import { addIcons } from 'ionicons';
 import {
   mailOutline,
   heart,
@@ -29,42 +38,38 @@ import {
   calendarNumberOutline,
   checkmarkDoneCircleOutline,
 } from 'ionicons/icons';
-import {
-  IonSegment,
-  IonSegmentButton,
-  IonSegmentContent,
-  IonSegmentView,
-  IonToolbar,
-  IonHeader,
-} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-profile-view',
   templateUrl: './profile-view.component.html',
   styleUrls: ['./profile-view.component.scss'],
+  standalone: true,
   imports: [
     CommonModule,
-    IonInput,
+    DatePipe,
+
+    IonContent,
     IonList,
     IonListHeader,
     IonItem,
-    IonButton,
+    IonLabel,
     IonIcon,
-    IonContent,
-    IonLabel,
+    IonButton,
+
     IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
     IonCardContent,
-    IonLabel,
+
     IonSegment,
     IonSegmentButton,
 
-    IonLabel,
-    IonSegment,
-    IonSegmentButton,
+    IonInput,
     IonToolbar,
   ],
 })
-export class ProfileViewComponent implements OnInit {
+export class ProfileViewComponent {
   constructor() {
     addIcons({
       mailOutline,
@@ -79,12 +84,10 @@ export class ProfileViewComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    console.log(this.futureEvents);
-  }
-  @Input() user!: ICurrentUser | null;
-  @Input() favoriteGrounds!: IGround[] | null;
-  @Input() futureEvents!: IEvent[] | null;
+  // async pipe может дать null до загрузки — поэтому дефолты:
+  @Input() user: ICurrentUser | null = null;
+  @Input() favoriteGrounds: IGround[] | null = null;
+  @Input() futureEvents: IEvent[] | null = null;
 
   showPasswordSettings = false;
   showEvents = false;
