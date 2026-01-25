@@ -1,22 +1,10 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  input,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, input, Input, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import {
-  IonCard,
-  IonAvatar,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
+  IonBadge,
+  IonTabButton,
   IonIcon,
-  IonItem,
   IonLabel,
   IonList,
 } from '@ionic/angular/standalone';
@@ -27,17 +15,36 @@ import {
   calendar,
   starOutline,
   locationOutline,
+  heartOutline,
+  peopleOutline,
+  golfOutline,
 } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 @Component({
   selector: 'app-playgrounds',
   templateUrl: './playgrounds.component.html',
   styleUrls: ['./playgrounds.component.scss'],
-  imports: [CommonModule, IonIcon, IonList, RouterModule],
+  imports: [
+    CommonModule,
+    IonIcon,
+    IonList,
+    RouterModule,
+    IonBadge,
+    IonTabButton,
+    IonIcon,
+  ],
 })
 export class PlaygroundsComponent implements OnInit {
   constructor(private router: Router) {
-    addIcons({ heart, star, calendar, starOutline, locationOutline });
+    addIcons({
+      heart,
+      star,
+      calendar,
+      starOutline,
+      locationOutline,
+      heartOutline,
+      golfOutline,
+    });
   }
 
   listFavoriteGrounds = input<IGround[]>();

@@ -53,7 +53,7 @@ export class AddEventComponent implements OnInit {
     date: '',
     startTime: '',
     duration: '',
-    groundId: '',
+    groundId: '',   
   };
 
   ngOnInit() {
