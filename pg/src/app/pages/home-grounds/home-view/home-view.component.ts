@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, input, output } from '@angular/core';
+import { Component, OnInit, Input, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -8,13 +8,14 @@ import {
   IonContent,
   ActionSheetController,
 } from '@ionic/angular/standalone';
+import { add } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
+
 import { MapComponent } from 'src/app/components/map/map.component';
 import { PlaygroundsComponent } from 'src/app/components/playgrounds/playgrounds.component';
 import { SearchComponent } from 'src/app/components/search/search.component';
-import { IFavoriteListSport, IGround } from 'src/app/interfaces/interfaces';
-import { add } from 'ionicons/icons';
-import { addIcons } from 'ionicons';
 import { AddGroundComponent } from 'src/app/components/add-ground/add-ground.component';
+import { IFavoriteListSport, IGround } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-home-view',
@@ -46,7 +47,6 @@ export class HomeViewComponent implements OnInit {
   listFavoriteGrounds = input<IGround[]>();
 
   presentingElement!: HTMLElement | null;
-
   private canDismissOverride = false;
 
   ngOnInit() {
@@ -54,12 +54,10 @@ export class HomeViewComponent implements OnInit {
   }
 
   onDismissChange(canDismiss: boolean) {
-    // Allows the modal to be dismissed based on the state of the checkbox
     this.canDismissOverride = canDismiss;
   }
 
   onWillPresent() {
-    // Resets the override when the modal is presented
     this.canDismissOverride = false;
   }
 }

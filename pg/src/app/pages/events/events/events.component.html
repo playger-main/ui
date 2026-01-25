@@ -1,5 +1,6 @@
 <app-events-view
   [listEvents]="listEvents$ | async"
+  [currentUser]="currentUser$ | async"
   (goToCurrentEventPage)="goToCurrentEventPage($event)"
-  (onNewEventForm)="onNewEventForm($event)"
+  (newEventForm)="onNewEventForm($event)"
 ></app-events-view>

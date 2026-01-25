@@ -13,12 +13,12 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MenuComponent } from './components/menu/menu.component';
 import { FooterMenuComponent } from './components/footer-menu/footer-menu.component';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { map, Observable } from 'rxjs';
-import { IFavoriteListSport, IGround } from 'src/app/interfaces/interfaces';
+import { Observable, map } from 'rxjs';
+
+import { IGround } from 'src/app/interfaces/interfaces';
 import { GroundService } from 'src/app/services/ground.service';
-import { UserService } from 'src/app/services/user.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -35,44 +35,27 @@ import { UserService } from 'src/app/services/user.service';
     IonTitle,
     IonToolbar,
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  ],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
 })
 export class AppComponent {
-  constructor(
-    private playGroundService: GroundService,
-    private userService: UserService,
-  ) {}
+  constructor(private playGroundService: GroundService) {}
 
   currentUrl = '';
-  pageTitle: string = 'PG';
-  listfavoriteKindOfSport$!: Observable<IFavoriteListSport[]>;
+  pageTitle = 'PG';
 
+  // теперь список площадок получаем только с сервера
   listPlaygrounds$!: Observable<IGround[]>;
 
-  selectedKindOfSport: string = '';
+  selectedKindOfSport = 'football'; // дефолт, чтобы не зависеть от mock
 
   isHomePage = false;
 
   ngOnInit(): void {
-    this.loadUserData();
-  }
-
-  private loadUserData() {
-    this.listfavoriteKindOfSport$ = this.userService
-      .getListOfFavKindSport()
-      .pipe(
-        map((data) => {
-          this.playGroundService.setSelectedGround(data[0].type.toLowerCase());
-          this.selectedKindOfSport = data[0].type.toLowerCase();
-
-          this.listPlaygrounds$ = this.playGroundService
-            .getListOfGroundsForChosenSport()
-            .pipe(map((data) => data));
-          return data;
-        }),
-      );
+    // задаём дефолтный вид спорта и грузим
+    this.playGroundService.setSelectedGround(this.selectedKindOfSport);
+    this.listPlaygrounds$ = this.playGroundService
+      .getListOfGroundsForChosenSport()
+      .pipe(map((data) => data ?? []));
   }
 
   setPageTitle(title: string) {
@@ -81,7 +64,6 @@ export class AppComponent {
 
   onMenuClosed() {
     if (document.activeElement instanceof HTMLElement) {
-      console.log(document.activeElement);
       document.activeElement.blur();
     }
   }

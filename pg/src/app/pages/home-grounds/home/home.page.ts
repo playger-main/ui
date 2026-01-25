@@ -1,26 +1,13 @@
+// ui/pg/src/app/pages/home-grounds/home/home.page.ts
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import {
-  IonButton,
-  IonIcon,
-  IonContent,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-} from '@ionic/angular/standalone';
-import { map, Observable, Subscription, pipe } from 'rxjs';
-import { FavouriteObjectsComponent } from 'src/app/components/favourite-objects/favourite-objects.component';
-import { MapComponent } from 'src/app/components/map/map.component';
-import { PlaygroundsComponent } from 'src/app/components/playgrounds/playgrounds.component';
-import { SearchComponent } from 'src/app/components/search/search.component';
-import { IFavoriteListSport, IGround } from 'src/app/interfaces/interfaces';
-import { GroundService } from 'src/app/services/ground.service';
-import { UserService } from 'src/app/services/user.service';
-import { Router, NavigationEnd } from '@angular/router';
-import { add } from 'ionicons/icons';
+import { Component, OnInit, signal } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
 import { addIcons } from 'ionicons';
+import { add } from 'ionicons/icons';
+
+import { IGround, IFavoriteListSport } from 'src/app/interfaces/interfaces';
+import { GroundService } from 'src/app/services/ground.service';
 import { AppComponent } from 'src/app/app.component';
 import { HomeViewComponent } from '../home-view/home-view.component';
 
@@ -28,49 +15,29 @@ import { HomeViewComponent } from '../home-view/home-view.component';
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
+  standalone: true,
   imports: [CommonModule, HomeViewComponent],
 })
 export class HomePage implements OnInit {
   constructor(
     public appComponent: AppComponent,
-    private userService: UserService,
     private playGroundService: GroundService,
     private router: Router
   ) {
     addIcons({ add });
   }
 
-  ngOnInit(): void {
-    this.loadUserData();
-    this.loadFavGrounds();
-  }
-
-  ionViewWillEnter(): void {
-    // This triggers every time you ENTER the Home page
-
-    this.loadUserData();
-  }
-
+  // чтобы template не падал
   listfavoriteKindOfSport$!: Observable<IFavoriteListSport[]>;
-
   listPlaygrounds$!: Observable<IGround[]>;
-
   listFavoriteGrounds = signal<IGround[]>([]);
 
-  private loadUserData() {
-    this.listfavoriteKindOfSport$ = this.userService
-      .getListOfFavKindSport()
-      .pipe(
-        map((data) => {
-          this.playGroundService.setSelectedGround(data[0].type.toLowerCase());
+  ngOnInit(): void {
+    // пока без fav sports с сервера — просто пустой список, чтобы не падал UI
+    this.listfavoriteKindOfSport$ = of<IFavoriteListSport[]>([]);
 
-          this.listPlaygrounds$ = this.playGroundService
-            .getListOfGroundsForChosenSport()
-            .pipe(map((data) => data));
-
-          return data;
-        })
-      );
+    // основные данные — с сервера
+    this.listPlaygrounds$ = this.playGroundService.getAllGrounds();
   }
 
   onNewGroundForm(ground: IGround) {

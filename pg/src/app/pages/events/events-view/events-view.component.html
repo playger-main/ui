@@ -3,10 +3,12 @@
     <div class="header-container">
       <h4>Events</h4>
 
-      <ion-button fill="outline" id="open-modal" expand="block" size="large">
+      <ion-button *ngIf="canCreateEvent" fill="outline" id="open-modal" expand="block" size="large">
         <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
+
       <ion-modal
+        *ngIf="canCreateEvent"
         #modal
         trigger="open-modal"
         [presentingElement]="presentingElement"
@@ -15,12 +17,14 @@
         <ng-template>
           <app-add-event
             [modal]="modal"
-            (newEventForm)="onNewEventForm.emit($event)"
-          ></app-add-event> </ng-template
-      ></ion-modal>
+            [groundId]="groundId"
+            (newEventForm)="onCreated($event); modal.dismiss()"
+          ></app-add-event>
+        </ng-template>
+      </ion-modal>
     </div>
 
-    <ion-list>
+    <ion-list *ngIf="listEvents?.length; else empty">
       <ion-card
         *ngFor="let event of listEvents"
         (click)="goToCurrentEventPage.emit(event.id)"
@@ -28,15 +32,30 @@
       >
         <ion-card-header>
           <ion-card-title>{{ event.name }}</ion-card-title>
-          <ion-card-subtitle>{{ event.category }}</ion-card-subtitle>
+          <ion-card-subtitle>
+            {{ event.date }} • {{ event.startTime }}
+          </ion-card-subtitle>
         </ion-card-header>
+
         <ion-card-content>
-          <p><strong>Date:</strong> {{ event.date }} {{ event.startTime }}</p>
-          <p><strong>Duration:</strong> {{ event.duration }} min</p>
-          <p><strong>Location:</strong> {{ event.location.address }}</p>
           <p>{{ event.description }}</p>
+
+          <p *ngIf="event.ground?.name">
+            <strong>Ground:</strong> {{ event.ground?.name }}
+          </p>
+          <p *ngIf="event.ground?.address">
+            <strong>Address:</strong> {{ event.ground?.address }}
+          </p>
+
+          <p *ngIf="event.creator?.name">
+            <strong>Creator:</strong> {{ event.creator?.name }}
+          </p>
         </ion-card-content>
       </ion-card>
     </ion-list>
+
+    <ng-template #empty>
+      <p class="ion-padding">No events yet.</p>
+    </ng-template>
   </ion-content>
 </div>

@@ -7,7 +7,6 @@ import {
   SimpleChanges,
   OnChanges,
 } from '@angular/core';
-import { IEvent, IGround } from 'src/app/interfaces/interfaces';
 import { CommonModule } from '@angular/common';
 import {
   IonCardContent,
@@ -22,8 +21,11 @@ import {
   IonContent,
   IonLabel,
 } from '@ionic/angular/standalone';
-import { star, starOutline, heart } from 'ionicons/icons';
+
+import { IEvent, IGround } from 'src/app/interfaces/interfaces';
+
 import { addIcons } from 'ionicons';
+import { star, starOutline, heart, heartOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-ground-view',
@@ -46,28 +48,29 @@ import { addIcons } from 'ionicons';
 })
 export class GroundViewComponent implements OnInit, OnChanges {
   constructor() {
-    addIcons({ heart, star, starOutline });
+    // ✅ чтобы работали: 'heart', 'heart-outline', 'star', 'star-outline'
+    addIcons({ heart, heartOutline, star, starOutline });
   }
 
   showFeedback = false;
   showEvents = false;
 
-  @Input() ground!: IGround | null;
+  @Input() ground: IGround | null = null;
   @Input() isFavorite = false;
-  @Input() eventsForGround!: IEvent[] | null;
+  @Input() eventsForGround: IEvent[] | null = null;
 
   @Output() eventClicked = new EventEmitter<string>();
   @Output() addToFavorites = new EventEmitter<IGround>();
   @Output() removeFromFavorites = new EventEmitter<IGround>();
 
   ngOnInit() {
-    console.log(this.ground);
+    // можно убрать, но пусть пока будет
+    console.log('GroundView init ground:', this.ground);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['ground']) {
-      this.ground = changes['ground'].currentValue;
-      console.log(this.ground);
+      console.log('GroundView ground changed:', changes['ground'].currentValue);
     }
   }
 

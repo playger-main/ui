@@ -3,7 +3,6 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import {
-  CheckboxCustomEvent,
   IonButton,
   IonButtons,
   IonContent,
@@ -11,7 +10,6 @@ import {
   IonItem,
   IonList,
   IonModal,
-  IonNote,
   IonToolbar,
   IonTitle,
   IonLabel,
@@ -20,15 +18,18 @@ import {
 } from '@ionic/angular/standalone';
 
 import { IGround } from 'src/app/interfaces/interfaces';
+
 @Component({
   selector: 'app-add-ground',
   templateUrl: './add-ground.component.html',
   styleUrls: ['./add-ground.component.scss'],
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     IonLabel,
     IonInput,
+    IonTextarea,
     IonButton,
     IonButtons,
     IonContent,
@@ -40,32 +41,49 @@ import { IGround } from 'src/app/interfaces/interfaces';
   ],
 })
 export class AddGroundComponent implements OnInit {
+  @Input() modal!: IonModal;
+  @Output() newGroundForm = new EventEmitter<IGround>();
+
+  // ✅ текстовые поля для ввода массивов
+  coverageText = '';
+  kindofsportText = '';
+
+  // ✅ новая модель IGround
   ground: IGround = {
     id: '',
     name: '',
-    coverage: '',
     description: '',
-    kindOfsport: '',
+    address: '',
+    kindofsport: [],
+    coverage: [],
+    geolocation: { lat: 0, lng: 0 },
     createdAt: '',
     updatedAt: '',
-    location: { lat: '', lng: '', address: '' },
-    reviews: null,
-    avatar: '',
-    averageRating: 0,
-    listImgs: [],
+    eventsCount: 0,
     isFavorite: false,
-    idsEvents: [],
+    avgRating: 0,
+    avatar: '',
   };
 
   constructor() {}
 
   ngOnInit() {}
 
-  @Input() modal!: IonModal;
-  @Output() newGroundForm = new EventEmitter<IGround>();
+  private csvToArray(text: string): string[] {
+    return (text ?? '')
+      .split(',')
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean);
+  }
 
   onSubmit() {
-    this.modal.dismiss(this.ground);
-    this.newGroundForm.emit(this.ground);
+    const payload: IGround = {
+      ...this.ground,
+      coverage: this.csvToArray(this.coverageText),
+      kindofsport: this.csvToArray(this.kindofsportText),
+    };
+
+    this.modal.dismiss(payload);
+    this.newGroundForm.emit(payload);
   }
 }

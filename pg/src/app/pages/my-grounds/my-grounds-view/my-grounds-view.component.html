@@ -1,48 +1,35 @@
-<div class="page-content">
-  <ion-content [fullscreen]="true">
-    <ion-list-header>
-      <ion-label><strong>My Favorite Grounds</strong></ion-label>
-    </ion-list-header>
+<ion-content [fullscreen]="true">
+  <ion-list-header>
+    <ion-label><strong>My Favorite Grounds</strong></ion-label>
+  </ion-list-header>
 
-    @if (favoriteGrounds.length) {
-      @for (ground of favoriteGrounds; track ground.id) {
-        <ion-card (click)="goToGroundPage(ground.id)">
-          @if (ground.avatar) {
-            <img [src]="ground.avatar" alt="{{ ground.name }}" />
-          }
+  <ng-container *ngIf="favoriteGrounds?.length; else empty">
+    <ion-card
+      *ngFor="let g of favoriteGrounds; trackBy: trackById"
+      (click)="onGroundClick(g.id)"
+      style="cursor: pointer"
+    >
+      <ion-card-header>
+        <ion-card-title>{{ g.name }}</ion-card-title>
+        <ion-card-subtitle>{{ g.address }}</ion-card-subtitle>
+      </ion-card-header>
 
-          <ion-card-header>
-            <ion-card-title>{{ ground.name }}</ion-card-title>
-            <ion-card-subtitle>{{ ground.location.address }}</ion-card-subtitle>
-          </ion-card-header>
+      <ion-card-content>
+        <ion-button
+          fill="clear"
+          (click)="onToggleFavorite($event, g)"
+        >
+          <ion-icon
+            slot="icon-only"
+            [name]="g.isFavorite ? 'heart' : 'heart-outline'"
+            color="danger"
+          ></ion-icon>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 
-          <ion-card-content>
-            <p><strong>Sport:</strong> {{ ground.kindOfsport }}</p>
-            <p><strong>Coverage:</strong> {{ ground.coverage }}</p>
-
-            <div class="rating-row" (click)="$event.stopPropagation()">
-              @if (ground.averageRating) {
-                <span
-                  ><strong>Rating:</strong> {{ ground.averageRating }}/5
-                  ⭐</span
-                >
-              }
-              <ion-button
-                fill="clear"
-                size="small"
-                (click)="toggleFavorite($event, ground)"
-              >
-                <ion-icon
-                  [name]="ground.isFavorite ? 'heart' : 'heart-outline'"
-                  color="danger"
-                ></ion-icon>
-              </ion-button>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      }
-    } @else {
-      <p class="ion-padding">No favorite grounds yet.</p>
-    }
-  </ion-content>
-</div>
+  <ng-template #empty>
+    <p class="ion-padding">No favorite grounds yet.</p>
+  </ng-template>
+</ion-content>

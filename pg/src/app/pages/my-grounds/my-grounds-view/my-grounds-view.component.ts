@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   IonButton,
   IonIcon,
-  IonModal,
   IonContent,
-  ActionSheetController,
-  IonSegment,
-  IonSegmentButton,
   IonLabel,
-  IonSegmentContent,
-  IonSegmentView,
   IonCardContent,
   IonCardSubtitle,
   IonCardTitle,
@@ -17,6 +12,7 @@ import {
   IonCard,
   IonListHeader,
 } from '@ionic/angular/standalone';
+
 import { addIcons } from 'ionicons';
 import {
   homeOutline,
@@ -26,19 +22,19 @@ import {
   chatbubbleOutline,
   notificationsOutline,
   gridOutline,
-  balloonOutline,
   heart,
   heartOutline,
 } from 'ionicons/icons';
-import { AppComponent } from 'src/app/app.component';
+
 import { IGround } from 'src/app/interfaces/interfaces';
-import { fakeGrounds } from 'src/app/mock';
 
 @Component({
   selector: 'app-my-grounds-view',
   templateUrl: './my-grounds-view.component.html',
   styleUrls: ['./my-grounds-view.component.scss'],
+  standalone: true,
   imports: [
+    CommonModule,
     IonContent,
     IonButton,
     IonLabel,
@@ -53,7 +49,6 @@ import { fakeGrounds } from 'src/app/mock';
 })
 export class MyGroundsViewComponent implements OnInit {
   constructor() {
-    console.log('menu component');
     addIcons({
       homeOutline,
       chatbubbleOutline,
@@ -62,19 +57,30 @@ export class MyGroundsViewComponent implements OnInit {
       settingsOutline,
       notificationsOutline,
       gridOutline,
+      heart,
       heartOutline,
     });
   }
-  favoriteGrounds = fakeGrounds.splice(0, 7);
+
+  // ✅ приходит сверху (из MyGroundsComponent)
+  @Input() favoriteGrounds: IGround[] | null = [];
+
+  // ✅ события наружу
+  @Output() goToGroundPage = new EventEmitter<string>();
+  @Output() toggleFavorite = new EventEmitter<IGround>();
+
   ngOnInit() {}
 
-  goToGroundPage(id: string) {}
+  onGroundClick(id: string) {
+    this.goToGroundPage.emit(id);
+  }
 
-  toggleFavorite(event: Event, ground: IGround) {
-    event.stopPropagation(); // не открываем карточку при клике на сердце
-    ground.isFavorite = !ground.isFavorite;
+  onToggleFavorite(ev: Event, ground: IGround) {
+    ev.stopPropagation();
+    this.toggleFavorite.emit(ground);
+  }
 
-    // тут можно дернуть сервис или эмитнуть событие наружу
-    console.log('Favorite toggled:', ground.name, ground.isFavorite);
+  trackById(_: number, g: IGround) {
+    return g.id;
   }
 }

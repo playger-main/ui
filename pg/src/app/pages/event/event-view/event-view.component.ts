@@ -1,39 +1,44 @@
-import { Component, Output, EventEmitter, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { IonCard,IonContent, IonButton, IonIcon, IonCardContent, IonCardHeader, IonCardSubtitle,IonCardTitle } from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
-import { IEvent, IUser, IGround } from 'src/app/interfaces/interfaces';
-import { accessibilityOutline } from 'ionicons/icons';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonContent,
+  IonIcon,
+  IonItem,
+  IonLabel,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
+import { calendarOutline, locationOutline, personOutline } from 'ionicons/icons';
+import { IEvent } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-event-view',
   templateUrl: './event-view.component.html',
   styleUrls: ['./event-view.component.scss'],
-  imports: [CommonModule, IonButton, IonIcon, IonContent, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent]
+  standalone: true,
+  imports: [
+    CommonModule,
+    DatePipe,
+    IonContent,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardSubtitle,
+    IonCardContent,
+    IonItem,
+    IonIcon,
+    IonLabel,
+  ],
 })
-export class EventViewComponent  implements OnInit, OnChanges{
-
-  constructor() { 
-    addIcons({ accessibilityOutline });
+export class EventViewComponent {
+  constructor() {
+    addIcons({ calendarOutline, locationOutline, personOutline });
   }
 
-  ngOnInit() {}
-
-  @Input() event!: IEvent | null;
-  @Input() user!: IUser | null ;
-  @Input() ground!: IGround | null ;
-
+  @Input() event: IEvent | null = null;
   @Output() onOrganizerClick = new EventEmitter<string>();
-  @Output() onAttendClick = new EventEmitter<string>();
-  @Output() onShareClick = new EventEmitter<string>();
-  
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
-    if(changes['event']){
-      this.event = changes['event'].currentValue;
-    }
-    if(changes['user']){
-      this.user = changes['user'].currentValue;
-    }
-  }
 }
