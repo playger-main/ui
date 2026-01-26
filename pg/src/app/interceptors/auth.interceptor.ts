@@ -1,4 +1,3 @@
-// src/app/interceptors/auth.interceptor.ts
 import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
@@ -19,42 +18,60 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private auth: AuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // не добавляем заголовок на auth-ручки (signin/signup/refresh/confirm-email)
     if (this.shouldSkip(req)) {
       return next.handle(req);
     }
 
     return from(this.auth.getAccessToken()).pipe(
-      switchMap((token) => {
-        const authedReq = this.addAuthHeader(req, token);
-        return next.handle(authedReq);
-      }),
-      catchError((err) => this.handle401(err, req, next))
+      switchMap((token) => next.handle(this.addAuthHeader(req, token))),
+      catchError((err) => {
+        // ✅ ловим удаленного пользователя / невалидную сессию
+        if (err instanceof HttpErrorResponse) {
+          // 1) пользователь удалён в БД (твой кейс)
+          if (this.isUserDoesNotExist(err)) {
+            void this.auth.logout();
+            return throwError(() => err);
+          }
+
+          // 2) если access/refresh протухли и сервер отвечает 403 вместо 401
+          if (err.status === 403) {
+            void this.auth.logout();
+            return throwError(() => err);
+          }
+
+          // 3) refresh логика — только для 401
+          if (err.status === 401) {
+            return this.handle401(err, req, next);
+          }
+        }
+
+        return throwError(() => err);
+      })
     );
   }
 
-  /** Добавляем Authorization, если есть токен и его не проставили выше по цепочке */
   private addAuthHeader(req: HttpRequest<any>, token?: string | null): HttpRequest<any> {
-    if (!token || req.headers.has('Authorization')) return req;
-    return req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+    const t = this.normalizeToken(token);
+    if (!t || req.headers.has('Authorization')) return req;
+    return req.clone({ setHeaders: { Authorization: `Bearer ${t}` } });
   }
 
-  /** Обработка 401: один рефреш для пачки запросов, остальные ждут */
+  private normalizeToken(token: any): string | null {
+    if (token == null) return null;
+    const t = String(token).trim();
+    if (!t || t === 'undefined' || t === 'null') return null;
+    return t;
+  }
+
   private handle401(
-    error: any,
+    error: HttpErrorResponse,
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (!(error instanceof HttpErrorResponse)) {
+    if (this.shouldSkip(req)) {
       return throwError(() => error);
     }
 
-    // рефрешим ТОЛЬКО на 401 и если это не auth-эндпоинт
-    if (error.status !== 401 || this.shouldSkip(req)) {
-      return throwError(() => error);
-    }
-
-    // если уже идёт обновление — ждём, пока придёт новый токен
     if (this.isRefreshing) {
       return this.refreshAccessToken$.pipe(
         filter((t): t is string => t !== null),
@@ -67,35 +84,53 @@ export class AuthInterceptor implements HttpInterceptor {
     this.refreshAccessToken$.next(null);
 
     return from(this.auth.refreshToken()).pipe(
-      switchMap((newToken) => {
+      switchMap((newTokenRaw) => {
+        const newToken = this.normalizeToken(newTokenRaw);
         this.isRefreshing = false;
 
         if (newToken) {
           this.refreshAccessToken$.next(newToken);
-          const retried = this.addAuthHeader(req, newToken);
-          return next.handle(retried);
+          return next.handle(this.addAuthHeader(req, newToken));
         }
 
-        // не удалось обновить — выходим из аккаунта
-        this.auth.logout?.();
+        void this.auth.logout();
         return throwError(() => error);
       }),
       catchError((refreshErr) => {
         this.isRefreshing = false;
-        this.auth.logout?.();
+        void this.auth.logout();
         return throwError(() => refreshErr);
       })
     );
   }
 
-  /** Какие запросы пропускать без токена/рефреша */
   private shouldSkip(req: HttpRequest<any>): boolean {
-    // не добавляем токен и не рефрешим для самих auth-роутов
-    // подгони регулярку под свои пути, если отличаются
     const url = req.url.toLowerCase();
-    const isAuth = /\/auth\/(signin|signup|refresh|confirm-email)/.test(url);
-    // preflight/OPTIONS обычно без токена
-    const isPreflight = req.method.toUpperCase() === 'OPTIONS';
-    return isAuth || isPreflight;
+
+    // OPTIONS / preflight
+    if (req.method.toUpperCase() === 'OPTIONS') return true;
+
+    // auth endpoints
+    if (/\/auth\/(signin|signup|refresh|confirm)/.test(url)) return true;
+
+    return false;
+  }
+
+  private isUserDoesNotExist(err: HttpErrorResponse): boolean {
+    if (err.status !== 404) return false;
+
+    // err.error может быть string или объект { message, error, statusCode }
+    const e = err.error as any;
+
+    const msg =
+      typeof e === 'string'
+        ? e
+        : typeof e?.message === 'string'
+          ? e.message
+          : Array.isArray(e?.message)
+            ? e.message.join(' ')
+            : '';
+
+    return msg.toLowerCase().includes("user doesn't exist");
   }
 }

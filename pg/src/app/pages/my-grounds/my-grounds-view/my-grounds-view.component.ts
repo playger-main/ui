@@ -62,25 +62,23 @@ export class MyGroundsViewComponent implements OnInit {
     });
   }
 
-  // ✅ приходит сверху (из MyGroundsComponent)
   @Input() favoriteGrounds: IGround[] | null = [];
 
-  // ✅ события наружу
   @Output() goToGroundPage = new EventEmitter<string>();
   @Output() toggleFavorite = new EventEmitter<IGround>();
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 
-  onGroundClick(id: string) {
+  onGroundClick(id: string): void {
     this.goToGroundPage.emit(id);
   }
 
-  onToggleFavorite(ev: Event, ground: IGround) {
+  onToggleFavorite(ev: Event, ground: IGround): void {
     ev.stopPropagation();
     this.toggleFavorite.emit(ground);
   }
 
-  trackById(_: number, g: IGround) {
+  trackById(_: number, g: IGround): string {
     return g.id;
   }
 }

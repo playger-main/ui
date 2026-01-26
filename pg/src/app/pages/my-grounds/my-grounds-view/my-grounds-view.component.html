@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="true">
   <ion-list-header>
-    <ion-label><strong>My Favorite Grounds</strong></ion-label>
+    <ion-label><strong>Favorite Grounds</strong></ion-label>
   </ion-list-header>
 
   <ng-container *ngIf="favoriteGrounds?.length; else empty">
@@ -11,25 +11,29 @@
     >
       <ion-card-header>
         <ion-card-title>{{ g.name }}</ion-card-title>
-        <ion-card-subtitle>{{ g.address }}</ion-card-subtitle>
+        <ion-card-subtitle *ngIf="g.address">{{ g.address }}</ion-card-subtitle>
       </ion-card-header>
 
       <ion-card-content>
-        <ion-button
-          fill="clear"
-          (click)="onToggleFavorite($event, g)"
-        >
-          <ion-icon
-            slot="icon-only"
-            [name]="g.isFavorite ? 'heart' : 'heart-outline'"
-            color="danger"
-          ></ion-icon>
+        <p *ngIf="g.description">{{ g.description }}</p>
+
+        <p *ngIf="(g.kindofsport ?? []).length">
+          <strong>Sport:</strong> {{ (g.kindofsport ?? []).join(', ') }}
+        </p>
+
+        <p *ngIf="(g.coverage ?? []).length">
+          <strong>Coverage:</strong> {{ (g.coverage ?? []).join(', ') }}
+        </p>
+
+        <ion-button fill="outline" size="small" (click)="onToggleFavorite($event, g)">
+          <ion-icon slot="start" name="heart"></ion-icon>
+          Remove
         </ion-button>
       </ion-card-content>
     </ion-card>
   </ng-container>
 
   <ng-template #empty>
-    <p class="ion-padding">No favorite grounds yet.</p>
+    <p class="ion-padding">No favorites yet.</p>
   </ng-template>
 </ion-content>

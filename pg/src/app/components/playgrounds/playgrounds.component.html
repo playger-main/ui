@@ -1,91 +1,70 @@
-import { CommonModule } from '@angular/common';
-import {
-  Component,
-  input,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import {
-  IonCard,
-  IonAvatar,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-} from '@ionic/angular/standalone';
-import { IGround } from 'src/app/interfaces/interfaces';
-import {
-  star,
-  heart,
-  calendar,
-  starOutline,
-  locationOutline,
-} from 'ionicons/icons';
-import { addIcons } from 'ionicons';
-@Component({
-  selector: 'app-playgrounds',
-  templateUrl: './playgrounds.component.html',
-  styleUrls: ['./playgrounds.component.scss'],
-  imports: [CommonModule, IonIcon, IonList, RouterModule],
-})
-export class PlaygroundsComponent implements OnInit {
-  constructor(private router: Router) {
-    addIcons({ heart, star, calendar, starOutline, locationOutline });
-  }
+<ion-list class="playgrounds-list">
+  <ion-card
+    class="playground-item"
+    [ngClass]="{ 'green-card': (item.eventsCount ?? 0) > 0 }"
+    *ngFor="let item of (listPlaygrounds ?? [])"
+    [routerLink]="['/ground', item.id]"
+  >
+    <div class="playground-card-content">
+      <!-- LEFT: photo -->
+      <div class="photo-wrap">
+        <img
+          [src]="item.avatar || 'assets/icon/placeholder-ground.png'"
+          alt="photo"
+          class="playground-photo"
+          loading="lazy"
+        />
+      </div>
 
-  listFavoriteGrounds = input<IGround[]>();
+      <!-- CENTER: info -->
+      <div class="playground-info">
+        <div class="title-row">
+          <h2 class="playground-title">
+            {{ item.name }}
+            <span class="kind" *ngIf="item.kindofsport?.length">
+              · {{ (item.kindofsport ?? []).join(', ') }}
+            </span>
+          </h2>
 
-  ngOnInit() {
-    console.log('playgrounds component');
-    const saved = localStorage.getItem('favorites');
-    if (saved) {
-      const favs = JSON.parse(saved);
-      this.listPlaygrounds?.forEach((p) => {
-        p.isFavorite = favs.some((f: any) => f.id === p.id);
-      });
-      this.listFavoriteGrounds = favs;
-    }
-  }
+          <!-- RIGHT TOP: calendar if has events -->
+          <ion-icon
+            *ngIf="(item.eventsCount ?? 0) > 0"
+            class="calendar-badge"
+            name="calendar"
+          ></ion-icon>
+        </div>
 
-  Math = Math;
+        <p class="playground-address" *ngIf="item.address">
+          <ion-icon class="addr-icon" name="location-outline"></ion-icon>
+          <span class="addr-text">{{ item.address }}</span>
+        </p>
 
-  @Input() listPlaygrounds: IGround[] | null = null;
+        <div class="meta-row" *ngIf="(item.avgRating ?? 0) > 0">
+          <div class="rating-stars">
+            <ng-container *ngFor="let s of [1, 2, 3, 4, 5]">
+              <ion-icon
+                [name]="s <= Math.round(item.avgRating ?? 0) ? 'star' : 'star-outline'"
+                class="star-ico"
+              ></ion-icon>
+            </ng-container>
 
-  @Input() currentKindOfSport: string | null = null;
+            <span class="rating-value">{{ item.avgRating }}/5</span>
+          </div>
 
-  navigateToGround(id: string) {
-    this.router.navigate(['/ground', id]);
-  }
-
-  toggleFavorite(item: any, event: Event) {
-    event.stopPropagation();
-    item.isFavorite = !item.isFavorite;
-
-    if (item.isFavorite) {
-      // добавляем
-      this.listFavoriteGrounds()?.push(item);
-    } else {
-      // убираем
-      // this.listFavoriteGrounds = this.listFavoriteGrounds()?.filter(
-      //   (f) => f.id !== item.id
-      // );
-    }
-
-    // если список пустой — очищаем localStorage
-    if (this.listFavoriteGrounds.length === 0) {
-      localStorage.removeItem('favorites');
-    } else {
-      localStorage.setItem(
-        'favorites',
-        JSON.stringify(this.listFavoriteGrounds)
-      );
-    }
-  }
-}
+          <!-- heart -->
+          <button
+            type="button"
+            class="fav-btn"
+            (click)="onToggleFavorite(item, $event)"
+            aria-label="Toggle favorite"
+          >
+            <ion-icon
+              [name]="item.isFavorite ? 'heart' : 'heart-outline'"
+              class="fav-ico"
+            ></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ion-card>
+</ion-list>

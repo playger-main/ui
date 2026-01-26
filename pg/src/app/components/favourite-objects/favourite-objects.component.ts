@@ -1,38 +1,61 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonIcon, IonLabel, IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
+import {
+  IonIcon,
+  IonLabel,
+  IonSegment,
+  IonSegmentButton,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { barbell, basketball, football } from 'ionicons/icons';
-import { AppComponent } from 'src/app/app.component';
 import { IFavoriteListSport } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-favourite-objects',
   templateUrl: './favourite-objects.component.html',
   styleUrls: ['./favourite-objects.component.scss'],
-  imports: [IonIcon,IonLabel, CommonModule, IonSegment, IonSegmentButton,  FormsModule,],
+  standalone: true,
+  imports: [IonIcon, IonLabel, CommonModule, IonSegment, IonSegmentButton, FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FavouriteObjectsComponent implements OnInit {
-
-  constructor(private appComponent: AppComponent) {
-    console.log(this.selectedKindOfSport)
-    addIcons({ football, basketball, barbell});
-  } 
-  ngOnInit(): void {
-    this.selectedKindOfSport = this.listfavoriteKindOfSport ? this.listfavoriteKindOfSport[0].type : '';
-    console.log('favourite component')
+export class FavouriteObjectsComponent implements OnChanges {
+  constructor() {
+    addIcons({ football, basketball, barbell });
   }
- 
-  @Input() listfavoriteKindOfSport!: IFavoriteListSport[] | null;
-  @Input()  selectedKindOfSport!: string;
 
+  @Input() listfavoriteKindOfSport: IFavoriteListSport[] | null = null;
+
+  /**
+   * Можно передавать из родителя, чтобы контролировать выбранный сегмент.
+   * Если родитель не передал — выберем первый из списка автоматически.
+   */
+  @Input() selectedKindOfSport: string | null = null;
 
   @Output() kindOfSportChanged = new EventEmitter<string>();
 
-  onSegmentChange(event: CustomEvent) {
-    this.kindOfSportChanged.emit(event.detail.value.toLowerCase());
+  ngOnChanges(changes: SimpleChanges): void {
+    // если список пришёл асинхронно и выбранного ещё нет — выбираем первый
+    if (
+      (changes['listfavoriteKindOfSport'] || changes['selectedKindOfSport']) &&
+      !this.selectedKindOfSport &&
+      this.listfavoriteKindOfSport?.length
+    ) {
+      this.selectedKindOfSport = this.listfavoriteKindOfSport[0].type;
+      this.kindOfSportChanged.emit(this.selectedKindOfSport.toLowerCase());
+    }
   }
-  
+
+  onSegmentChange(event: CustomEvent) {
+    const value = String(event.detail?.value ?? '');
+    this.kindOfSportChanged.emit(value.toLowerCase());
+  }
 }

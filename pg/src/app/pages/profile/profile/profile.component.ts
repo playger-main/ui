@@ -1,10 +1,9 @@
-// ui/pg/src/app/pages/profile/profile/profile.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileViewComponent } from '../profile-view/profile-view.component';
 
-import { Observable, of, forkJoin } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, shareReplay } from 'rxjs/operators';
 
 import { ICurrentUser, IEvent, IGround } from 'src/app/interfaces/interfaces';
 import { UserService } from 'src/app/services/user.service';
@@ -29,27 +28,29 @@ export class ProfileComponent implements OnInit {
   favoriteGrounds$!: Observable<IGround[]>;
   futureEvents$!: Observable<IEvent[]>;
 
-  ngOnInit() {
-    this.user$ = this.userService.getMe();
+  ngOnInit(): void {
+    this.user$ = this.userService.getMe().pipe(
+      catchError((err) => {
+        console.warn('Load me failed:', err);
+        return of(null);
+      }),
+      shareReplay({ bufferSize: 1, refCount: true })
+    );
 
-    const favoriteIds = (this.groundService.getFavoriteGrounds() ?? [])
-      .map((g) => g?.id)
-      .filter((id): id is string => Boolean(id));
-
-    this.favoriteGrounds$ = favoriteIds.length
-      ? forkJoin(favoriteIds.map((id) => this.groundService.getGroundById(id))).pipe(
-          map((list) => (list ?? []).filter((g): g is IGround => Boolean(g?.id))),
-          catchError((err) => {
-            console.warn('Load favorite grounds failed:', err);
-            return of<IGround[]>([]);
-          })
-        )
-      : of<IGround[]>([]);
+    // ✅ избранные уже приходят как IGround[] с /favorite
+    this.favoriteGrounds$ = this.groundService.getFavoriteGrounds().pipe(
+      map((list: IGround[]) => (list ?? []).filter((g: IGround) => Boolean(g?.id))),
+      catchError((err) => {
+        console.warn('Load favorite grounds failed:', err);
+        return of<IGround[]>([]);
+      }),
+      shareReplay({ bufferSize: 1, refCount: true })
+    );
 
     this.futureEvents$ = this.eventService.getMyEvents().pipe(
-      map((list) => {
+      map((list: IEvent[] | null | undefined) => {
         const now = new Date();
-        return (list ?? []).filter((e) => {
+        return (list ?? []).filter((e: IEvent) => {
           const d = new Date(e.date);
           return !isNaN(d.getTime()) && d >= now;
         });
@@ -57,7 +58,8 @@ export class ProfileComponent implements OnInit {
       catchError((err) => {
         console.warn('Load my events failed:', err);
         return of<IEvent[]>([]);
-      })
+      }),
+      shareReplay({ bufferSize: 1, refCount: true })
     );
   }
 }

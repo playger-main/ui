@@ -10,6 +10,7 @@ import { IGround, IFavoriteListSport } from 'src/app/interfaces/interfaces';
 import { GroundService } from 'src/app/services/ground.service';
 import { AppComponent } from 'src/app/app.component';
 import { HomeViewComponent } from '../home-view/home-view.component';
+import { mapTo } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -21,30 +22,53 @@ import { HomeViewComponent } from '../home-view/home-view.component';
 export class HomePage implements OnInit {
   constructor(
     public appComponent: AppComponent,
-    private playGroundService: GroundService,
+    private groundService: GroundService,
     private router: Router
   ) {
     addIcons({ add });
   }
 
-  // чтобы template не падал
   listfavoriteKindOfSport$!: Observable<IFavoriteListSport[]>;
   listPlaygrounds$!: Observable<IGround[]>;
-  listFavoriteGrounds = signal<IGround[]>([]);
+
+  /** серверное избранное: список площадок */
+  favoriteGrounds = signal<IGround[]>([]);
 
   ngOnInit(): void {
-    // пока без fav sports с сервера — просто пустой список, чтобы не падал UI
     this.listfavoriteKindOfSport$ = of<IFavoriteListSport[]>([]);
+    this.listPlaygrounds$ = this.groundService.getAllGrounds();
 
-    // основные данные — с сервера
-    this.listPlaygrounds$ = this.playGroundService.getAllGrounds();
+    this.reloadFavorites();
   }
 
   onNewGroundForm(ground: IGround) {
     console.log(ground);
   }
 
-  loadFavGrounds() {
-    this.listFavoriteGrounds.set(this.playGroundService.getFavoriteGrounds());
+  /** перезагрузить избранное с сервера */
+  reloadFavorites() {
+    this.groundService.getFavoriteGrounds().subscribe({
+      next: (list) => this.favoriteGrounds.set(Array.isArray(list) ? list : []),
+      error: (err: unknown) => {
+        console.warn('GET /favorite failed:', err);
+        this.favoriteGrounds.set([]);
+      },
+    });
+  }
+
+  /** обработка клика по сердечку (добавить/убрать) */
+  onFavoriteToggled(g: IGround) {
+    // ✅ приводим к одному типу Observable<void>, чтобы TS не ругался на subscribe
+    const req$: Observable<void> = g.isFavorite
+      ? this.groundService.deleteFavoriteGround(g.id)
+      : this.groundService.saveFavoriteGround(g.id).pipe(mapTo(void 0));
+
+    req$.subscribe({
+      next: () => {
+        g.isFavorite = !g.isFavorite;
+        this.reloadFavorites();
+      },
+      error: (err: unknown) => console.warn('favorite toggle failed:', err),
+    });
   }
 }

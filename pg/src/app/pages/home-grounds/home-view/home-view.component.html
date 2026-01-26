@@ -1,6 +1,5 @@
 <div class="page-content">
   <ion-content [fullscreen]="true">
-
     <div class="header-container">
       <h4>Grounds</h4>
 
@@ -25,26 +24,15 @@
 
     <div class="header-menu">
       <div class="map-container">
-        <!-- ✅ передаём площадки в карту -->
         <app-map [grounds]="listPlaygrounds"></app-map>
       </div>
 
-      <!-- ✅ если SearchComponent пока сам по себе — оставь так -->
       <app-search></app-search>
-
-      <!-- 🔁 если SearchComponent должен знать избранные/виды спорта — можно так:
-      <app-search
-        [listfavoriteKindOfSport]="listfavoriteKindOfSport"
-        [selectedKindOfSport]="selectedKindOfSport"
-      ></app-search>
-      -->
     </div>
 
-    <!-- ✅ оставляем как у тебя было по именам инпутов -->
     <app-playgrounds
       [listPlaygrounds]="listPlaygrounds"
-      [listFavoriteGrounds]="listFavoriteGrounds()"
+      (favoriteToggled)="onFavoriteToggled($event)"
     ></app-playgrounds>
-
   </ion-content>
 </div>
