@@ -1,96 +1,160 @@
-.playground-item {
-  margin-bottom: 1rem;
-  padding: 0.5rem;
+.playgrounds-list {
+  padding: 0 8px;
 }
 
+.playground-item {
+  margin: 10px 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* основная сетка карточки */
 .playground-card-content {
   display: grid;
-  justify-content: space-between;
-  grid-template-columns: 1fr 50px;
-  height: 100%;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  align-items: stretch;
+  padding: 12px;
 }
 
-.info-left-section {
+/* фото */
+.photo-wrap {
   display: flex;
   align-items: center;
-}
-
-.fav-icon-box,
-.calendar-icon-box {
-  display: flex;
   justify-content: center;
-  align-self: center;
-  width: 100%;
-
-  height: 50%;
-}
-
-icon-icon {
-  margin-left: 0;
-}
-
-.icon-heart {
-  font-size: 1.8em;
-  vertical-align: middle;
-  color: var(--warn-color);
-
-  &-outline {
-    font-size: 1.8em;
-    vertical-align: middle;
-    color: var(--gray-light-color);
-    cursor: pointer;
-  }
 }
 
 .playground-photo {
-  width: 100px;
-  height: 100px;
-  border-radius: 12px;
+  width: 110px;
+  height: 110px;
+  border-radius: 14px;
   object-fit: cover;
-  margin-right: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
+/* инфо */
 .playground-info {
-  // flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 0; // чтобы длинные строки нормально обрезались
+}
+
+.title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .playground-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 2px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+.kind {
+  font-weight: 500;
+  opacity: 0.75;
+  font-size: 0.95rem;
+}
+
+/* календарик справа сверху */
+.calendar-badge {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+/* адрес */
 .playground-address {
-  color: #666;
-  font-size: 0.98rem;
-  margin-bottom: 4px;
+  margin: 6px 0 0;
   display: flex;
   align-items: center;
+  gap: 6px;
+  color: rgba(0, 0, 0, 0.62);
+  font-size: 0.95rem;
+  min-width: 0;
 }
 
-.playground-rating-row {
+.addr-icon {
+  font-size: 1.1rem;
+  flex: 0 0 auto;
+  opacity: 0.9;
+}
+
+.addr-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* нижняя строка: рейтинг + сердце */
+.meta-row {
+  margin-top: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px;
+  gap: 10px;
 }
 
 .rating-stars {
   display: flex;
   align-items: center;
+  gap: 2px;
+}
+
+.star-ico {
+  font-size: 1.15rem;
 }
 
 .rating-value {
-  margin-left: 8px;
-  color: #888;
-  font-size: 0.95em;
+  margin-left: 6px;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 0.92rem;
+  white-space: nowrap;
 }
 
+/* кнопка избранного */
+.fav-btn {
+  border: 0;
+  background: transparent;
+  padding: 6px;
+  margin: -6px; // расширяем область клика
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.fav-btn:active {
+  transform: scale(0.96);
+}
+
+.fav-ico {
+  font-size: 1.5rem;
+}
+
+/* подсветка карточек с событиями */
 .green-card {
-  // background-color: #e0f7e0; /* Light green background */
-  border: 3px solid #a0d8a0; /* Optional: green border */
+  border: 2px solid rgba(46, 204, 113, 0.55);
+}
+
+/* адаптив */
+@media (max-width: 380px) {
+  .playground-card-content {
+    grid-template-columns: 96px 1fr;
+  }
+  .playground-photo {
+    width: 96px;
+    height: 96px;
+  }
+  .playground-title {
+    font-size: 1rem;
+  }
 }
