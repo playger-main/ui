@@ -30,7 +30,7 @@ import { star, starOutline, heart, heartOutline } from 'ionicons/icons';
 @Component({
   selector: 'app-ground-view',
   templateUrl: './ground-view.component.html',
-  styleUrls: ['./ground-view.component.scss'],
+  styleUrls: ['./ground-view.component.scss'],  
   imports: [
     CommonModule,
     IonButton,

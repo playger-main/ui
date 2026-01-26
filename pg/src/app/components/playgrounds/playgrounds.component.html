@@ -1,91 +1,65 @@
-import { CommonModule } from '@angular/common';
-import {
-  Component,
-  input,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import {
-  IonCard,
-  IonAvatar,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-} from '@ionic/angular/standalone';
-import { IGround } from 'src/app/interfaces/interfaces';
-import {
-  star,
-  heart,
-  calendar,
-  starOutline,
-  locationOutline,
-} from 'ionicons/icons';
-import { addIcons } from 'ionicons';
-@Component({
-  selector: 'app-playgrounds',
-  templateUrl: './playgrounds.component.html',
-  styleUrls: ['./playgrounds.component.scss'],
-  imports: [CommonModule, IonIcon, IonList, RouterModule],
-})
-export class PlaygroundsComponent implements OnInit {
-  constructor(private router: Router) {
-    addIcons({ heart, star, calendar, starOutline, locationOutline });
-  }
+<ion-list>
+  <ion-card
+    class="playground-item"
+    [ngClass]="{ 'green-card': (item.eventsCount ?? 0) > 0 }"
+    *ngFor="let item of (listPlaygrounds ?? [])"
+    [routerLink]="['/ground', item.id]"
+  >
+    <div class="playground-card-content">
+      <img
+        [src]="item.avatar || 'assets/icon/placeholder-ground.png'"
+        alt="photo"
+        class="playground-photo"
+      />
 
-  listFavoriteGrounds = input<IGround[]>();
+      <div class="playground-info">
+        <h2 class="playground-title">
+          {{ item.name }}
+          <span *ngIf="item.kindofsport?.length">
+            - {{ (item.kindofsport ?? []).join(', ') }}
+          </span>
+        </h2>
 
-  ngOnInit() {
-    console.log('playgrounds component');
-    const saved = localStorage.getItem('favorites');
-    if (saved) {
-      const favs = JSON.parse(saved);
-      this.listPlaygrounds?.forEach((p) => {
-        p.isFavorite = favs.some((f: any) => f.id === p.id);
-      });
-      this.listFavoriteGrounds = favs;
-    }
-  }
+        <p class="playground-address" *ngIf="item.address">
+          <ion-icon
+            name="location-outline"
+            color="primary"
+            style="vertical-align: middle; margin-right: 4px"
+          ></ion-icon>
+          {{ item.address }}
+        </p>
 
-  Math = Math;
+        <div *ngIf="(item.avgRating ?? 0) > 0" class="playground-rating-row">
+          <div class="rating-stars">
+            <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+              <ion-icon
+                [name]="star <= Math.round(item.avgRating ?? 0) ? 'star' : 'star-outline'"
+                color="warning"
+                style="font-size: 1.2em; vertical-align: middle"
+              ></ion-icon>
+            </ng-container>
 
-  @Input() listPlaygrounds: IGround[] | null = null;
+            <span class="rating-value" style="margin-left: 8px">
+              {{ item.avgRating }}/5
+            </span>
+          </div>
 
-  @Input() currentKindOfSport: string | null = null;
+          <!-- сердечко -->
+          <ion-icon
+            [name]="item.isFavorite ? 'heart' : 'heart-outline'"
+            color="danger"
+            style="font-size: 1.4em; vertical-align: middle; margin-left: 12px"
+            (click)="onToggleFavorite(item, $event)"
+          ></ion-icon>
+        </div>
+      </div>
 
-  navigateToGround(id: string) {
-    this.router.navigate(['/ground', id]);
-  }
-
-  toggleFavorite(item: any, event: Event) {
-    event.stopPropagation();
-    item.isFavorite = !item.isFavorite;
-
-    if (item.isFavorite) {
-      // добавляем
-      this.listFavoriteGrounds()?.push(item);
-    } else {
-      // убираем
-      // this.listFavoriteGrounds = this.listFavoriteGrounds()?.filter(
-      //   (f) => f.id !== item.id
-      // );
-    }
-
-    // если список пустой — очищаем localStorage
-    if (this.listFavoriteGrounds.length === 0) {
-      localStorage.removeItem('favorites');
-    } else {
-      localStorage.setItem(
-        'favorites',
-        JSON.stringify(this.listFavoriteGrounds)
-      );
-    }
-  }
-}
+      <ion-icon
+        *ngIf="(item.eventsCount ?? 0) > 0"
+        name="calendar"
+        color="success"
+        style="font-size: 1.4em; position: absolute; top: 10px; right: 10px"
+      ></ion-icon>
+    </div>
+  </ion-card>
+</ion-list>

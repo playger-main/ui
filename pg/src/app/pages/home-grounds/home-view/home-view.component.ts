@@ -1,5 +1,6 @@
+// ui/pg/src/app/pages/home-grounds/home-view/home-view.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Input, input, output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonButton,
@@ -21,6 +22,7 @@ import { IFavoriteListSport, IGround } from 'src/app/interfaces/interfaces';
   selector: 'app-home-view',
   templateUrl: './home-view.component.html',
   styleUrls: ['./home-view.component.scss'],
+  standalone: true,
   imports: [
     CommonModule,
     IonModal,
@@ -43,8 +45,13 @@ export class HomeViewComponent implements OnInit {
   @Input() listPlaygrounds: IGround[] | null = null;
   @Input() selectedKindOfSport: string | null = null;
 
-  onNewGroundForm = output<IGround>();
-  listFavoriteGrounds = input<IGround[]>();
+  /** серверное избранное (список площадок) */
+  @Input() favoriteGrounds: IGround[] | null = null;
+
+  @Output() onNewGroundForm = new EventEmitter<IGround>();
+
+  /** событие “клик по сердечку” */
+  @Output() favoriteToggled = new EventEmitter<IGround>();
 
   presentingElement!: HTMLElement | null;
   private canDismissOverride = false;
@@ -59,5 +66,13 @@ export class HomeViewComponent implements OnInit {
 
   onWillPresent() {
     this.canDismissOverride = false;
+  }
+
+  onFavoriteToggled(g: IGround) {
+    this.favoriteToggled.emit(g);
+  }
+
+  trackById(_: number, g: IGround) {
+    return g.id;
   }
 }

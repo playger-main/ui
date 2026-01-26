@@ -1,68 +1,50 @@
-// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 type AuthResponse = {
   accessToken?: string;
   refreshToken?: string;
-  access_token?: string;   // на случай snake_case
-  refresh_token?: string;  // на случай snake_case
+  access_token?: string;
+  refresh_token?: string;
 };
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private api = environment.apiUrl.replace(/\/+$/, ''); // без завершающего /
+  private api = environment.apiUrl.replace(/\/+$/, '');
 
-  // ключи хранения (оставляю как у тебя, snake_case)
   private ACCESS_KEY = 'access_token';
   private REFRESH_KEY = 'refresh_token';
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  /** Логин: запрос, сохранение токенов и переход */
-  login(user: string, password: string) {
-    // возвращаем subscription как у тебя (минимум правок в компонентах)
-    return this.http
-      .post<AuthResponse>(`${this.api}/auth/signin`, { user, password })
-      .subscribe({
-        next: async (res) => {
-          const { accessToken, refreshToken } = this.pickTokens(res);
-          await this.saveTokens(accessToken, refreshToken);
-          this.router.navigate(['/profile']);
-        },
-        error: (err) => {
-          console.error('Ошибка входа', err);
-          alert(err?.error?.message ?? 'Ошибка входа');
-        },
-      });
+  /* ===================== API ===================== */
+
+  /** Логин: возвращает Observable, подписка в компоненте */
+  login(user: string, password: string): Observable<void> {
+    return this.http.post<AuthResponse>(`${this.api}/auth/signin`, { user, password }).pipe(
+      map((res) => this.pickTokens(res)),
+      tap(async ({ accessToken, refreshToken }) => {
+        await this.saveTokens(accessToken, refreshToken);
+      }),
+      map(() => void 0)
+    );
   }
 
-  /** Регистрация: без токенов, просто редирект и уведомление */
-  register(username: string, email: string, password: string) {
-    return this.http
-      .post(`${this.api}/auth/signup`, { username, email, password })
-      .subscribe({
-        next: () => {
-          alert(
-            `На ${email} выслано письмо для подтверждения почты. `
-            + `Если не находите письмо, проверьте спам.`
-          );
-          this.router.navigate(['/login']);
-        },
-        error: (error) => {
-          console.error('Ошибка регистрации', error);
-          alert(error?.error?.message || 'Ошибка регистрации');
-        },
-      });
+  /** Регистрация: возвращает Observable, подписка в компоненте */
+  register(username: string, email: string, password: string): Observable<void> {
+    return this.http.post<void>(`${this.api}/auth/signup`, { username, email, password });
   }
 
   /**
-   * Обновление access_token через refresh_token
-   * Возвращает новый access_token или null (если не удалось).
+   * Refresh: ВАЖНО для твоего NestJS:
+   * - JwtRefreshGuard обычно проверяет refresh из Authorization header
+   * - AuthService.refresh() у тебя читает req.body.refreshToken
+   * Поэтому отправляем refresh и в header, и в body.
    */
   async refreshToken(): Promise<string | null> {
     const refresh = await this.getRefreshToken();
@@ -72,55 +54,68 @@ export class AuthService {
     }
 
     try {
-      // важный момент: путь должен совпадать с исключением в интерцепторе (shouldSkip)
+      const headers = new HttpHeaders({ Authorization: `Bearer ${refresh}` });
+
       const res = await firstValueFrom(
-        this.http.post<AuthResponse>(`${this.api}/auth/refresh`, { refreshToken: refresh })
+        this.http.post<AuthResponse>(
+          `${this.api}/auth/refresh`,
+          { refreshToken: refresh },   // ✅ body для твоей проверки
+          { headers }                  // ✅ чтобы JwtRefreshGuard пропустил
+        )
       );
 
       const { accessToken, refreshToken } = this.pickTokens(res);
 
-      // сохраняем новый access; если пришёл новый refresh — тоже обновим
-      if (accessToken) {
-        await Preferences.set({ key: this.ACCESS_KEY, value: accessToken });
-      }
-      if (refreshToken && refreshToken !== refresh) {
-        await Preferences.set({ key: this.REFRESH_KEY, value: refreshToken });
-      }
+      // если refreshToken не пришёл — оставляем старый refresh
+      await this.saveTokens(accessToken, refreshToken || refresh);
 
-      return accessToken ?? null;
-    } catch (error) {
-      console.error('Ошибка обновления токена', error);
+      return this.normalizeToken(accessToken);
+    } catch (err) {
+      console.error('refreshToken failed:', err);
       await this.logout();
       return null;
     }
   }
 
-  /** Достаём токены из ответа в любом кейсе (camelCase/snake_case) */
+  /* ===================== TOKENS ===================== */
+
   private pickTokens(res: AuthResponse): { accessToken: string; refreshToken: string } {
     const accessToken = res.accessToken ?? res.access_token ?? '';
     const refreshToken = res.refreshToken ?? res.refresh_token ?? '';
     return { accessToken, refreshToken };
   }
 
-  /* ========= ХРАНИЛИЩЕ (Capacitor Preferences) ========= */
+  private normalizeToken(value: string | null | undefined): string | null {
+    const t = (value ?? '').trim();
+    if (!t || t === 'undefined' || t === 'null') return null;
+    return t;
+  }
 
-  async saveTokens(accessToken: string, refreshToken: string) {
-    if (accessToken) {
-      await Preferences.set({ key: this.ACCESS_KEY, value: accessToken });
+  async saveTokens(accessToken?: string, refreshToken?: string) {
+    const at = this.normalizeToken(accessToken ?? null);
+    const rt = this.normalizeToken(refreshToken ?? null);
+
+    if (at) {
+      await Preferences.set({ key: this.ACCESS_KEY, value: at });
+    } else {
+      await Preferences.remove({ key: this.ACCESS_KEY });
     }
-    if (refreshToken) {
-      await Preferences.set({ key: this.REFRESH_KEY, value: refreshToken });
+
+    if (rt) {
+      await Preferences.set({ key: this.REFRESH_KEY, value: rt });
+    } else {
+      await Preferences.remove({ key: this.REFRESH_KEY });
     }
   }
 
   async getAccessToken(): Promise<string | null> {
     const { value } = await Preferences.get({ key: this.ACCESS_KEY });
-    return value ?? null;
+    return this.normalizeToken(value);
   }
 
   async getRefreshToken(): Promise<string | null> {
     const { value } = await Preferences.get({ key: this.REFRESH_KEY });
-    return value ?? null;
+    return this.normalizeToken(value);
   }
 
   async removeTokens() {
@@ -128,7 +123,6 @@ export class AuthService {
     await Preferences.remove({ key: this.REFRESH_KEY });
   }
 
-  /** Выход */
   async logout() {
     await this.removeTokens();
     this.router.navigate(['/login']);

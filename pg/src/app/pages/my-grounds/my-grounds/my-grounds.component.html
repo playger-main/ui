@@ -1,1 +1,5 @@
-<app-my-grounds-view />
+<app-my-grounds-view
+  [favoriteGrounds]="favoriteGrounds$ | async"
+  (goToGroundPage)="goToGroundPage($event)"
+  (toggleFavorite)="toggleFavorite($event)"
+></app-my-grounds-view>

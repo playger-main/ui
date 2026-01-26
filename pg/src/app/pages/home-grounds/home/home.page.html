@@ -1,6 +1,7 @@
 <app-home-view
   [listfavoriteKindOfSport]="listfavoriteKindOfSport$ | async"
   [listPlaygrounds]="listPlaygrounds$ | async"
+  [favoriteGrounds]="favoriteGrounds()"
   (onNewGroundForm)="onNewGroundForm($event)"
-  [listFavoriteGrounds]="listFavoriteGrounds()"
+  (favoriteToggled)="onFavoriteToggled($event)"
 ></app-home-view>

@@ -156,27 +156,60 @@ export class GroundService {
 
   /* ========= избранное (локально) ========= */
 
-  saveFavoriteGround(ground: IGround): void {
-    const favorites = this.getFavoriteGrounds();
-    if (!favorites.some((fav) => fav.id === ground.id)) {
-      favorites.push(ground);
-      localStorage.setItem(this.FAVORITES_KEY, JSON.stringify(favorites));
-    }
+  saveFavoriteGround(groundId: string): Observable<{groundId: string}> {
+    return this.http.post<{groundId: string}>(`${this.api}/favorite`, {groundId}).pipe(
+      catchError((err) => {
+        console.warn('POST /favorite failed:', err);
+        throw err;
+      })
+    );
   }
 
-  deleteFavoriteGround(groundId: string): void {
-    const favorites = this.getFavoriteGrounds();
-    const updated = favorites.filter((fav) => fav.id !== groundId);
-    localStorage.setItem(this.FAVORITES_KEY, JSON.stringify(updated));
+  deleteFavoriteGround(groundId: string): Observable<void> {
+    return this.http.delete<void>(`${this.api}/favorite/${groundId}`).pipe(
+      catchError((err) => {
+        console.warn(`DELETE /ground failed:`, err);
+        throw err;
+      })
+    );
   }
 
-  getFavoriteGrounds(): IGround[] {
-    const stored = localStorage.getItem(this.FAVORITES_KEY);
-    try {
-      return stored ? (JSON.parse(stored) as IGround[]) : [];
-    } catch (e) {
-      console.warn('Failed to parse favorite grounds:', e);
-      return [];
-    }
+  getFavoriteGrounds(): Observable<IGround[]> {
+    return this.http.get<any[]>(`${this.api}/favorite`).pipe(
+      map((list) =>
+        (Array.isArray(list) ? list : []).map((f) => {
+          const g = f?.ground;
+
+          return {
+            id: String(g?.id ?? ''),                 // <-- ВАЖНО: id площадки
+            name: String(g?.name ?? ''),
+            description: g?.description ?? '',
+            address: g?.location?.address ?? '',     // <-- address лежит в location
+
+            kindofsport: Array.isArray(g?.kindofsport) ? g.kindofsport : [],
+            coverage: Array.isArray(g?.coverage) ? g.coverage : [],
+
+            geolocation: {                           // <-- lat/lng у тебя строками
+              lat: Number(g?.location?.lat ?? 0),
+              lng: Number(g?.location?.lng ?? 0),
+            },
+
+            createdAt: g?.createdAt,
+            updatedAt: g?.updatedAt,
+
+            eventsCount: Number(g?.eventsCount ?? 0),
+            isFavorite: true,                        // раз это /favorite
+            avgRating: Number(g?.avgRating ?? 0),
+
+            avatar: g?.avatar,
+          } as IGround;
+        })
+      ),
+      catchError((err) => {
+        console.warn('GET /favorite failed:', err);
+        return of<IGround[]>([]);
+      })
+    );
   }
+
 }

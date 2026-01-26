@@ -47,7 +47,6 @@ import {
   imports: [
     CommonModule,
     DatePipe,
-
     IonContent,
     IonList,
     IonListHeader,
@@ -55,18 +54,9 @@ import {
     IonLabel,
     IonIcon,
     IonButton,
-
     IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardSubtitle,
     IonCardContent,
-
-    IonSegment,
-    IonSegmentButton,
-
     IonInput,
-    IonToolbar,
   ],
 })
 export class ProfileViewComponent {
