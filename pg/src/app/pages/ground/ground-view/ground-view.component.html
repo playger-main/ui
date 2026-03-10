@@ -19,38 +19,28 @@
         <!-- coverage: string[] -->
         <ion-card-subtitle>
           @if (g.coverage?.length) {
-            {{ (g.coverage ?? []).join(', ') }}
-          } @else {
-            —
-          }
+          {{ (g.coverage ?? []).join(", ") }}
+          } @else { — }
         </ion-card-subtitle>
       </ion-card-header>
 
       <ion-card-content>
-        @if (g.description) {
-          <p><strong>Description:</strong> {{ g.description }}</p>
-        }
-
-        @if (g.kindofsport?.length) {
-          <p><strong>Sport:</strong> {{ (g.kindofsport ?? []).join(', ') }}</p>
-        }
-
-        @if (g.createdAt) {
-          <p><strong>Created At:</strong> {{ g.createdAt | date : 'short' }}</p>
-        }
-
-        @if (g.updatedAt) {
-          <p><strong>Updated At:</strong> {{ g.updatedAt | date : 'short' }}</p>
-        }
-
-        @if (g.address) {
-          <p><strong>Address:</strong> {{ g.address }}</p>
-        }
-
-        <p><strong>Latitude:</strong> {{ g.geolocation?.lat }}</p>
-        <p><strong>Longitude:</strong> {{ g.geolocation?.lng }}</p>
-
-        <!-- Reviews button (пока показываем только рейтинг/кол-во) -->
+        <p><strong>Description:</strong> {{ ground.description }}</p>
+        <p><strong>Created At:</strong> {{ ground.createdAt }}</p>
+        <p><strong>Updated At:</strong> {{ ground.updatedAt }}</p>
+        <p><strong>Address:</strong> {{ ground.location.address }}</p>
+        <p><strong>Latitude:</strong> {{ ground.location.lat }}</p>
+        <p class="raiting">
+          <strong>Longitude:</strong> {{ ground.location.lng }}
+        </p>
+        <p>
+          <strong>Rating:</strong> {{ ground.averageRating }}
+          <ion-icon
+            name="star"
+            color="warning"
+            style="font-size: 1.2em; vertical-align: middle"
+          ></ion-icon>
+        </p>
         <ion-button expand="block" fill="outline" (click)="toggleFeedback()">
           {{ showFeedback ? "Hide Info" : "Show Info" }}
         </ion-button>
